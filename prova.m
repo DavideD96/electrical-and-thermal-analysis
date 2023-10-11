@@ -8,3 +8,4 @@ surf(xx,yy,noisy)
 figure
 surf(x{1},x{2},sval.')
 disp('ciao')
+disp('prova')
