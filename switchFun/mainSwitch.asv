@@ -38,8 +38,7 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %               switch.
 %       'usr' - the user specify a mean and a sigma, and then the method
 %               'rel' is used.
-%   'appl': specify if you are applying constant voltage ('volt') or
-%           current ('curr').
+%   'appl': 
 %   'sel': sel is true if you ewant to select a data interval, false
 %          otherwise
 %   'ntv': select intervals to compute mean and std.
@@ -68,7 +67,7 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %                       between consecutive switches inside the same burst.
 %               "bNb" - compute the "numBin" analysis inside the bursts,
 %                       using the binlength specified by the input 'bin'.
-%               "cdt" - compute the Barab‡si et al. analysis for the
+%               "cdt" - compute the Barab√†si et al. analysis for the
 %                       correlation between the switches. To simulate the
 %                       stochastic beaviour, the switches are mixed ten times
 %                       and then is taken a mean of the histograms
