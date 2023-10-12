@@ -1,4 +1,25 @@
-function [max_hotspot, min_hotspot, z] = hotspot_3 (filename, m1, mdiff, soglia_max, soglia_min, varargin)
+function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_min, varargin)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Date: 2023-10-11 Last modification: 2023-10-11
+%Author: Cristina Zuccali
+%hotspot_3 (filename, m1, mdiff, soglia_max, soglia_min, varargin)
+%
+%Return the data of maxima and minima of the matrix mdiff. Minima and
+%maxima are selected with two different thresholds.
+%
+%   'mdiff' = 2D array (in our case array of temperatures variations in the selected region
+%           between fr_evento+fr_diff and fr_evento)
+%   'soglia_max' = threshold for the selection of maxima
+%   'soglia_min' = threshold for the selection of minima
+%
+%   'varargin' : there is the possibility of smooth mdiff data
+%               ('smoothing', 1) --> smoothing of mdiff data
+%               ('smoothing', 0) --> mdiff is left invariate
+%
+%   'max_hotspot' = array of maxima --> [coordinate, value]
+%   'min_hotspot' = array of minima --> [coordinate, value]
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     num = length(varargin);
 
     for k = 1:2:num
@@ -6,14 +27,6 @@ function [max_hotspot, min_hotspot, z] = hotspot_3 (filename, m1, mdiff, soglia_
             smooth = varargin{k+1}; %1 = smooth, 0 = grezzo
         end
     end
-
-    %Cartella per salvataggio dati
-    check = exist(['ThermoResults\',filename]);
-    if check ~= 7
-        mkdir(['ThermoResults\',filename]);
-    end
-
-    path = [pwd,'\ThermoResults\',filename,'\',];
 
     %Trova hotspots
     [Rows, Columns] = size (mdiff);
