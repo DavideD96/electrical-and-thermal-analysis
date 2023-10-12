@@ -178,6 +178,8 @@ R = [R(:,1:3), Resistance];
 anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
 %---------------------------------------
 
+s.detection = [anlR()];
+
 numberodSwitches = sum(anlR(:,end));
 
 s.nsw = numberodSwitches;

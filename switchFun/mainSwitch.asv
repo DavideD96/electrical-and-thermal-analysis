@@ -38,7 +38,8 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %               switch.
 %       'usr' - the user specify a mean and a sigma, and then the method
 %               'rel' is used.
-%   'appl': 
+%   'appl': specify if you are applying constant voltage ('volt') or
+%           current ('curr').
 %   'sel': sel is true if you ewant to select a data interval, false
 %          otherwise
 %   'ntv': select intervals to compute mean and std.
@@ -176,6 +177,8 @@ R = [R(:,1:3), Resistance];
 %--------------FIND SWITCH--------------
 anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
 %---------------------------------------
+
+s.detection = 
 
 numberodSwitches = sum(anlR(:,end));
 
