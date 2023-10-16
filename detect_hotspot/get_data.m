@@ -1,5 +1,24 @@
 function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
-    %seleziona area
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Date: 2023-10-11 Last modification: 2023-10-11
+%Author: Cristina Zuccali
+%get_data(filename, fr_evento, fr_diff, coordname)
+%
+%Return the data of a frame in a wanted ragione and the difference of
+%temperature value between fr_evento+fr_diff and fr_evento.
+%
+%   'filename' = principal part of the file name of frame (without number of frame and .CSV)
+%   'fr_evento' = number of start frame
+%   'fr_diff' = difference beetwen frame to show the difference of temperature
+%   'coordname' = name of file with coordinates of the wanted region
+%
+%   'm1' = array of temperatures in the selected region of fr_evento
+%   'mdiff' = array of temperatures variations in the selected region
+%           between fr_evento+fr_diff and fr_evento
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %selection of the area
     m1=readtable(sprintf(append(filename,'%d.CSV'),floor(10)),'Range','B9:XQ488');
     m1= m1{:,:};
 
@@ -21,12 +40,11 @@ function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
     m1_ridotta = zeros(y_ridotta+10,x_ridotta+10);
         n = fr_evento;
 
-    %salva dati
+    %store data
     for k = 1 : 2
         m1=readtable(sprintf(append(filename,'%d.CSV'), n),'Range','B9:XQ488'); %dimentions = (480x640)
         m1 = m1{:,:};
 
-        %%%%%%%% store data %%%%%%%%%
         n_pixel = 0;
 
         for i=1:480 %righe    
@@ -42,9 +60,7 @@ function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
         n = fr_evento + fr_diff;
     end
 
-
-    %Grafico
-    %axdiff = axes(f,'outerPosition', [0.5 0 0.3 1]);
+    %Graph
     m2 = frames{2, 1};
     m1 = frames{1, 1};
     mdiff = m2-m1;    
