@@ -1,6 +1,6 @@
 function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-10-12
+%Date: 2023-10-12 Last modification: 2023-10-16
 %Author: Cristina Zuccali
 %analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %
@@ -53,7 +53,10 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
     for i=0:(Nframes-fr_diff-frame_start)
         fname = ['frame', num2str(frame_start+i)];
         [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
-        D.(fname) = {mdiff}; 
+        D.(fname) = {mdiff};
+        if frame_start+i == 14
+            mdiff;
+        end
     end
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,25 +84,25 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
             p_max = sortrows(P.(fname){1,1}, 2, 'descend');
             
             %Costruisco S_max
-            [peak, state] = primi_vicini(p_max(1,:), 1, z);
-            S_max.(fname) = {peak, state};
+            [peak, point_state_max] = primi_vicini(p_max(1,:), 1, P.(fname){3});
+            S_max.(fname) = {peak, point_state_max};
             
         else
-            S_max.(fname) = {[[], []], 0};
+            S_max.(fname) = {[000, 000], 0};
         end
         
         %MINIMO ASSOLUTO
         %controllo se ci sono dati o è vuota
         if isempty(P.(fname){1,2}) == 0
-            %seleziono massimo assoluto
+            %seleziono minimo assoluto
             p_min = sortrows(P.(fname){1,2}, 2, 'ascend');
             
-            %Costruisco S_max
-            [peak, state] = primi_vicini(p_min(1,:), 0, z);
-            S_min.(fname) = {peak, state};
+            %Costruisco S_min
+            [peak, point_state_min] = primi_vicini(p_min(1,:), 0,  P.(fname){3});
+            S_min.(fname) = {peak, point_state_min};
             
         else
-            S_min.(fname) = {[[], []] , 0};
+            S_min.(fname) = {[000, 000] , 0};
         end
         
         state_tot = S_max.(fname){1,2} + S_min.(fname){1,2};
@@ -118,7 +121,8 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
 %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     rallenty = 15;
-    colormap_or_height = 0;
+    frames = zeros(0,6);
+
     %# create AVI object
     if video == 1
         video_name = [filename,'DETECT_fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'_'];
@@ -138,8 +142,6 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
             video_times(i) = (i-1)*1/video_frameRate;
         end
 
-        dist_da_prec = 1;
-        dist_da_succ = 1;
         f = figure('position',[200 100 1000 500]);
 
         for i=0:(Nframes-fr_diff-frame_start)
@@ -192,8 +194,11 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
             hold off
             
             clf(gcf);
+
+            frames(end+1,:) = [frames_states.(fname){1,1}{1,1}(1,1) frames_states.(fname){1,1}{1,1}(1,2) frames_states.(fname){1,2}{1,1}(1,1) frames_states.(fname){1,2}{1,1}(1,2) frames_states.(fname){1,3} frames_states.(fname){1,4}]; %coord_max, max, coord_min, min, state, tempo
         end
-        
+           
+        save('frames.mat', 'frames');
         close(gcf);
         close(vidObj);
     end

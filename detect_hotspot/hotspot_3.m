@@ -1,6 +1,6 @@
 function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_min, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-11 Last modification: 2023-10-11
+%Date: 2023-10-11 Last modification: 2023-10-16
 %Author: Cristina Zuccali
 %hotspot_3 (filename, m1, mdiff, soglia_max, soglia_min, varargin)
 %
@@ -66,5 +66,5 @@ function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_mi
         max_hotspot = [max_hotspot_coord, z(max_hotspot_coord)];
         min_hotspot = [min_hotspot_coord, z(min_hotspot_coord)];
     %Pulisci workspace
-    clear S;
+    %clear S;
 end

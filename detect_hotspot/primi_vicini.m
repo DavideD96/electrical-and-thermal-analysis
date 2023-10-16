@@ -1,6 +1,6 @@
 function [peak, state] = primi_vicini(peak, type, z)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-11 Last modification: 2023-10-11
+%Date: 2023-10-11 Last modification: 2023-10-16
 %Author: Cristina Zuccali
 %primi_vicini(peak, type, z)
 %
@@ -23,16 +23,18 @@ function [peak, state] = primi_vicini(peak, type, z)
     %Controllo i primi vicini
     state = 1;
     
-    coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1]
+    coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1];
     i = 1;
     
     if type == 1
-        while state == 1 && i<8
-            if z(coord_primi(i,1), coord_primi(i,2)) < 0
-                state = 0;
+            while state == 1 && i<8
+                [coord_primi(i,1), coord_primi(i,2)];
+                z(coord_primi(i,1), coord_primi(i,2));
+                if z(coord_primi(i,1), coord_primi(i,2)) < 0
+                    state = 0;
+                end
+                i = i+1;              
             end
-            i = i+1;              
-        end
         
     elseif type == 0     
         while state == 1 && i<8
