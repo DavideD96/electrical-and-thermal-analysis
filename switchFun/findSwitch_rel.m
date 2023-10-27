@@ -59,5 +59,9 @@ hold on;
             end
         end
     end
+
+%elimino transienti
+analyzed(analyzed(:,end) == -1,:) = 0;   
+
 hold off;            
 end
