@@ -22,7 +22,7 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
 %       for video production
 %               ('makeVideo', 1) --> makes the video
 %
-%   'frames_states' = is struct --> {[max_coordinate, max_value], [min_coordinate, min_value], state, time}
+%   'frames_states' = is struct --> {[max_coordinate, max_value], [min_coordinate, min_value], state, time, }
 %               where the state is equal to 1 if there is a maximum or/and
 %               a minimum, it is 0 if there aren't a maximum and a minimum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,9 +54,6 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
         fname = ['frame', num2str(frame_start+i)];
         [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
         D.(fname) = {mdiff};
-        if frame_start+i == 14
-            mdiff;
-        end
     end
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,12 +76,12 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
         
         %MASSIMO ASSOLUTO
         %controllo se ci sono dati o è vuota
-        if isempty(P.(fname){1,1}) == 0
+        if isempty(P.(fname){1,1}) == 0 %DD perché questo controllo?
             %seleziono massimo assoluto
             p_max = sortrows(P.(fname){1,1}, 2, 'descend');
             
             %Costruisco S_max
-            [peak, point_state_max] = primi_vicini(p_max(1,:), 1, P.(fname){3});
+            [peak, point_state_max] = primi_vicini(p_max(1,:), 1, P.(fname){3}); %DD perchè restituire peak?
             S_max.(fname) = {peak, point_state_max};
             
         else
@@ -105,7 +102,7 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
             S_min.(fname) = {[000, 000] , 0};
         end
         
-        state_tot = S_max.(fname){1,2} + S_min.(fname){1,2};
+        state_tot = S_max.(fname){1,2} + S_min.(fname){1,2}; %DD + = or?
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
         
         if state_tot == 0
@@ -122,6 +119,8 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     rallenty = 15;
     frames = zeros(0,6);
+
+
 
     %# create AVI object
     if video == 1
@@ -201,6 +200,12 @@ function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_dif
         save('frames.mat', 'frames');
         close(gcf);
         close(vidObj);
+
     end
+    detMethod = 'ThresholdNN'; %modifica in base agli inputs
+    areaMethod = 'CWT'; %modifica in base agli inputs
+
+    name = [filename, '_Elect_Thermal_',detMethod,'_', areaMethod,'_startFrame',num2str(frame_start),'.mat'];        
+    save(name', 'frames');
 end
 
