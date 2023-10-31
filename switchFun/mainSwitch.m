@@ -87,42 +87,7 @@ meanByUser = 0;
 sigmaByUser = 0;
 i = 0; %index to take account of the number of otpions to be performed
 
-%check the correct path
-if ~isfolder(folder)
-    tmprry_p = pwd;
-    cd ..
-    if ~isfolder(folder)
-        cd (tmprry_p);
-        disp('You are not in the correct folder...Bye!')
-        s.readPlease = 'Run correctly the program, please!'
-        return
-    else
-        disp('Attention! You were in the wrong directory')
-    end
-end
-%save the sigma and discrimintant levels
-sigLev = load('sigmaLevel.txt');
-%check for directory where saving the data
-check = exist(['switchResults\',folder]);
-if check ~= 7
-    mkdir(['switchResults\',folder]);
-end
-%save the folder path where save data
-path = [pwd,'\switchResults\',folder];
-%cd('switchResults');
-%path = cd;
-%cd ..;
-
-%go to the folder where there are the data to be analyzed
-cd(folder);
-checkFile = exist(nomefile);
-if checkFile ~= 2
-    disp('File not found.');
-    cd ..;
-    return
-end
-R = load(nomefile,'-ascii');
-cd ..;
+R = load(nomefile).R;
 
 %set the data in varargin
 num = length(varargin);
@@ -173,6 +138,7 @@ end
 
 Resistance = voltage./I;
 R = [R(:,1:3), Resistance];
+sigLev = 1; %%cafone
 
 %--------------FIND SWITCH--------------
 anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
@@ -180,9 +146,9 @@ anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
 
 s.detection = [anlR()];
 
-numberodSwitches = sum(anlR(:,end));
+numberofSwitches = sum(anlR(:,end));
 
-s.nsw = numberodSwitches;
+s.nsw = numberofSwitches;
 
 for j = 1:i
     if opt(j) == "ISI"
@@ -190,7 +156,7 @@ for j = 1:i
         %-----build the path to save without ext----
         build_path = [path,'\ISI_V',num2str(anlR(1,2)),'_sig',num2str(nos)]; 
         %control the number of switch
-        if numberodSwitches == 0
+        if numberofSwitches == 0
             disp('No switch found, you cannot use ISI! Bye bye');
             return;
         end
@@ -239,7 +205,7 @@ for j = 1:i
         %-----build the path to save without ext----
         build_path = [path,'\BIN_V',num2str(anlR(1,2)),'_sig',num2str(nos),'_tm',erase(num2str(bl),'.'),'_method',method];
         %control the number of switch
-        if numberodSwitches == 0
+        if numberofSwitches == 0
             disp('No switch found, you cannot use numberPerBin! Bye bye');
             return;
         end
@@ -305,7 +271,7 @@ for j = 1:i
         
     elseif opt(j) == "IEI"
         %control the number of switch
-        if numberodSwitches == 0
+        if numberofSwitches == 0
             disp('No switch found, you cannot use IEI! Bye bye');
             return;
         end
@@ -516,7 +482,7 @@ for j = 1:i
         %----------------------
     end
 end
-    %change '\' in '/' on mac
-    build_path = [path,'\V',num2str(anlR(1,2)),'_sig',num2str(nos),'_tm',erase(num2str(bl),'.'),'_dt',num2str(deltaT),'.mat'];
-    save(build_path, 's');
+    %%change '\' in '/' on mac
+    %build_path = [path,'\V',num2str(anlR(1,2)),'_sig',num2str(nos),'_tm',erase(num2str(bl),'.'),'_dt',num2str(deltaT),'.mat'];
+    %save(build_path, 's');
 end
