@@ -27,7 +27,7 @@ if normalize == true %MODIFICATO
     matr(:,1) = matr(:,1) - matr(1,1);
 end
 
-analyzed = [matr z];
+analyzed = [matr z z];
 
 figure;
 plot(matr(:,1),matr(:,col));
@@ -47,7 +47,7 @@ hold on;
                     analyzed(i,end) = 1;
                     plot(matr(i,1), matr(i,col), 'or'); 
                 end
-            else
+            else %sei all'inizio di un nuovo evento
                 plot(matr(i,1), matr(i,col), 'or');               
                 analyzed(i,end) = 1;
             end

@@ -58,7 +58,7 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
         D.(fname) = {mdiff};
     end
     
-    framestates_arr = zeros(Nframes-fr_diff-frame_start,6);
+    framestates_arr = zeros(Nframes,6);
 
     if prod(method == 'ThreshNN')
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,11 +111,13 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
             t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
             
             if state_tot == 0
-                framestates_arr(i+1,:) = [S_max.(fname){1,1}(1),S_max.(fname){1,1}(2), S_min.(fname){1,1}(1),S_min.(fname){1,1}(2), 0, t];
+                %S_max.(fname){1,1}
+                framestates_arr(i,:) = [S_max.(fname){1,1}(1),S_max.(fname){1,1}(2), S_min.(fname){1,1}(1),S_min.(fname){1,1}(2), 0, t];
                 frames_states.(fname) = {S_max.(fname)(1,1), S_min.(fname)(1,1), 0, t};
                 
             else
-                framestates_arr(i+1,:) = [S_max.(fname){1,1}(1),S_max.(fname){1,1}(2), S_min.(fname){1,1}(1),S_min.(fname){1,1}(2), 1, t];
+                %S_max.(fname){1,1}
+                framestates_arr(i,:) = [S_max.(fname){1,1}, S_min.(fname){1,1}, 1, t];
                 frames_states.(fname) = {S_max.(fname)(1,1), S_min.(fname)(1,1), 1, t};
                 
             end
