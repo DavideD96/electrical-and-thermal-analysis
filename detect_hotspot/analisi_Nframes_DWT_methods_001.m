@@ -1,6 +1,6 @@
 function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-26 Last modification: 2023-10-26
+%Date: 2023-10-26 Last modification: 2023-10-30
 %Author: Cristina Zuccali
 %analisi_Nframes_DWT_binary_2(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %
@@ -25,8 +25,8 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
 %               ('makeVideo', 1) --> makes the video
 %       
 %       to choose the method for the spot characterization
-%               ('methods', 1) = binarization 
-%               ('methods', 2) = regional growth method
+%               ('AreaMetho', 1) = binarization 
+%               ('AreaMetho', 2) = regional growth method
 %               ('ThreshRGS', ...) for pixels selection in regional growth segmentation
 %
 %   'frames_states' = is struct --> {[max_coordinate, max_value], [min_coordinate, min_value], state, time}
@@ -54,12 +54,22 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cartella per salvataggio dati
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    check = exist(['ThermoResults\',filename]);
-    if check ~= 7
-        mkdir(['ThermoResults\',filename]);
-    end
+    if method == 1
+        check = exist(['ThermoResults\BW\',filename]);
+        if check ~= 7
+            mkdir(['ThermoResults\BW\',filename]);
+        end
+        
+        path = [pwd,'\ThermoResults\BW\',filename,'\',];
     
-    path = [pwd,'\ThermoResults\',filename,'\',];
+    elseif method == 2
+        check = exist(['ThermoResults\RGS\',filename]);
+        if check ~= 7
+            mkdir(['ThermoResults\RGS\',filename]);
+        end
+        
+        path = [pwd,'\ThermoResults\RGS\',filename,'\',];
+    end
         
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %prendi dati
@@ -137,12 +147,7 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
     
         %# create AVI object
         if video == 1
-
-            if method == 1
-                video_name = [filename,'DETECT_fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'_DWT_BW'];
-            else if method ==2
-                video_name = [filename,'DETECT_fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'_DWT_RGS'];
-            end
+            video_name = [filename,'DETECT_fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'_DWT_BW'];
 
             video_name = strcat(video_name,'color.avi');
     
@@ -265,13 +270,17 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
                         end
 
                         if method == 2
-                            RS = regional_growth_segmentation(frames_states.(fname){1,1}{1,1}, 1, imrec, soglia_diff);
+                            RS = regional_growth_segmentation_2(frames_states.(fname){1,1}{1,1}, 1, imrec, soglia_diff);
+
                             subplot(2,3,2)
+                            hold on
                             imagesc(RS)
                             set(subplot(2,3,2), 'YDir', 'normal')
                             colormap(subplot(2,3,2),'gray')
                             colorbar(subplot(2,3,2));
                             title('Method: regional growth segmentation, hot regions');
+                            plot(data_x(frames_states.(fname){1,1}{1,1}(1,1)),data_y(frames_states.(fname){1,1}{1,1}(1,1)), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'red'); 
+                            hold off
 
                             imsov_max=labeloverlay(P.(fname){1,3},RS);
         
@@ -329,13 +338,16 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
                         end
 
                         if method == 2
-                            RS = regional_growth_segmentation(frames_states.(fname){1,2}{1,1}, 0, +imrec, soglia_diff);
+                            RS = regional_growth_segmentation_2(frames_states.(fname){1,2}{1,1}, 0, +imrec, soglia_diff);
                             subplot(2,3,4)
+                            hold on
                             imagesc(RS)
                             set(subplot(2,3,4), 'YDir', 'normal')
                             colormap(subplot(2,3,4),'gray')
                             colorbar(subplot(2,3,4));
                             title('Method: regional growth segmentation, cold regions');
+                            plot(data_x(frames_states.(fname){1,2}{1,1}(1,1)),data_y(frames_states.(fname){1,2}{1,1}(1,1)), 'o', 'MarkerSize', 8,'MarkerFaceColor', 'red'); 
+                            hold off
 
                             imsov_min=labeloverlay(-P.(fname){1,3},RS);
         
@@ -392,8 +404,6 @@ function [frames_states] = analisi_Nframes_DWT_methods_001(filename,Nframes, fra
                 cla(subplot(2,3,4));
                 cla(subplot(2,3,5));
                 cla(subplot(2,3,6));
-                % cla(subplot(3,3,7));
-                % cla(subplot(3,3,8));
         
                 frames(end+1,:) = [frames_states.(fname){1,1}{1,1}(1,1) frames_states.(fname){1,1}{1,1}(1,2) frames_states.(fname){1,2}{1,1}(1,1) frames_states.(fname){1,2}{1,1}(1,2) frames_states.(fname){1,3} frames_states.(fname){1,4}, area_max, area_min]; %coord_max, max, coord_min, min, state, tempo, area_max, area_min
             end 
