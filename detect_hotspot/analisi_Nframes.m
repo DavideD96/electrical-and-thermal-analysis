@@ -88,7 +88,9 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
                 %Costruisco S_max
                 [peak, point_state_max] = primi_vicini(p_max(1,:), 1, P.(fname){3}); %DD perchè restituire peak?
                 S_max.(fname) = {peak, point_state_max};
-                
+                % if i == 2
+                %     point_state_max
+                % end
             else
                 S_max.(fname) = {[000, 000], 0};
             end

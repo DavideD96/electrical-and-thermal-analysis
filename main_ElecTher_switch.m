@@ -61,7 +61,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [~,Th_rs] = analisi_Nframes(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+Th_rs
 %renormalize times
 Th_rs(:,6) = Th_rs(:,6)-Th_rs(1,6);
 
@@ -69,7 +69,7 @@ figure;
 subplot(2,1,1);
 title('electrical RS detection');
 format long
-a = [El_rs.detection(:,end),El_rs.detection(:,end-2),El_rs.detection(:,end-1)]
+%a = [El_rs.detection(:,end),El_rs.detection(:,end-2),El_rs.detection(:,end-1)]
 
 plot([El_rs.detection(1,1),El_rs.detection(end-1,1)],1, '-');
 hold on;
