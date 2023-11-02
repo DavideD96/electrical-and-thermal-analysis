@@ -69,7 +69,7 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
     %array massimi e minimi
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %attenzione: è importante fare clear o eliminare la struct P
-        for i=0:(Nframes-fr_diff-frame_start)
+        for i=0:(Nframes-fr_diff)
             fname = ['frame', num2str(frame_start+i)];
             [max_hotspot, min_hotspot, z] = hotspot_3(D.(fname){1}, soglia_max, soglia_min, 'smoothing', smooth);
             P.(fname) = {max_hotspot, min_hotspot, z}; 
@@ -80,7 +80,7 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %attenzione: è importante fare clear o eliminare la struct S, S_max,
         %S_min
-        for i=0:(Nframes-fr_diff-frame_start)
+        for i=0:(Nframes-fr_diff)
             fname = ['frame', num2str(frame_start+i)];
             
             %MASSIMO ASSOLUTO
@@ -199,7 +199,7 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
 
         f = figure('position',[200 100 1000 500]);
 
-        for i=0:(Nframes-fr_diff-frame_start)
+        for i=0:(Nframes-fr_diff)
             fname = ['frame', num2str(frame_start+i)];
             set(gcf, 'Color','white')
 
