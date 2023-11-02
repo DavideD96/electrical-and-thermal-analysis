@@ -56,6 +56,10 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
         fname = ['frame', num2str(frame_start+i)];
         [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
         D.(fname) = {mdiff};
+
+        if i == 0
+            [Rows, Columns] = size (mdiff); %mi servono per convertire le posizioni di massimi e minimi in coordinate (y,x)
+        end
     end
     
     framestates_arr = zeros(Nframes-fr_diff-frame_start,6);
