@@ -1,4 +1,4 @@
-function results_ordered = select_noise(filename)
+function select_noise(nomefile)
 
 %Date: 2019-03-08 Last Modification: 2019-06-26
 %Author: M. Camponovo, D. Decastri
