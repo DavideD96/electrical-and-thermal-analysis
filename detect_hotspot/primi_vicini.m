@@ -1,6 +1,6 @@
-function [peak, state] = primi_vicini(peak, type, z)
+function [state] = primi_vicini(peak, type, z)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-11 Last modification: 2023-10-16
+%Date: 2023-10-11 Last modification: 2023-11-02
 %Author: Cristina Zuccali
 %primi_vicini(peak, type, z)
 %

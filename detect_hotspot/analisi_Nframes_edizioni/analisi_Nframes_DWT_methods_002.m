@@ -25,8 +25,8 @@ function [frames_states] = analisi_Nframes_DWT_methods_002(filename,Nframes, fra
 %               ('makeVideo', 1) --> makes the video
 %       
 %       to choose the method for the spot characterization
-%               ('AreaMetho', 1) = binarization 
-%               ('AreaMetho', 2) = regional growth method
+%               ('AreaMetho', 'BiW') = binarization 
+%               ('AreaMetho', 'RGS') = regional growth method
 %               ('ThreshRGS', ...) for pixels selection in regional growth segmentation
 %
 %   'frames_states' = is a struct --> {[max_coordinate, max_value], [min_coordinate, min_value], state, time}

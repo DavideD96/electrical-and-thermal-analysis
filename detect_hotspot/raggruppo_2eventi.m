@@ -1,4 +1,4 @@
-function [state] = raggruppo_2eventi(peak_1, peak_2, Rows, Columns)
+function [state] = raggruppo_2eventi(peak_1_coord, peak_1_value, peak_2_coord, peak_2_value, Rows, Columns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-31 Last modification: 2023-11-02
 %Author: Cristina Zuccali
@@ -14,12 +14,12 @@ function [state] = raggruppo_2eventi(peak_1, peak_2, Rows, Columns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     %Coordinate picco_1
-    y_1 = ceil(peak_1(1,1)/Rows); %%floor up
-    x_1 = peak_1(1,1) - Rows*(y_1-1);
+    y_1 = ceil(peak_1_coord/Rows); %%floor up
+    x_1 = peak_1_coord - Rows*(y_1-1);
 
     %Coordinate picco_2
-    y_2 = ceil(peak_2(1,1)/Rows); %%floor up
-    x_2 = peak_2(1,1) - Rows*(y_2-1);
+    y_2 = ceil(peak_2_coord/Rows); %%floor up
+    x_2 = peak_2_coord - Rows*(y_2-1);
         
     %Coordinate primi vicini
     coord_primi = [ x_1, y_1; (x_1 - 1) (y_1 - 1); (x_1) (y_1 - 1); (x_1 + 1) (y_1 - 1); (x_1 - 1) (y_1); (x_1 + 1) (y_1); (x_1 - 1) (y_1 + 1); (x_1) (y_1 + 1); (x_1 + 1) (y_1+1)];
@@ -28,7 +28,7 @@ function [state] = raggruppo_2eventi(peak_1, peak_2, Rows, Columns)
     state = 0;
     i = 1;
     
-    if peak_1(1,2)*peak_2(1,2) > 0      %controllo che i due picchi siano dello stesso tipo
+    if peak_1_value*peak_2_value > 0      %controllo che i due picchi siano dello stesso tipo
             while state == 0 && i<8
                 
                 if x_2 == coord_primi(i,1) && y_2 == coord_primi(i,2)

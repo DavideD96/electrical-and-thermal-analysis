@@ -1,6 +1,6 @@
-function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function [frames_states,framestates_arr] = analisi_Nframes001(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-10-16
+%Date: 2023-10-12 Last modification: 2023-11-02
 %Author: Cristina Zuccali
 %analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %
@@ -31,6 +31,8 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
 
     num = length(varargin);
 
+    smooth = 0; %default
+
     for k = 1:2:num
         if prod(varargin{k}=='smoothing')
             smooth = varargin{k+1}; %1 = smooth, 0 = grezzo
@@ -49,123 +51,139 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
     path = [pwd,'\ThermoResults\',filename,'\',];
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%prendi dati
+%prendi dati e denoising
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %attenzione: è importante fare clear o eliminare la struct D
+    %scelta parametri DWT
+        wname = 'db4';
+        level =1;
+    
+    %array per salvare i dati dei frame
+        framestates = zeros(Nframes-fr_diff-frame_start,6);
+
     for i=0:(Nframes-fr_diff)
-        fname = ['frame', num2str(frame_start+i)];
-        [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
-        D.(fname) = {mdiff};
 
+        %mi servono per convertire le posizioni di massimi e minimi in coordinate (y,x)
         if i == 0
-            [Rows, Columns] = size (mdiff); %mi servono per convertire le posizioni di massimi e minimi in coordinate (y,x)
+            [Rows, Columns] = size (mdiff); 
         end
-    end
     
-    framestates_arr = zeros(Nframes-fr_diff-frame_start,6);
+        %calcolo tempo
+        t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
+        framestates(i+1, 6) = t;
 
-    if prod(method == 'ThreshNN')
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %array massimi e minimi
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %attenzione: è importante fare clear o eliminare la struct P
-        for i=0:(Nframes-fr_diff)
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %salvataggio dati
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
+
+
+        %decomposizione
+            [C, S] = wavedec2(mdiff, level, wname);
+        
+        %ricostruzione immagine
+            imrec = wrcoef2("a",C,S,wname,level);
+
+        %salvataggio dati
             fname = ['frame', num2str(frame_start+i)];
-            [max_hotspot, min_hotspot, z] = hotspot_3(D.(fname){1}, soglia_max, soglia_min, 'smoothing', smooth);
-            P.(fname) = {max_hotspot, min_hotspot, z}; 
-        end
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %Controllo primi vicini assoluti
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %attenzione: è importante fare clear o eliminare la struct S, S_max,
-        %S_min
-        for i=0:(Nframes-fr_diff)
-            fname = ['frame', num2str(frame_start+i)];
-            
-            %MASSIMO ASSOLUTO
+            D.(fname) = {imrec, m1};
+            %coeff.DWT(fname) = {C, S};
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %Ho due possibilità: salvo C,S sia per m1 che per mdiff
+            %oppure salvo imrec e m1
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+        if prod(method == 'ThreshNN')
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %array massimi e minimi %% lo smoothing lo toglierei
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        [max_hotspot, min_hotspot] = hotspot_3(imrec, soglia_max, soglia_min, 'smoothing', smooth);
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %Controllo primi vicini assoluti
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %MASSIMO ASSOLUTO
             %controllo se ci sono dati o è vuota
-            if isempty(P.(fname){1,1}) == 0 %DD perché questo controllo?
+            if isempty(max_hotspot) == 0 %DD perché questo controllo?
+
+                framestates(i+1, 1) = max_hotspot(1,1);
+                framestates(i+1, 2) = max_hotspot(1,2);
+
                 %seleziono massimo assoluto
-                p_max = sortrows(P.(fname){1,1}, 2, 'descend');
+                p_max = sortrows(max_hotspot, 2, 'descend');
                 
-                %Costruisco S_max
-                [peak, point_state_max] = primi_vicini(p_max(1,:), 1, P.(fname){3}); %DD perchè restituire peak?
-                S_max.(fname) = {peak, point_state_max};
-                % if i == 2
-                %     point_state_max
-                % end
-            else
-                S_max.(fname) = {[000, 000], 0};
+                %primi vicini
+                [point_state_max] = primi_vicini(p_max(1,:), 1, imrec);
+
+            else   
+                framestates(i+1, 1) = 0;
+                framestates(i+1, 2) = 0;
+                point_state_max = 0;
             end
             
             %MINIMO ASSOLUTO
             %controllo se ci sono dati o è vuota
-            if isempty(P.(fname){1,2}) == 0
+            if isempty(min_hotspot) == 0
+
+                framestates(i+1, 3) = min_hotspot(1,1);
+                framestates(i+1, 4) = min_hotspot(1,2);
+
                 %seleziono minimo assoluto
-                p_min = sortrows(P.(fname){1,2}, 2, 'ascend');
+                p_min = sortrows(min_hotspot, 2, 'ascend');
                 
-                %Costruisco S_min
-                [peak, point_state_min] = primi_vicini(p_min(1,:), 0,  P.(fname){3});
-                S_min.(fname) = {peak, point_state_min};
-                
-            else
-                S_min.(fname) = {[000, 000] , 0};
-            end
-            
-
-
-            state_tot = S_max.(fname){1,2} + S_min.(fname){1,2}; %DD + = or?
-            t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
-            
-            if state_tot == 0
-                framestates_arr(i+1,:) = [S_max.(fname){1,1}(1),S_max.(fname){1,1}(2), S_min.(fname){1,1}(1),S_min.(fname){1,1}(2), 0, t];
-                frames_states.(fname) = {S_max.(fname)(1,1), S_min.(fname)(1,1), 0, t};
+                %primi vicini
+                [point_state_min] = primi_vicini(p_min(1,:), 0,  imrec);
                 
             else
-                framestates_arr(i+1,:) = [S_max.(fname){1,1}(1),S_max.(fname){1,1}(2), S_min.(fname){1,1}(1),S_min.(fname){1,1}(2), 1, t];
-                frames_states.(fname) = {S_max.(fname)(1,1), S_min.(fname)(1,1), 1, t};
+                framestates(i+1, 3) = 0;
+                framestates(i+1, 4) = 0;
+                point_state_min = 0;
+            end
+            
+            if point_state_max == 1 || point_state_min == 1 
+                framestates(i+1, 5) = 1;
+                
+            else
+                framestates(i+1,5) = 0;
                 
             end
+
+        else
+            disp('Incorrect detection method.');
         end
-    else
-        disp('Incorrect detection method.');
     end
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Raggruppamento frames che detectano lo stesso evento
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %variabile per contare gli eventi e raggrupparli
         n_evento = 0;
         state_max = 0;
         state_min = 0;
-
-        mat_n_evento = zeros(Nframes-fr_diff, 1);
     
         for i=1:(Nframes-fr_diff)
-            fname = ['frame', num2str(frame_start+i)];
-            fname_prec = ['frame', num2str((frame_start+i)-1)];
-            
+
             %se c'è un evento
-           state_max = raggruppo_2eventi(frames_states.(fname_prec){1,1}{1,1}, frames_states.(fname){1,1}{1,1}, Rows, Columns);
-           state_min = raggruppo_2eventi(frames_states.(fname_prec){1,2}{1,1}, frames_states.(fname){1,2}{1,1}, Rows, Columns);
+            state_max = raggruppo_2eventi(framestates(i-1,1), framestates(i-1,2), framestates(i,1), framestates(i,2), Rows, Columns);
+            state_min = raggruppo_2eventi(framestates(i-1,3), framestates(i-1,4), framestates(i,3), framestates(i,4), Rows, Columns);
 
-
-            if frames_states.(fname){3} == 1 && frames_states.(fname_prec){3} ~= 0
+            if framestates(i,5) == 1 && framestates(i-1,5) ~= 0
                 if state_max == 1 || state_min == 1
-                    frames_states.(fname){1,3} = n_evento;
+                    framestates(i,5) = n_evento;
                 end
 
                 if state_max == 0 && state_min == 0
                     n_evento = n_evento + 1;
-                    frames_states.(fname){1,3} = n_evento;
+                    framestates(i,5) = n_evento;
                 end
 
-            elseif frames_states.(fname){3} == 1 && frames_states.(fname_prec){3} == 0
+            elseif framestates(i,5) == 1 && framestates(i-1,5) == 0
                 n_evento = n_evento + 1;
-                frames_states.(fname){1,3} = n_evento;
+                framestates(i,5) = n_evento;
             end
             
-            mat_n_evento(i+1) = n_evento;
             state_max = 0;
             state_min = 0;
         end
@@ -175,8 +193,6 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     rallenty = 15;
     frames = zeros(0,6);
-
-
 
     %# create AVI object
     if video == 1
@@ -198,18 +214,16 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
         end
 
         f = figure('position',[200 100 1000 500]);
+        load('ThermoColorMap1.mat');
 
         for i=0:(Nframes-fr_diff)
             fname = ['frame', num2str(frame_start+i)];
             set(gcf, 'Color','white')
 
-            load('ThermoColorMap1.mat');
+            T_max_aus = zeros(Rows,1);
 
-            T_max_aus = zeros(size((P.(fname){1,3}),2),1);
-            ind_row = zeros(size(P.(fname){1,3},2),1);
-            [Rows, Columns] = size (P.(fname){1,3});
-            for k = 1:size(P.(fname){1,3},2)
-                [T_max_aus(k),ind_row(k)] = max(abs(P.(fname){1,3}(k,:)));
+            for k = 1:Rows
+                [T_max_aus(k),k] = max(abs(D.(fname){1}(k,:)));
             end
 
             [T_max,ind_col] = max(T_max_aus);
@@ -217,8 +231,8 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
             zMax = T_max;
 
             hold on
-                imagesc(P.(fname){1,3});
-                caxis([zMin, zMax]);
+                imagesc(D.(fname){1});
+                clim([zMin, zMax]);
                 colormap(cm);
                 colorbar;
 
@@ -226,19 +240,26 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
                 ylabel('[n° pixel]');
                 zlabel('Temperature difference [°C]');
                 title('Temperature difference [°C]');
-                tempo = append(num2str(frames_states.(fname){1,4}), ' s');
+
+                tempo = append(num2str(framestates(i, 6)), ' s');
                 annotation('textbox', 'Position', [0.9 0.85 0.1 0.1], 'String', tempo, 'FitBoxToText', true, 'EdgeColor', 'k', 'BackgroundColor', 'w');
 
                 %se state del frame è 1 disegno punto di massimo e/o minimo            
-                if frames_states.(fname){1,3} ~= 0
+                if framestates(i, 5) ~= 0
+
                     annotation('textbox', 'Position', [0.9 0.9 0.1 0.1], 'String', 'EVENTO', 'FitBoxToText', true, 'EdgeColor', 'r', 'BackgroundColor', 'r');
-                    [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
-                    if isempty(P.(fname){1,1}) == 0
-                        plot(data_x(frames_states.(fname){1,1}{1,1}(1,1)),data_y(frames_states.(fname){1,1}{1,1}(1,1)), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'black') 
+
+
+                    if framestates(i, 2) ~= 0 %%se c'è un massimo allora plotta il punto
+                        y = ceil(framestates(i, 1)/Rows); %%floor up
+                        x = framestates(i, 1)/Rows) - Rows*(y-1);
+                        plot(x, y, 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'black') 
                     end
 
-                    if isempty(P.(fname){1,2}) == 0
-                        plot(data_x(frames_states.(fname){1,2}{1,1}(1,1)),data_y(frames_states.(fname){1,2}{1,1}(1,1)), 'o', 'MarkerSize', 8,'MarkerFaceColor', 'black') 
+                    if framestates(i, 4) ~= 0
+                        y = ceil(framestates(i, 3)/Rows); %%floor up
+                        x = framestates(i, 3)/Rows) - Rows*(y-1);
+                        plot(x, y, 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'black')  
                     end
                 end
 
@@ -249,11 +270,9 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
             hold off
             
             clf(gcf);
-
-            frames(end+1,:) = [frames_states.(fname){1,1}{1,1}(1,1) frames_states.(fname){1,1}{1,1}(1,2) frames_states.(fname){1,2}{1,1}(1,1) frames_states.(fname){1,2}{1,1}(1,2) frames_states.(fname){1,3} frames_states.(fname){1,4}]; %coord_max, max, coord_min, min, state, tempo
         end
            
-        save('frames.mat', 'frames');
+        save('frames.mat', 'framestates');
         close(gcf);
         close(vidObj);
 
