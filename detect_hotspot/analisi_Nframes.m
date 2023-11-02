@@ -109,6 +109,8 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
                 S_min.(fname) = {[000, 000] , 0};
             end
             
+
+
             state_tot = S_max.(fname){1,2} + S_min.(fname){1,2}; %DD + = or?
             t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
             
@@ -125,7 +127,45 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
     else
         disp('Incorrect detection method.');
     end
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %Raggruppamento frames che detectano lo stesso evento
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %variabile per contare gli eventi e raggrupparli
+        n_evento = 0;
+        state_max = 0;
+        state_min = 0;
+
+        mat_n_evento = zeros(Nframes-fr_diff, 1);
     
+        for i=1:(Nframes-fr_diff)
+            fname = ['frame', num2str(frame_start+i)];
+            fname_prec = ['frame', num2str((frame_start+i)-1)];
+            
+            %se c'è un evento
+           state_max = raggruppo_2eventi(frames_states.(fname_prec){1,1}{1,1}, frames_states.(fname){1,1}{1,1}, Rows, Columns);
+           state_min = raggruppo_2eventi(frames_states.(fname_prec){1,2}{1,1}, frames_states.(fname){1,2}{1,1}, Rows, Columns);
+
+
+            if frames_states.(fname){3} == 1 && frames_states.(fname_prec){3} ~= 0
+                if state_max == 1 || state_min == 1
+                    frames_states.(fname){1,3} = n_evento;
+                end
+
+                if state_max == 0 && state_min == 0
+                    n_evento = n_evento + 1;
+                    frames_states.(fname){1,3} = n_evento;
+                end
+
+            elseif frames_states.(fname){3} == 1 && frames_states.(fname_prec){3} == 0
+                n_evento = n_evento + 1;
+                frames_states.(fname){1,3} = n_evento;
+            end
+            
+            mat_n_evento(i+1) = n_evento;
+            state_max = 0;
+            state_min = 0;
+        end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,7 +226,7 @@ function [frames_states,framestates_arr] = analisi_Nframes(filename,Nframes, fra
                 annotation('textbox', 'Position', [0.9 0.85 0.1 0.1], 'String', tempo, 'FitBoxToText', true, 'EdgeColor', 'k', 'BackgroundColor', 'w');
 
                 %se state del frame è 1 disegno punto di massimo e/o minimo            
-                if frames_states.(fname){1,3} == 1
+                if frames_states.(fname){1,3} ~= 0
                     annotation('textbox', 'Position', [0.9 0.9 0.1 0.1], 'String', 'EVENTO', 'FitBoxToText', true, 'EdgeColor', 'r', 'BackgroundColor', 'r');
                     [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
                     if isempty(P.(fname){1,1}) == 0
