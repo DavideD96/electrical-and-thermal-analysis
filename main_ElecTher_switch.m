@@ -53,9 +53,9 @@ areaMeth = ThermalParameters.areaMeth;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Electric %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if prod(analysis=='nll') %no analysis => detection only
-    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', nvt);
+    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', 0);
 else
-    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', nvt, 'opt', analysis);
+    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', 0, 'opt', analysis);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
