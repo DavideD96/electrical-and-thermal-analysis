@@ -1,4 +1,18 @@
 function [area_max, area_min, imsov] = calculate_area(imm, framestates, method, thresh)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Date: 2023-11-02 Last modification: 2023-11-02
+%Author: Cristina Zuccali
+%calculate_area(imm, framestates, method, thresh)
+%
+%It calculates the area with 'method'.
+%   imm = matrix of the frame;
+%   framestates = array --> [max_coordinate, max_value, min_coordinate, min_value, state, time]
+%   method = 'BiW', 'RGS'
+%   thresh = threshold for RGS method
+%
+%   area_max = area of hot regions
+%   area_min = area of cold regions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Analisi con binarizzazione e calcolo area
