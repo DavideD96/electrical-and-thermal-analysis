@@ -22,6 +22,9 @@ function [max_hotspot, min_hotspot] = hotspot_3 (mdiff, soglia_max, soglia_min, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     num = length(varargin);
 
+    %default
+    smooth = 0; 
+
     for k = 1:2:num
         if prod(varargin{k}=='smoothing')
             smooth = varargin{k+1}; %1 = smooth, 0 = grezzo
