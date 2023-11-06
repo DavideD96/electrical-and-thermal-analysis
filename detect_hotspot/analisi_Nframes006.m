@@ -1,6 +1,7 @@
-function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function analisi_Nframes006(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-11-03
+%Date: 2023-10-12 Last modification: 2023-11-06
+%6th edition of analisi_Nframes
 %Author: Cristina Zuccali
 %analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %
@@ -46,6 +47,7 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
     method_area = 'BiW';
     soglia_diff = 0.8;
     area = 1;
+    dec_centroid = 1;
 
     for k = 1:2:num
         if prod(varargin{k}=='smoothing')
@@ -67,25 +69,27 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
             soglia_diff = varargin{k+1};
         end
     end
- 
+
     %Cartella per salvataggio dati
+    sub_folder = ['fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'\'];
+
      if prod(method_area == 'BiW')
 
-        check = exist(['ThermoResults\',filename,'\BW\']);
+        check = exist(['ThermoResults\',filename,'\BW\', sub_folder]);
         if check ~= 7
-            mkdir(['ThermoResults\',filename,'\BW\',]);
+            mkdir(['ThermoResults\',filename,'\BW\', sub_folder]);
         end
         
-        path = [pwd,'\ThermoResults\',filename,'\BW\',];
+        path = [pwd,'\ThermoResults\',filename,'\BW\',sub_folder];
     
      elseif prod(method_area == 'RGS')
 
-        check = exist(['ThermoResults\',filename, '\RGS\']);
+        check = exist(['ThermoResults\',filename, '\RGS\', sub_folder]);
         if check ~= 7
-            mkdir(['ThermoResults\',filename,'\RGS\']);
+            mkdir(['ThermoResults\',filename,'\RGS\', sub_folder]);
         end
         
-        path = [pwd,'\ThermoResults\',filename,'\RGS\',];
+        path = [pwd,'\ThermoResults\',filename,'\RGS\', sub_folder];
     end
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,10 +102,10 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
     %array per salvare i dati dei frame e temperature massime e minime
     %(coord, value)
         framestates = zeros(Nframes-fr_diff-frame_start,6);
-        max_min_temp = zeros(Nframes-fr_diff-frame_start,6); %max_coord, max_value, min_coord, min_value, state_max, state_min
+        max_min_temp = zeros(Nframes-fr_diff-frame_start,3); %max_coord, max_value, state_max
 
     for i=0:(Nframes-fr_diff)
-
+        fname = ['frame', num2str(frame_start+i)];
         %calcolo tempo
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
         framestates(i+1, 6) = t;
@@ -116,10 +120,6 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
         [massimi, minimi] = hotspot_3(m1, 0, 0);
         max_min_temp(i+1, 1) = massimi(1,1);
         max_min_temp(i+1, 2) = massimi(1,2);
-
-        max_min_temp(1+1, 3) = minimi(1,1);
-        max_min_temp(i+1, 4) = minimi(1,2);
-
 
         %decomposizione
             [C, S] = wavedec2(mdiff, level, wname);
@@ -158,13 +158,13 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
                 
                 %primi vicini
                 point_state_max = primi_vicini(p_max(1,:), 1, imrec);
-                max_min_temp(i+1, 5) = raggruppo_2eventi(max_min_temp(i+1, 1), max_min_temp(i+1, 2), framestates(i+1, 1), framestates(i+1, 2), Rows, Columns);
+                max_min_temp(i+1, 3) = raggruppo_2eventi(max_min_temp(i+1, 1), max_min_temp(i+1, 2), framestates(i+1, 1), framestates(i+1, 2), Rows, Columns);
 
             else   
                 framestates(i+1, 1) = 0;
                 framestates(i+1, 2) = 0;
                 point_state_max = 0;
-                max_min_temp(i+1, 5) = 0;
+                max_min_temp(i+1, 3) = 0;
             end
             
             %MINIMO ASSOLUTO
@@ -178,13 +178,11 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
                 
                 %primi vicini
                 point_state_min = primi_vicini(p_min(1,:), 0,  imrec);
-                max_min_temp(i+1, 6) = raggruppo_2eventi(max_min_temp(i+1, 3), max_min_temp(i+1, 4), framestates(i+1, 3), framestates(i+1, 4), Rows, Columns);
                
             else
                 framestates(i+1, 3) = 0;
                 framestates(i+1, 4) = 0;
                 point_state_min = 0;
-                max_min_temp(i+1, 6) = 0;
             end
             
             if point_state_max == 1 || point_state_min == 1 
@@ -233,19 +231,42 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
             state_max = 0;
             state_min = 0;
         end
+        
+        %salva dati
+        save('frames.mat', 'framestates');
+        save('temperature.mat', 'max_min_temp');
+            
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%metodo calcolo area
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if area == 1 & video == 0
+    for i=0:(Nframes-fr_diff)
+        fname = ['frame', num2str(frame_start+i)];
+
+        %ricostruzione immagine
+        imrec = wrcoef2("a",coeff_DWT.(fname){1}, coeff_DWT.(fname){2},wname,level);
+
+        if framestates(i+1, 5) ~= 0 && area == 1
+            [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
+            Area.(fname) = struct ('Max', area_max, 'Min', area_min);
+
+        elseif framestates(i+1, 5) == 0 && area == 1
+             Area.(fname) = struct ('Max', 0, 'Min', 0);
+        end
+    end
+
+    %salva dati
+    save('area.mat', 'Area');
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     rallenty = 15;
-    if dec_centroid == 1
-        centroid = zeros(Nframes-fr_diff-frame_start,1);
-    end
 
     %# create AVI object
     if video == 1
-        video_name = [filename,'DETECT_fStart', num2str(frame_start), '_fdiff_', num2str(fr_diff), '_Nframes_', num2str(Nframes) ,'_'];
-        video_name = strcat(video_name,'color.avi');
+        video_name = strcat('video.avi');
 
         vidObj = VideoWriter(append(path,video_name));
         vidObj.Quality = 100; % max (credo)
@@ -284,7 +305,7 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
             subplot(1,2,1)
             hold on
                 imagesc(imrec);
-                set(subplot(2,3,3), 'YDir', 'normal')
+                set(subplot(1,2,1), 'YDir', 'normal')
                 clim(subplot(1,2,1), [zMin, zMax]);
                 colormap(subplot(1,2,1), cm);
                 colorbar (subplot(1,2,1));
@@ -314,13 +335,10 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
 
                 hold off
 
-                %ricostruisco immagine
-                %imrec = wrcoef2("a",coeff_DWT.(fname){1},  coeff_DWT.(fname){2},wname,level);
-                
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 %metodo calcolo area
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                if framestates(i+1, 5) ~= 0 && area == 1
+                if framestates(i+1, 5) ~= 0 & area == 1
                     [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
                     Area.(fname) = struct ('Max', area_max, 'Min', area_min);
 
@@ -356,16 +374,59 @@ function analisi_Nframes005(filename,Nframes, frame_start, fr_diff, coordname, s
             frame = getframe(gcf);
             writeVideo(vidObj, frame);
             delete(findall(gcf,'type','annotation'));
-            
+            save('area.mat', 'Area');
             clf(gcf);
         end
-           
-        save('frames.mat', 'framestates');
-        save('area.mat', 'Area');
-        save('temperature.mat', 'max_min_temp');
+        
         close(gcf);
         close(vidObj);
 
+    end
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %calcolo CM
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    if dec_centroid == 1
+        CM = zeros(Nframes-fr_diff-frame_start,2);
+
+        for i=0:(Nframes-fr_diff)
+            fname = ['frame', num2str(frame_start+i)];
+            %ricostruzione immagine
+            imrec = wrcoef2("a",coeff_DWT.(fname){1}, coeff_DWT.(fname){2},wname,level);
+
+            if framestates(i+1, 5) ~= 0
+                [CM(i+1, 1), CM(i+1, 2)] = calculate_CM(imrec, Rows, Columns);
+
+            elseif framestates(i+1, 5) == 0 
+                CM(i+1, 1) = 0;
+                CM(i+1, 2) = 0;
+            end
+        end
+
+        %salva dati
+        save('CM.mat', 'CM');
+
+        %figura con mappatura CM
+        figure
+        hold on
+            title('Position of CM');
+            xlabel('[n° pixel]');
+            xlim([0 Rows]);
+            ylim([0 Columns]);
+            ylabel('[n° pixel]');
+            A = zeros(0, 2);
+
+            for i = 1 : length(CM(:,1))
+                if CM(i,1) ~= 0 && CM(i,2) ~= 0
+                    A(end+1,:) = [CM(i,1), CM(i,2)];
+                end
+            end
+
+            plot(A(:,1), A(:,2), '-o', 'MarkerSize', 8, 'MarkerFaceColor', 'red');
+
+            %salva figura
+            CM_name = append(path,'CM_position');
+            saveas( gcf , CM_name);
     end
 
     name = [filename, '_Elect_Thermal_',method_area,'_startFrame',num2str(frame_start),'.mat'];        
