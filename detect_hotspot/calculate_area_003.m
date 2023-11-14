@@ -1,4 +1,4 @@
-function [area_max, area_min, imsov] = calculate_area_002(imm, framestates, method, thresh)
+function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, method, thresh)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-02 Last modification: 2023-11-03
 %Author: Cristina Zuccali
@@ -33,6 +33,31 @@ function [area_max, area_min, imsov] = calculate_area_002(imm, framestates, meth
             
             elseif prod(method == 'RGS')
                 BW = regional_growth_segmentation_2(framestates(1,1), 1, imm, thresh);
+
+            elseif prod(method == 'CWT')
+                %punto di massimo per ogni scala e lo salvo
+                scala_max = 20;
+                max_ampiezze_coeff = zeros(scala_max, 3);
+                
+                %coefficienti a vari fattori di scala e salvo l'array delle
+                %massime ampiezze
+                for i=1:1:scala_max
+                    cwtstruct = cwtft2(imm,'wavelet','mexh','scales',1:1:scala_max);
+                    ampiezze_coef = abs(cwtstruct.cfs(:,:,1,i,1)).^2;
+
+                    max_array_coord = find(imregionalmax(ampiezze_coef));
+                    max_array = [max_array_coord, ampiezze_coef(max_array_coord)];
+
+                    massimo = sortrows(max_array, 2, 'descend');
+
+                    max_ampiezze_coeff(i, :) = [massimo(1,1), massimo(1,2), i];                          
+                end
+                
+                %trovo il fattore di scala per cui ho le ampiezze massime e
+                %salvo
+                massimo = sortrows(max_ampiezze_coeff, 2, 'descend');
+                fattore_scala = massimo(1,3);
+                BW = abs(cwtstruct.cfs(:,:,1,fattore_scala,1)).^2;
             end
 
             seD = strel('diamond', 1);
@@ -64,9 +89,29 @@ function [area_max, area_min, imsov] = calculate_area_002(imm, framestates, meth
                 BW = regional_growth_segmentation_2(framestates(1,1), 1, -imm, thresh);
 
             elseif prod(method == 'CWT')
+                %punto di massimo per ogni scala e lo salvo
+                scala_max = 20;
+                max_ampiezze_coeff = zeros(scala_max, 3);
                 
+                %coefficienti a vari fattori di scala e salvo l'array delle
+                %massime ampiezze
+                for i=1:1:scala_max
+                    cwtstruct = cwtft2(-imm,'wavelet','mexh','scales',1:1:scala_max);
+                    ampiezze_coef = abs(cwtstruct.cfs(:,:,1,i,1)).^2;
 
+                    max_array_coord = find(imregionalmax(ampiezze_coef));
+                    max_array = [max_array_coord, ampiezze_coef(max_array_coord)];
 
+                    massimo = sortrows(max_array, 2, 'descend');
+
+                    max_ampiezze_coeff(i, :) = [massimo(1,1), massimo(1,2), i];                          
+                end
+                
+                %trovo il fattore di scala per cui ho le ampiezze massime e
+                %salvo
+                massimo = sortrows(max_ampiezze_coeff, 2, 'descend');
+                fattore_scala = massimo(1,3);
+                BW = abs(cwtstruct.cfs(:,:,1,fattore_scala,1)).^2;
             end
 
             seD = strel('diamond', 1);

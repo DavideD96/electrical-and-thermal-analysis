@@ -1,4 +1,4 @@
-function [frames_states] = analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
+function [frames_states] = analisi_Nframes_CWT(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-19 Last modification: 2023-10-20
 %Author: Cristina Zuccali
