@@ -113,6 +113,8 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
     %(coord, value)
         framestates = zeros(Nframes-fr_diff+1,8);
         max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
+        disp('framestates')
+        size(framestates)
 
     for i=0:(Nframes-fr_diff)
         fname = ['frame', num2str(frame_start+i)];
@@ -207,7 +209,9 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
             disp('Incorrect detection method.');
         end
 
-    end    
+    end
+        disp('framestates')
+        size(framestates)        
             
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Raggruppamento frames che detectano lo stesso evento
@@ -245,6 +249,9 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
         %salva dati
         save('frames.mat', 'framestates');
         save('temperature.mat', 'max_min_temp');
+
+        disp('framestates')
+        size(framestates)
 
             
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -441,7 +448,7 @@ end
     
                             if Area.(fname).Min(1,1) ~= 0
                                 for k = 1 : size(Peaks.(fname).Min)
-                                    plot(data_x(Peaks.(fname).Min(k,1)), data_y(Peaks.(fname).Min(k,1)), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'blue');
+                                    plot(data_x(Peaks.(fname).Min(k,1)), data_y(Peaks.(fname).Min(i,1)), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'blue');
                                 end
                             end
                         end

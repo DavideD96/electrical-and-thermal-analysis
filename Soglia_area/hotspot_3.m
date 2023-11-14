@@ -21,10 +21,11 @@ function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_mi
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     num = length(varargin);
+    smooth_ = 0;
 
     for k = 1:2:num
         if prod(varargin{k}=='smoothing')
-            smooth = varargin{k+1}; %1 = smooth, 0 = grezzo
+            smooth_ = varargin{k+1}; %1 = smooth, 0 = grezzo
         end
     end
 
@@ -34,7 +35,7 @@ function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_mi
     dati = [data_x, data_y, mdiff];
 
         %smoothing
-        if smooth == 1
+        if smooth_ == 1
                 dati = {data_x(1,:), data_y(:,1).'};
 
                 [sval,p] = csaps(dati,mdiff.', [],dati);

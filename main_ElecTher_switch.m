@@ -58,12 +58,14 @@ else
     El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', 0, 'opt', analysis);
 end
 
+El_rs
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[~,Th_rs] = analisi_Nframes(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
+Th_rs = analisi_Nframes007(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Th_rs
 %renormalize times
-Th_rs(:,6) = Th_rs(:,6)-Th_rs(1,6);
+Th_rs(:,1) = Th_rs(:,1)-Th_rs(1,1);
 
 figure;
 subplot(2,1,1);
@@ -80,12 +82,28 @@ hold off;
 
 subplot(2,1,2);
 title('thermal RS detection');
-plot([Th_rs(1,6),Th_rs(end,6)],1, '-');
+plot([Th_rs(1,1),Th_rs(end,1)],1, '-');
 hold on;
-thRs = Th_rs(Th_rs(:,5)==1,:);
-gridxy(thRs(:,6), 'Color','k');
+thRs = Th_rs(Th_rs(:,8)~=0,:);
+gridxy(thRs(:,1), 'Color','k');
 %plot(thRs(:,1),1, 'r*');
 hold off;
+
+% resistenza
+% delta T
+% area T
+
+figure;
+Th_rs_ = repelem(Th_rs,2,1);
+stop = size(Th_rs_,2);
+
+size(El_rs)
+size(Th_rs_)
+
+El_rs_ = repelem(Th_rs,3,1);
+El_rs_ = El_rs_(1:stop,:);
+
+stackedplot([El_rs_(:,end),Th_rs(:,4),Th_rs(:,5),Th_rs(:,6),Th_rs(:,7)]);
 
 %stackedplot(times,tabella_5);
 %xlabel('time [s]');
