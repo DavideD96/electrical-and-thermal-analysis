@@ -1,4 +1,4 @@
-function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-11-06
 %6th edition of analisi_Nframes
@@ -12,7 +12,8 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
 %   'filename' = principal part of the file name of frame (without number of frame and .CSV)
 %   'Nframes' = number of frames to analyze
 %   'frame_start' = number of start frame
-%   'fr_diff' = difference beetwen frame to show the difference of temperature
+%   'fr_diff' = difference beetwen frame to show the difference of
+%               temperature (fr_diff = 2 means difference between consecutive frames)
 %   'coordname' = name of file with coordinates of the wanted region
 %   'soglia_max' = threshold for the selection of maxima
 %   'soglia_min' = threshold for the selection of minima
@@ -106,15 +107,27 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
 %prendi dati e denoising
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %scelta parametri DWT
-        wname = 'db4';
-        level =1;
+    wname = 'db4';
+    level =1;
     
     %array per salvare i dati dei frame e temperature massime e minime
     %(coord, value)
-        framestates = zeros(Nframes-fr_diff+1,8);
-        max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
+    framestates = zeros(Nframes-fr_diff+1,8);
+    max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
+    
+    m1 = get_data002(filename, frame_start, coordname);
+    [Rows,Columns] = size(m1);
+    m_memory = zeros(Rows,Columns,fr_diff);
+    m_memory(:,:,1) = m1;
+    framestates(1, 6) = (frame_start + fr_diff)/30;
 
-    for i=0:(Nframes-fr_diff)
+    for i = 1:fr_diff-2
+        m_memory(:,:,i+1) = get_data002(filename, frame_start+i, coordname);
+        t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
+        framestates(i+1, 6) = t;
+    end
+
+    for i=fr_diff:Nframes
 
         %calcolo tempo
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
@@ -123,11 +136,16 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %salvataggio dati
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
+
+        %update data
+        m_memory(:,:,1:end-1) = m_memory(:,:,2:end);
+        m_memory(:,:,end) = get_data002(filename, frame_start+i, coordname);
+
+        mdiff = m_memory(:,:,end)-m_memory(:,:,1);
 
         %trova temperature massima e minima
 
-        [massimi,~,~] = hotspot_3(m1, 0, 0);
+        [massimi,~,~] = hotspot_3(m_memory(:,:,end), 0, 0);
         max_min_temp(i+1, 1) = massimi(1,1);
         max_min_temp(i+1, 2) = massimi(1,2);
 
@@ -141,17 +159,10 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
             fname = ['frame', num2str(frame_start+i)];
             coeff_DWT.(fname) = {C, S};
 
-        %mi servono per convertire le posizioni di massimi e minimi in coordinate (y,x)
-        if i == 0
-            [Rows, Columns] = size(mdiff); 
-        end
-
         if prod(method == 'ThreshNN')
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %array massimi e minimi %% lo smoothing lo toglierei
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        size(imrec)
-
         [max_hotspot, min_hotspot, ~] = hotspot_3(imrec, soglia_max, soglia_min, 'smoothing', smooth);
         Peaks.(fname) = struct('Max', {max_hotspot}, 'Min', {min_hotspot});
         %max_hotspot

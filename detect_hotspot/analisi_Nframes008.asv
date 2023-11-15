@@ -106,15 +106,27 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
 %prendi dati e denoising
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %scelta parametri DWT
-        wname = 'db4';
-        level =1;
+    wname = 'db4';
+    level =1;
     
     %array per salvare i dati dei frame e temperature massime e minime
     %(coord, value)
-        framestates = zeros(Nframes-fr_diff+1,8);
-        max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
+    framestates = zeros(Nframes-fr_diff+1,8);
+    max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
+    
+    m1 = get_data002(filename, frame_start, fr_diff, coordname);
+    [Rows,Columns] = size(m1);
+    m_memory = zeros(Rows,Columns,fr_diff);
+    m_memory(:,:,1) = m1;
+    framestates(1, 6) = (frame_start + fr_diff)/30;
 
-    for i=0:(Nframes-fr_diff)
+    for i = 1:fr_diff-2
+        m_memory(:,:,i+1) = get_data002(filename, frame_start+i, fr_diff, coordname);
+        t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
+        framestates(i+1, 6) = t;
+    end
+
+    for i=fr_diff:Nframes
 
         %calcolo tempo
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
@@ -123,7 +135,11 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %salvataggio dati
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        [m1, mdiff] = get_data(filename, frame_start+i, fr_diff, coordname);
+
+        mdiff = m_memory(:,:,end)-m_memory(:,:,1);
+
+
+        m1 = get_data002(filename, frame_start+i, fr_diff, coordname);
 
         %trova temperature massima e minima
 
@@ -141,16 +157,10 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
             fname = ['frame', num2str(frame_start+i)];
             coeff_DWT.(fname) = {C, S};
 
-        %mi servono per convertire le posizioni di massimi e minimi in coordinate (y,x)
-        if i == 0
-            [Rows, Columns] = size(mdiff); 
-        end
-
         if prod(method == 'ThreshNN')
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %array massimi e minimi %% lo smoothing lo toglierei
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        size(imrec)
 
         [max_hotspot, min_hotspot, ~] = hotspot_3(imrec, soglia_max, soglia_min, 'smoothing', smooth);
         Peaks.(fname) = struct('Max', {max_hotspot}, 'Min', {min_hotspot});

@@ -1,4 +1,4 @@
-function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
+function m1 = get_data002(filename, fr_evento, coordname)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-11 Last modification: 2023-10-11
@@ -35,32 +35,23 @@ function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
     y_ridotta = round(y_bl)-round(y(2));
     x_ridotta = round(x(3))-round(x(1));
     m1_ridotta = zeros(y_ridotta+10,x_ridotta+10);
-        n = fr_evento;
 
     %store data
-    for k = 1 : 2
-        m1=readtable(sprintf(append(filename,'%d.CSV'), n),'Range','B9:XQ488'); %dimentions = (480x640)
-        m1 = m1{:,:};
+    m1=readtable(sprintf(append(filename,'%d.CSV'), fr_evento),'Range','B9:XQ488'); %dimentions = (480x640)
+    m1 = m1{:,:};
 
-        n_pixel = 0;
+    n_pixel = 0;
 
-        for i=1:480 %righe    
-            for j=1:640 %colonne
-                if j >= boundaries(i,1) && j <= boundaries(i,2)
-                    n_pixel = n_pixel + 1;
+    for i=1:480 %righe    
+        for j=1:640 %colonne
+            if j >= boundaries(i,1) && j <= boundaries(i,2)
+                n_pixel = n_pixel + 1;
 
-                    m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m1(i,j);
-                end
+                m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m1(i,j);
             end
         end
-        frames(k,1) = {m1_ridotta};
-        n = fr_evento + fr_diff;
     end
+    m1 = m1_ridotta;
 
-    %Graph
-    m2 = frames{2, 1};
-    m1 = frames{1, 1};
-    mdiff = m2-m1;
-    
 end
 
