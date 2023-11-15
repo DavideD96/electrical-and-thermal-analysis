@@ -115,10 +115,10 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
         max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
 
     for i=0:(Nframes-fr_diff)
-        fname = ['frame', num2str(frame_start+i)];
+
         %calcolo tempo
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
-        framestates(i+1, 1) = t;
+        framestates(i+1, 6) = t;
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %salvataggio dati
@@ -146,14 +146,17 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
             [Rows, Columns] = size(mdiff); 
         end
 
-
         if prod(method == 'ThreshNN')
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %array massimi e minimi %% lo smoothing lo toglierei
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        disp('prima')
         [max_hotspot, min_hotspot, ~] = hotspot_3(imrec, soglia_max, soglia_min, 'smoothing', smooth);
+        disp('dopo')
         Peaks.(fname) = struct('Max', {max_hotspot}, 'Min', {min_hotspot});
-
+        disp('hotspot')
+        disp(fname)
+        %max_hotspot
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %Controllo primi vicini assoluti
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -251,7 +254,6 @@ function frame_states = analisi_Nframes007(filename,Nframes, frame_start, fr_dif
 %metodo calcolo area
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 arr_aree = zeros(Nframes-fr_diff+1,2);
-size(arr_aree)
 
 if area == 1 & video == 0
     for i=0:(Nframes-fr_diff)
@@ -517,8 +519,6 @@ end
 
     name = [filename, '_Elect_Thermal_',method_area,'_startFrame',num2str(frame_start),'.mat'];    
 
-    size(framestates)
-    size(arr_aree)
     frame_states = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4), arr_aree(:,1), arr_aree(:,2), framestates(:,5)];
 end
 

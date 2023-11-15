@@ -63,8 +63,11 @@ function [max_hotspot, min_hotspot, z] = hotspot_3 (mdiff, soglia_max, soglia_mi
                 min_hotspot_coord = min_hotspot_coord(mdiff(min_hotspot_coord) <= soglia_min);
 
         end
-        
+
+        %max_hotspot_coord
         max_hotspot = [max_hotspot_coord, z(max_hotspot_coord)];
+        disp('hotspot dentro')
+        max_hotspot
         min_hotspot = [min_hotspot_coord, z(min_hotspot_coord)];
     %Pulisci workspace
     %clear S;
