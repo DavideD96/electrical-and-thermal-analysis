@@ -1,6 +1,6 @@
-function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function results = analisi_Nframes008(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-11-06
+%Date: 2023-10-12 Last modification: 2023-11-15
 %6th edition of analisi_Nframes
 %Author: Cristina Zuccali
 %analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
@@ -38,7 +38,7 @@ function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_dif
 %               ('AreaMetho', 'RGS') = regional growth method
 %               ('ThreshRGS', ...) for pixels selection in regional growth segmentation
 %
-%   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
+%   'results' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -112,7 +112,7 @@ function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_dif
     
     %array per salvare i dati dei frame e temperature massime e minime
     %(coord, value)
-    framestates = zeros(Nframes-fr_diff+1,8);
+    framestates = zeros(Nframes-fr_diff+1,6);
     max_min_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
     
     m1 = get_data002(filename, frame_start, coordname);
@@ -127,7 +127,7 @@ function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_dif
         framestates(i+1, 6) = t;
     end
 
-    for i=fr_diff:Nframes
+    for i = fr_diff : Nframes
 
         %calcolo tempo
         t = (frame_start + fr_diff + i)/30; %%campionamento a 30 Hz
@@ -136,7 +136,6 @@ function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_dif
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %salvataggio dati
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
         %update data
         m_memory(:,:,1:end-1) = m_memory(:,:,2:end);
         m_memory(:,:,end) = get_data002(filename, frame_start+i, coordname);
@@ -144,7 +143,6 @@ function frame_states = analisi_Nframes008(filename,Nframes, frame_start, fr_dif
         mdiff = m_memory(:,:,end)-m_memory(:,:,1);
 
         %trova temperature massima e minima
-
         [massimi,~,~] = hotspot_3(m_memory(:,:,end), 0, 0);
         max_min_temp(i+1, 1) = massimi(1,1);
         max_min_temp(i+1, 2) = massimi(1,2);
@@ -528,6 +526,6 @@ end
 
     name = [filename, '_Elect_Thermal_',method_area,'_startFrame',num2str(frame_start),'.mat'];    
 
-    frame_states = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4), arr_aree(:,1), arr_aree(:,2), framestates(:,5)];
+    results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4), arr_aree(:,1), arr_aree(:,2), framestates(:,5)];
 end
 

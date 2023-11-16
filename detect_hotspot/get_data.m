@@ -19,9 +19,6 @@ function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %selection of the area
-    m1=readtable(sprintf(append(filename,'%d.CSV'),floor(10)),'Range','B9:XQ488');
-    m1= m1{:,:};
-
     CAF_coord = load(coordname);
     x = CAF_coord.coordinates(:,1);
     y = CAF_coord.coordinates(:,2);
@@ -63,6 +60,7 @@ function [m1, mdiff] = get_data(filename, fr_evento, fr_diff, coordname)
     %Graph
     m2 = frames{2, 1};
     m1 = frames{1, 1};
-    mdiff = m2-m1;    
+    mdiff = m2-m1;
+    
 end
 

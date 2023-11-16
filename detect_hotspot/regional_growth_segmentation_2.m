@@ -89,7 +89,7 @@ function [im_bin] = regional_growth_segmentation_2(peak, type, im, soglia_perc)
         status_c = 0;
         j = 1;
             while status_c == 0 && j <= (c-1)
-                if abs(im(r,c)) - abs(im(r_down, c-j))<= soglia_diff
+                if abs(im(r,c)) - abs(im(r_down, c-j)) <= soglia_diff
                     im_bin(r_down, c-j) = 1;
                 else
                     status_c = 1;
