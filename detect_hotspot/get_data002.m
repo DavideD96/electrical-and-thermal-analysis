@@ -1,4 +1,4 @@
-function m1 = get_data002(filename, fr_evento, coordname)
+function m = get_data002(filename, fr_evento, coordname)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-11 Last modification: 2023-10-11
@@ -38,7 +38,8 @@ function m1 = get_data002(filename, fr_evento, coordname)
 
     %store data
     m1=readtable(sprintf(append(filename,'%d.CSV'), fr_evento),'Range','B9:XQ488'); %dimentions = (480x640)
-    m1 = m1{:,:};
+    m = m1{:,:};
+    clear m1;
 
     n_pixel = 0;
 
@@ -47,11 +48,11 @@ function m1 = get_data002(filename, fr_evento, coordname)
             if j >= boundaries(i,1) && j <= boundaries(i,2)
                 n_pixel = n_pixel + 1;
 
-                m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m1(i,j);
+                m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m(i,j);
             end
         end
     end
-    m1 = m1_ridotta;
+    m = m1_ridotta;
 
 end
 
