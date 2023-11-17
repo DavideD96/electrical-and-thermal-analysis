@@ -182,6 +182,13 @@ for i = 0 : Nframes - fr_diff
     mdiff = m_memory(:,:,end)-m_memory(:,:,1);
     clear m_ausilio;
 
+    for j = 1 : Rows*Columns
+        if isnan(mdiff(j))
+            disp(fname)
+            disp(mdiff)
+            break
+        end
+    end
 
     %decomposizione
     [C, S] = wavedec2(mdiff, level, wname);

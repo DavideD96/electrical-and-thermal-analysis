@@ -178,8 +178,8 @@ for i = 0 : Nframes - fr_diff
     mdiff = m_memory(:,:,end)-m_memory(:,:,1);
     m_memory(:,:,1:end-1) = m_memory(:,:,2:end);
     
-    for i = 1 : Rows*Columns
-        if isnan(mdiff(i))
+    for j = 1 : Rows*Columns
+        if isnan(mdiff(j))
             disp(fname)
             m2 = m_memory(:,:,end);
             m1 = m_memory(:,:,1);
@@ -493,7 +493,8 @@ end
     name = [filename, '_Elect_Thermal_',method_area,'_startFrame',num2str(frame_start),'.mat'];    
     
     results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4), arr_aree(:,1), arr_aree(:,2), framestates(:,5)];
-
+    
+    clear S;
 end
 
 
