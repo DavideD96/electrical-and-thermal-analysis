@@ -58,12 +58,12 @@ else
     El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, MeasureType, 'col', column, 'nos', nsigma, 'nvt', 0, 'opt', analysis);
 end
 
-El_rs
+%El_rs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Th_rs = analisi_Nframes009(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
+Th_rs = analisi_Nframes010(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Th_rs
+%Th_rs
 %renormalize times
 Th_rs(:,1) = Th_rs(:,1)-Th_rs(1,1);
 
@@ -94,14 +94,20 @@ hold off;
 % area T
 
 figure;
+
+% thermal 30 Hz
 Th_rs_ = repelem(Th_rs,2,1);
 stop = size(Th_rs_,2);
 
-size(El_rs)
-size(Th_rs_)
+%size(El_rs)
+%size(Th_rs_)
 
-El_rs_ = repelem(Th_rs,3,1);
+% electrical 20 Hz
+El_rs_ = repelem(El_rs.detection,3,1);
 El_rs_ = El_rs_(1:stop,:);
+
+El_rs_
+Th_rs_
 
 stackedplot([El_rs_(:,end),Th_rs(:,4),Th_rs(:,5),Th_rs(:,6),Th_rs(:,7)]);
 
