@@ -1,4 +1,4 @@
-function s = mainSwitch(nomefile,folder,method,appl,varargin)
+function s = mainSwitch(nomefile,folder,method,varargin)
 %
 %Date: 2019-02-18 Last Modification: 2023-11-14
 %Author: M. Camponovo, D. Decastri, M. Mirigliano
@@ -131,15 +131,9 @@ else
     end
 end
 
-if prod(appl == 'curr')
-    voltage = R(:,3);
-    I = R(:,2);
-end
 
-if prod(appl == 'volt')
-    voltage = R(:,2);
-    I = R(:,3);
-end
+voltage = R(:,2);
+I = R(:,3);
 
 Resistance = voltage./I;
 R = [R(:,1:3), Resistance];
