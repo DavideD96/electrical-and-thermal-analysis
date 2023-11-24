@@ -111,7 +111,6 @@ El_rs_ = El_rs_(1:stop,:);
 
 period = 1/60;
 times = linspace(0,period*size(El_rs_,1),size(El_rs_,1));
-times = times';
 
 %line1: resistance
 %line2: peak temperature
@@ -125,15 +124,12 @@ T_min = Th_rs_(:,5);
 area_max = Th_rs_(:,6);
 area_min = Th_rs_(:,7);
 
-data = table(times, resistance,T_max,T_min,area_max,area_min);
-data = renamevars(data,'times','times [s]');
-
-data.Properties.VariableUnits = {'[s]','[\Omega]','[°C]','[°C]','[pixel #]','[pixel #]'};
-data.Properties.VariableNames
+data = table(times', resistance,T_max,T_min,area_max,area_min);
+data.Properties.VariableUnits = {'times','[\Omega]','[°C]','[°C]','[pixel #]','[pixel #]'};
 
 degreeSymbol = char(176);
-newYlabels = ["time [s]","R diff [Ohm]"," T max ["+ degreeSymbol + "C]","T min ["+ degreeSymbol + "C]","area max [pixel #]","area min [pixel #]"];
-plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
+newYlabels = ["time [s]"R diff [Ohm]"," T max ["+ degreeSymbol + "C]","T min ["+ degreeSymbol + "C]","area max [pixel #]","area min [pixel #]"];
+plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times');
 grid on;
 %pltax = plt.NodeChildren(end/2+1:end);
 %for K = pltax.'; K.YLabel.Interpreter = 'tex'; end
