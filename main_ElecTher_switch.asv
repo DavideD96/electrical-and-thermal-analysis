@@ -105,6 +105,9 @@ if Th_sampl_fr == 30 && El_sampl_fr == 20
     Th_rs_ = repelem(Th_rs,2,1);
     stop = size(Th_rs_,1);
 
+    %size(El_rs)
+    %size(Th_rs_)
+
     % electrical 20 Hz
     El_rs_ = repelem(El_rs.detection,3,1);
     El_rs_ = El_rs_(1:stop,:);
@@ -114,20 +117,10 @@ if Th_sampl_fr == 30 && El_sampl_fr == 20
     times = times';
 
 elseif Th_sampl_fr == 10 && El_sampl_fr == 20
-    % electrical 20 Hz
-    El_rs_ = El_rs;
-    stop = size(Eh_rs_,1);
 
-    % thermal 10 Hz
-    Th_rs_ = repelem(Th_rs,2,1);
-    Th_rs_ = Th_rs_(1:stop,:);
-    
-    period = 1/20;
-    times = linspace(0,period*size(El_rs_,1),size(El_rs_,1));
-    times = times';
 
 else
-    disp('Incorrect frame rates.');
+    disp('incorrect frame rates');
 end
     
 %line1: resistance

@@ -12,7 +12,8 @@ function s = mainSwitch(nomefile,folder,method,varargin)
 %The main to analyze the switch data; a file named 'sigmaLevel.txt' where
 %the values of sigma and quantity discriminants are written has to be found
 %in the current folder. The analysis to be performed on the data can be
-%selected from 'option' variable.
+%selected from 'option' variable. Data should be organised as follows:
+%[times, voltages(t), currents(t)]
 %
 %   'nomefile': the name of the file where data are saved (usually
 %               'Data.mat'). The name of the data in the workspace must be
@@ -43,8 +44,6 @@ function s = mainSwitch(nomefile,folder,method,varargin)
 %               switch.
 %       'usr' - the user specify a mean and a sigma, and then the method
 %               'rel' is used.
-%   'appl': specify if you are applying constant voltage ('volt') or
-%           current ('curr').
 %   'sel': sel is true if you ewant to select a data interval, false
 %          otherwise
 %   'ntv': select intervals to compute mean and std.
