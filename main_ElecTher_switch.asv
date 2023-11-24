@@ -124,12 +124,10 @@ area_min = Th_rs_(:,7);
 data = table(resistance,T_max,T_min,area_max,area_min);
 data.Properties.VariableUnits = {'[\Omega]','[°C]','[°C]','[pixel #]','[pixel #]'};
 
-degreeSymbol = char(176);
-newYlabels = ["R diff [Ohm]"," T max ["+ degreeSymbol + "C]","T min ["+ degreeSymbol + "C]","area max [pixel #]","area min [pixel #]"];
-plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels);
-grid on;
-%pltax = plt.NodeChildren(end/2+1:end);
-%for K = pltax.'; K.YLabel.Interpreter = 'tex'; end
+newYlabels = ['\Delta Resistance [\Omega]',' T_{max} ['+ char(176) 'C]','T_{min} [°C]','area_{max} [pixel #]','area_{min} [pixel #]'];
+
+stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels);
+
 
 %stackedplot(times,tabella_5);
 %xlabel('time [s]');
