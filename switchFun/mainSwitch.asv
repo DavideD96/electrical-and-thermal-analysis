@@ -18,8 +18,7 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %               'Data.mat'). The name of the data in the workspace must be
 %               'R'.
 %   'folder': the name of the folder in the current directory where the
-%             the file containing interval parameters is to be found (see
-%             'sig' method).
+%             the file named 'nomefile' is to be found
 %   'method': method to be used to find the switch events
 %       'rel' - reltive differance between two contigues points; when 'rel'
 %               is invoked, 'col' and 'nos' have to be specifed (SEE
@@ -32,7 +31,7 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %               used.
 %       'sig' - this method allow you to choose manually an interval of the time
 %               serie for computing a mea and a sigma. Then, the method
-%               'rel' is used. (RECOMMENDED) You
+%               'rel' is used. (RECOMMENDED)
 %       'ecn' - use an hibrid method: the program identyfy the clusters of 
 %               hte values of resistance using the same algorithm of the
 %               method 'apd', and then use an econometric method to find
@@ -71,7 +70,7 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %                       between consecutive switches inside the same burst.
 %               "bNb" - compute the "numBin" analysis inside the bursts,
 %                       using the binlength specified by the input 'bin'.
-%               "cdt" - compute the Barab‡si et al. analysis for the
+%               "cdt" - compute the Barab√†si et al. analysis for the
 %                       correlation between the switches. To simulate the
 %                       stochastic beaviour, the switches are mixed ten times
 %                       and then is taken a mean of the histograms
