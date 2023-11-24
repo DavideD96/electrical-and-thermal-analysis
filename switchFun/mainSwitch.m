@@ -32,7 +32,9 @@ function s = mainSwitch(nomefile,folder,method,appl,varargin)
 %               used.
 %       'sig' - this method allow you to choose manually an interval of the time
 %               serie for computing a mea and a sigma. Then, the method
-%               'rel' is used. (RECOMMENDED) You
+%               'rel' is used. (RECOMMENDED) You can decide to choose the
+%               interval manually at the beginning of the analysis. The
+%               
 %       'ecn' - use an hibrid method: the program identyfy the clusters of 
 %               hte values of resistance using the same algorithm of the
 %               method 'apd', and then use an econometric method to find
