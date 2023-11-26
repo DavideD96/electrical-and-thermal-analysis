@@ -1,4 +1,4 @@
-function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, method, thresh)
+function [area_max, area_min, imsov] = calculate_area_003(imm_pos, framestates, method, thresh)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-02 Last modification: 2023-11-03
 %Author: Cristina Zuccali
@@ -27,12 +27,13 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
         if framestates(1, 2) ~= 0
 
             controllo_stato = controllo_stato + 1;
+            imm_pos = max(imm, 0);
             
             if prod(method == 'BiW')
-                BW = imbinarize(imm, "global");
+                BW = imbinarize(imm_pos, "global");
             
             elseif prod(method == 'RGS')
-                BW = regional_growth_segmentation_2(framestates(1,1), 1, imm, thresh);
+                BW = regional_growth_segmentation_2(framestates(1,1), 1, imm_pos, thresh);
 
             elseif prod(method == 'CWT')
                 %punto di massimo per ogni scala e lo salvo
@@ -42,7 +43,7 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
                 %coefficienti a vari fattori di scala e salvo l'array delle
                 %massime ampiezze
                 for i=1:1:scala_max
-                    cwtstruct = cwtft2(imm,'wavelet','mexh','scales',1:1:scala_max);
+                    cwtstruct = cwtft2(imm_pos,'wavelet','mexh','scales',1:1:scala_max);
                     ampiezze_coef = abs(cwtstruct.cfs(:,:,1,i,1)).^2;
 
                     max_array_coord = find(imregionalmax(ampiezze_coef));
@@ -64,7 +65,7 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
             BWfinal = imerode(BW, seD);
             BWfinal = imerode(BWfinal, seD);
 
-            imsov_max=labeloverlay(imm,BWfinal);
+            imsov_max=labeloverlay(imm_pos,BWfinal);
             
             %calcolo l'area
             area = regionprops(BWfinal, 'Area'); %perchè BiW binarizza tutta l'immagine e quindi trova tutte le regioni calde. Questo restituisce le aree separate.
@@ -81,12 +82,13 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
     %poterlo vedere come bianco nell'immagine binaria
         if framestates(1, 4) ~= 0
             controllo_stato = controllo_stato + 1;
+            imm_neg = max(-imm, 0);
 
             if prod(method == 'BiW')
-                BW = imbinarize(-imm, "global");
+                BW = imbinarize(imm_neg, "global");
             
             elseif prod(method == 'RGS')
-                BW = regional_growth_segmentation_2(framestates(1,1), 1, -imm, thresh);
+                BW = regional_growth_segmentation_2(framestates(1,1), 1, imm_neg, thresh);
 
             elseif prod(method == 'CWT')
                 %punto di massimo per ogni scala e lo salvo
@@ -96,7 +98,7 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
                 %coefficienti a vari fattori di scala e salvo l'array delle
                 %massime ampiezze
                 for i=1:1:scala_max
-                    cwtstruct = cwtft2(-imm,'wavelet','mexh','scales',1:1:scala_max);
+                    cwtstruct = cwtft2(-imm_pos,'wavelet','mexh','scales',1:1:scala_max);
                     ampiezze_coef = abs(cwtstruct.cfs(:,:,1,i,1)).^2;
 
                     max_array_coord = find(imregionalmax(ampiezze_coef));
@@ -118,7 +120,7 @@ function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, meth
             BWfinal = imerode(BW, seD);
             BWfinal = imerode(BW, seD);
 
-            imsov_min=labeloverlay(-imm,BWfinal);
+            imsov_min=labeloverlay(imm_neg,BWfinal);
 
             %calcolo l'area
             area = regionprops(BWfinal, 'Area'); %perchè BiW binarizza tutta l'immagine e quindi trova tutte le regioni fredde. Questo restituisce le area separate.
