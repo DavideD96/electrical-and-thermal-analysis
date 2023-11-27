@@ -32,7 +32,8 @@ function [area_max, area_min, imsov] = calculate_area_002(imm, framestates, meth
                 BW = imbinarize(imm, "global");
             
             elseif prod(method == 'RGS')
-                BW = regional_growth_segmentation_2(framestates(1,1), 1, imm, thresh);
+                peak = [framestates(1,1) framestates(1,2)];
+                BW = regional_growth_segmentation_2(peak, 1, imm, thresh);
             end
 
             seD = strel('diamond', 1);

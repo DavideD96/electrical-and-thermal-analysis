@@ -46,7 +46,7 @@ num = length(varargin);
 
 %PARAMETRI DI DEFAULT
 smooth = 0;
-method_area = 'BiW';
+method_area = 'RGS';
 soglia_diff = 0.8;
 area = 1;
 dec_centroid = 0;

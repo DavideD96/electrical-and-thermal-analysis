@@ -27,8 +27,18 @@ function [im_bin] = regional_growth_segmentation_2(peak, type, im, soglia_perc)
 
     %Coordinate picco e setto im_bin
         [Rows, Columns] = size (im);
+
+        if peak(1,1) == 0
+            im_bin = zeros(Rows, Columns);
+            return
+        end
         c = ceil(peak(1,1)/Rows); %%floor up
         r = peak(1,1) - Rows*(c-1);
+        
+
+        % disp(r)
+        % disp(peak(1,1))
+        % disp(c)
 
         im_bin = zeros(Rows, Columns);
         im_bin(r,c) = 1;
