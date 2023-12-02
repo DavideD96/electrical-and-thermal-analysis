@@ -23,25 +23,23 @@ data = zeros(frames(2)-frames(1)+1,rows*col);
 
 if storeall == 1
 
-    for i = frames(1):frames(2)
-        if Th_analysis(i,end) ~= 0 && Th_analysis(i,end) ~= event
-            event = Th_analysis(i,end);
-            dataMat = load(append(filename,num2str(i)));
-            data(i,:) = dataMat.a(:); %all data in a column vector
-        end
+for i = frames(1):frames(2)
+    if Th_analysis(i,end) ~= 0 && Th_analysis(i,end) ~= event
+        event = Th_analysis(i,end);
+        dataMat = load(append(filename,num2str(i)));
+        data(i,:) = dataMat.a(:); %all data in a column vector
     end
-    
-    %remove extra columns (all zeros)
-    data( :, all( ~data, 1 ) ) = [];
-    
-    %coeff sono i coefficienti delle componenti principali. Ogni colonna
-    %rappresenta una componente principale nella base delle osservabili fisiche
-    %originarie
-    
-    coeff = pca(data);
-    
-elseif storeall == 0
+end
 
+%remove extra columns (all zeros)
+data( :, all( ~data, 1 ) ) = [];
+
+%coeff sono i coefficienti delle componenti principali. Ogni colonna
+%rappresenta una componente principale nella base delle osservabili fisiche
+%originarie
+
+coeff = pca(data);
+elseif storeall == 0
 
 end
 

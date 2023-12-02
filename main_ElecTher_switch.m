@@ -1,4 +1,4 @@
-function [Th, El] = main_ElecTher_switch(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start)
+function [Th, El] = main_ElecTher_switch(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start, storeData)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-10-16
 %Authors: Cristina Zuccali, Davide Decastri
@@ -69,7 +69,7 @@ end
 %El_rs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Th_rs = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
+Th_rs = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0,'storedata',storeData); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
 %renormalize times

@@ -1,4 +1,4 @@
-function results = analisi_Nframes011(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function [means, stds, results] = analisi_Nframes011(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-11-16
 %6th edition of analisi_Nframes
@@ -37,6 +37,12 @@ function results = analisi_Nframes011(filename,Nframes, frame_start, fr_diff, co
 %               ('AreaMetho', 'BiW') = binarization 
 %               ('AreaMetho', 'RGS') = regional growth method
 %               ('ThreshRGS', ...) for pixels selection in regional growth segmentation
+%
+%       to store data in ".mat" (thus avoiding to use get_Data multiple times, that is
+%       time consuming):
+%               ('store___T', true) stores T
+%               ('store__DT', true) store delta T (mdiff)
+%               ('storeEvnT', true) store events only
 %       
 %
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
@@ -52,6 +58,19 @@ soglia_diff = 0.8;
 area = 1;
 dec_centroid = 0;
 video = 1;
+store___T = false;
+store__DT = false;
+storeEvenT = false;
+
+if storeData == true
+    check = exist('termoFiles_mat','dir');
+    if check == 7
+        rmdir('termoFiles_mat', 's') %cancella la cartella e tutti i files contenuti
+        mkdir termoFiles_mat;
+    elseif check ~= 7
+        mkdir termoFiles_mat;
+    end
+end
 
 %varagin
 for k = 1:2:num
@@ -72,6 +91,15 @@ for k = 1:2:num
 
     elseif prod(varargin{k}=='ThreshRGS')
         soglia_diff = varargin{k+1};
+
+    elseif prod(varargin{k}=='store___T')
+        store___T = varargin{k+1};
+
+    elseif prod(varargin{k}=='store__DT')
+        store___T = varargin{k+1};
+
+    elseif prod(varargin{k}=='storeEvenT')
+        store___T = varargin{k+1};
     end
 end
 
@@ -154,9 +182,25 @@ m1 = get_data002(filename, frame_start, coordname);
 m_memory = zeros(Rows,Columns,fr_diff);
 m_memory(:,:,1) = m1;
 
+%%%%%%%%%%%%%%%% storage %%%%%%%%%%%%%%%%%
+if store___T == true %all T
+    mtotal(:,:,i+fr_diff) = m_memory(:,:,end);
+end
+
+if store__DT == true
+    mtotal(:,:,i+fr_diff) = md;
+end
+
+if storeEvenT == true
+    mtotal = zeros(Rows,Columns,Nframes);
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i = 1:fr_diff-2
     m_memory(:,:,i+1) = get_data002(filename, frame_start+i, coordname);
+    if store___T == true
+        mtotal(:,:,i) = m_memory(:,:,i+1); %STORAGE
+    end %gli altri due casi qui non posso ancora aggiornarli
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,6 +224,10 @@ for i = 0 : Nframes - fr_diff
     mdiff = m_memory(:,:,end)-m_memory(:,:,1);
     m_memory(:,:,1:end-1) = m_memory(:,:,2:end);
 
+    if storeData == true
+        mtotal(:,:,i) = m_memory(:,:,i+1); %STORAGE
+    end
+    
 
     %controllo dei dati
     for j = 1 : Rows*Columns
@@ -264,7 +312,20 @@ for i = 0 : Nframes - fr_diff
     else
         disp('Incorrect detection method.');
     end  
-   
+    
+    %%%%%%%%%%%%%%%% storage %%%%%%%%%%%%%%%%%
+    if store___T == true %all T
+        mtotal = zeros(Rows,Columns,Nframes);
+    end
+    
+    if store__DT == true
+        mtotal = zeros(Rows,Columns,Nframes);
+    end
+    
+    if storeEvenT == true
+        mtotal = zeros(Rows,Columns,Nframes);
+    end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Calcolo area senza video
