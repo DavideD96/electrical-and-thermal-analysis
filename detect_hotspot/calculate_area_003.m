@@ -1,4 +1,4 @@
-function [area_max, area_min, imsov] = calculate_area_003(imm_pos, framestates, method, thresh)
+function [area_max, area_min, imsov] = calculate_area_003(imm, framestates, method, thresh)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-02 Last modification: 2023-11-03
 %Author: Cristina Zuccali
