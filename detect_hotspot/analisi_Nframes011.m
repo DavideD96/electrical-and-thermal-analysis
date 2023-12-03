@@ -1,4 +1,4 @@
-function results = analisi_Nframes011(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function [results, Rows, Columns] = analisi_Nframes011(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-11-16
 %6th edition of analisi_Nframes
@@ -272,7 +272,7 @@ for i = 0 : Nframes - fr_diff
     if area == 1  
         if framestates(i+1, 5) ~= 0
             if prod(method_area == 'BiW') | prod(method_area == 'RGS')
-                [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
+                [area_max, area_min, imsov] = calculate_area_003(imrec, framestates(i+1,:), method_area, soglia_diff);
                 Area.(fname) = struct ('Max', area_max, 'Min', area_min);
                 arr_aree(i+1,:) = [area_max(1,1), area_min(1,1)]; 
 
@@ -440,14 +440,14 @@ if dec_centroid == 1
     hold on
         title('Position of CM');
         xlabel('[n° pixel]');
-        xlim([0 Rows]);
-        ylim([0 Columns]);
+        ylim([0 Rows]);
+        xlim([0 Columns]);
         ylabel('[n° pixel]');
-        A = zeros(Nframes-fr_diff+1, 2);
+        A = zeros(0, 2);
 
         for i = 1 : length(CM(:,1))
             if CM(i,1) ~= 0 && CM(i,2) ~= 0
-                A(i,:) = [CM(i,1), CM(i,2)];
+                A(end+1,:) = [CM(i,1), CM(i,2)];
             end
         end
 
@@ -463,11 +463,11 @@ end
 %Raggruppamento frames che detectano lo stesso evento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %variabile per contare gli eventi e raggrupparli
-    n_evento = 0;
+    n_evento = 1;
     state_max = 0;
     state_min = 0;
 
-    for i=2:(Nframes-fr_diff)
+    for i=2:(Nframes-fr_diff+1)
 
         %se c'è un evento
         state_max = raggruppo_2eventi(framestates(i-1,1), framestates(i-1,2), framestates(i,1), framestates(i,2), Rows, Columns);
@@ -498,6 +498,7 @@ end
     name = [filename, '_Elect_Thermal_',method_area,'_startFrame',num2str(frame_start),'.mat'];    
     
     results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4), arr_aree(:,1), arr_aree(:,2), framestates(:,5)];
+    save('results.mat', 'results');
     
     clear S;
 end

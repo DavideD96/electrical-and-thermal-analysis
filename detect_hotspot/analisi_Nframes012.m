@@ -1,4 +1,4 @@
-function results = analisi_Nframes012(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
+function [results, Rows, Columns] = analisi_Nframes012(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-11-16
 %6th edition of analisi_Nframes
@@ -361,7 +361,7 @@ for i = 0 : Nframes - fr_diff
     if area == 1  
         if framestates(i+1, 5) ~= 0
             if prod(method_area == 'BiW') | prod(method_area == 'RGS')
-                [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
+                [area_max, area_min, imsov] = calculate_area_003(imrec, framestates(i+1,:), method_area, soglia_diff);
                 Area.(fname) = struct ('Max', area_max, 'Min', area_min);
                 arr_aree(i+1,:) = [area_max(1,1), area_min(1,1)]; 
 
