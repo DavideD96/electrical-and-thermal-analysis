@@ -1,4 +1,4 @@
-function main_ElecTher_switch(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start)
+function [Th, El] = main_ElecTher_switch(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start, storeData)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-10-16
 %Authors: Cristina Zuccali, Davide Decastri
@@ -13,6 +13,12 @@ function main_ElecTher_switch(ElectrFilename, ThermalFilename, coordname, Nframe
 %   'coordname' = name of file with coordinates of the wanted region
 %   'Nframes' = number of frames to be analysed.
 %   'frame_start' = frame corresponding to electrical measumerement start
+%
+%   returns:
+%   Th: results of thermal analysis [time, max coord, min coord, T max, T
+%       min, area max, area min, state (event or not, with indexing)
+%   El: results of electrical analysis [times, voltages, currents,
+%       resistances, state (switch or not), resistance difference]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 check = exist('ThEl_Results');
@@ -63,7 +69,7 @@ end
 %El_rs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Th_rs = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
+Th_rs = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0,'storedata',storeData); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
 %renormalize times
@@ -158,5 +164,8 @@ grid on;
 %xlabel('time [s]');
 %stackname = [filename,'_calibFr_', num2str(calibr_frame),'_stack5pixel_',num2str(pixel_away_from_CAF),'_frames_', num2str(Frames(1)),'-',num2str(Frames(2)),'.fig'];
 %savefig(stacked,[path,stackname]); %'\'
+
+Th = Th_rs;
+El = El_rs;
 
 end
