@@ -176,14 +176,19 @@ m_memory(:,:,1) = m1;
 if store___T == true %all T
     mtotalT = zeros(Rows,Columns,Nframes);
     mtotalT(:,:,1) = m1; %STORAGE
+    m_TmeanStd = zeros(Rows,Columns,2);
+    m_TmeanStd(:,:,1) = m1;
+    m_TmeanStd(:,:,2) = m1.^2;
 end
 
 if store__DT == true
     mtotalDT = zeros(Rows,Columns,Nframes-fr_diff);
+    m_DTmeanStd = zeros(Rows,Columns,2);
 end
 
 if storeEvnT == true
     mtotalEvT = zeros(Rows,Columns,Nframes);
+    m_EvenTmeanStd = zeros(Rows,Columns,2);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,6 +196,8 @@ for i = 1:fr_diff-2
     m_memory(:,:,i+1) = get_data002(filename, frame_start+i, coordname);
     if store___T == true
         mtotalT(:,:,i) = m_memory(:,:,i+1); %STORAGE
+        m_TmeanStd(:,:,1) = m_TmeanStd(:,:,1) + m_memory(:,:,i+1);
+        m_TmeanStd(:,:,2) = m_TmeanStd(:,:,2) + m_memory(:,:,i+1).^2;
     end %gli altri due casi qui non posso ancora aggiornarli
 end
 
@@ -337,10 +344,14 @@ for i = 0 : Nframes - fr_diff
     %%%%%%%%%%%%%%%% storage %%%%%%%%%%%%%%%%%
     if store___T == true %all T
         mtotalT(:,:,i + fr_diff) = m_memory(:,:,end);
+        m_TmeanStd(:,:,1) = m_TmeanStd(:,:,1) + m_memory(:,:,end);
+        m_TmeanStd(:,:,2) = m_TmeanStd(:,:,2) + m_memory(:,:,end).^2;
     end
     
     if store__DT == true 
         mtotalDT(:,:,i + fr_diff) = mdiff;
+        m_DTmeanStd(:,:,1) = m_DTmeanStd(:,:,1) + mdiff;
+        m_DTmeanStd(:,:,2) = m_DTmeanStd(:,:,2) + mdiff.^2;
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -521,12 +532,21 @@ if (store__DT == true || store___T == true) || storeEvnT == true
     cd termoFiles_mat
     if store___T == true
         save('mtotalT','mtotalT','-mat')
+        m_TmeanStd(:,:,1) = m_TmeanStd(:,:,1)/Nframes;
+        m_TmeanStd(:,:,2) = sqrt(m_TmeanStd(:,:,2)/Nframes);
+        save('m_TmeanStd','m_TmeanStd','-mat')
     end
     if store__DT == true
         save('mtotalDT','mtotalDT','-mat')
+        m_DTmeanStd(:,:,1) = m_DTmeanStd(:,:,1)/(Nframes-fr_diff);
+        m_DTmeanStd(:,:,2) = sqrt(m_DTmeanStd(:,:,2)/(Nframes-fr_diff));
+        save('m_DTmeanStd','m_DTmeanStd','-mat')
     end
     if storeEvnT == true
         save('mtotalEvT','mtotalEvT','-mat')
+        m_EvenTmeanStd(:,:,1) = m_EvenTmeanStd(:,:,1)/n_evento;
+        m_EvenTmeanStd(:,:,2) = sqrt(m_EvenTmeanStd(:,:,2)/n_evento);
+        save('m_EvenTmeanStd','m_EvenTmeanStd','-mat')
     end
 
     cd ..
