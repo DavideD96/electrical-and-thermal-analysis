@@ -11,7 +11,10 @@ function coeff = pca_thermal001(filename)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-data = load(filename);
+
+
+data = load(filename,'-mat');
+data = data.mtotalEvT;
 nframes = size(data,3);
 [rows,col] = size(data,1,2);
 data_ = zeros(nframes,rows*col);
@@ -20,6 +23,9 @@ data_ = zeros(nframes,rows*col);
 for i = 1:nframes
     data_(i,:) = reshape(data(:,:,i),[1,rows*col]); 
 end
+
+%per ricostruire data:
+%data = reshape(data_',[rows,col,nframes]); %da testare
 
 clear data
 
@@ -46,21 +52,50 @@ ylabel('latent');
 set(gca, 'XTick', 1:10)
 
 %first principal component
-pc1 = reshape(coeff(:,1),3,3);
+pc1 = reshape(coeff(:,1),[rows,col]);
 figure
 title('pc1');
 imagesc(pc1);
 colorbar
 
 %second principal component
-pc2 = reshape(coeff(:,2),3,3);
+pc2 = reshape(coeff(:,2),[rows,col]);
 figure
 title('pc2');
 imagesc(pc2);
 colorbar
 
+%third principal component
+pc3 = reshape(coeff(:,3),[rows,col]);
+figure
+title('pc3');
+imagesc(pc3);
+colorbar
+
+%fourth principal component
+pc4 = reshape(coeff(:,4),[rows,col]);
+figure
+title('pc4');
+imagesc(pc4);
+colorbar
+
+%fifth principal component
+pc5 = reshape(coeff(:,5),[rows,col]);
+figure
+title('pc5');
+imagesc(pc5);
+colorbar
+
+%7th principal component
+pc7 = reshape(coeff(:,7),[rows,col]);
+figure
+title('pc7');
+imagesc(pc7);
+colorbar
+
+
 %reconstruct frame 1
-fr1 = reshape(scores(1,:)*coeff'+ repmat(mu1,1,1),3,3); %i dati sono centrati, il numero di gradi di libertà è n-1
+fr1 = reshape(scores(1,:)*coeff'+ repmat(mu1,1,1),[rows,col]); %i dati sono centrati, il numero di gradi di libertà è n-1
 figure
 title('fr1');
 imagesc(fr1);

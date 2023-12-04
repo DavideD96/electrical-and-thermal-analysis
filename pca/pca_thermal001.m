@@ -95,7 +95,7 @@ colorbar
 
 
 %reconstruct frame 1
-fr1 = reshape(scores(1,:)*coeff'+ repmat(mu1,1,1),3,3); %i dati sono centrati, il numero di gradi di libertà è n-1
+fr1 = reshape(scores(1,:)*coeff'+ repmat(mu1,1,1),[rows,col]); %i dati sono centrati, il numero di gradi di libertà è n-1
 figure
 title('fr1');
 imagesc(fr1);

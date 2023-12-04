@@ -42,7 +42,7 @@ function [results, Rows, Columns] = analisi_Nframes012(filename,Nframes, frame_s
 %       time consuming):
 %               ('store___T', true) stores T
 %               ('store__DT', true) store delta T (mdiff)
-%               ('storeEvnT', true) store events only
+%               ('storeEvnT', true) store events only (1 event <-> 1 frame)
 %       
 %
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
