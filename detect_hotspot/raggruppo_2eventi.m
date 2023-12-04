@@ -28,7 +28,7 @@ function [state] = raggruppo_2eventi(peak_1_coord, peak_1_value, peak_2_coord, p
     state = 0;
     i = 1;
     
-    if peak_1_value*peak_2_value > 0      %controllo che i due picchi siano dello stesso tipo
+    if peak_1_value*peak_2_value > 0      %controllo che i due picchi siano dello stesso tipo e che esistano
             while state == 0 && i<8
                 
                 if x_2 == coord_primi(i,1) && y_2 == coord_primi(i,2)
