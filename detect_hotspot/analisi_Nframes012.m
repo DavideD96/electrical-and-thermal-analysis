@@ -86,10 +86,10 @@ for k = 1:2:num
         store___T = varargin{k+1};
 
     elseif prod(varargin{k}=='store__DT')
-        store___T = varargin{k+1};
+        store__DT = varargin{k+1};
 
-    elseif prod(varargin{k}=='storeEvenT')
-        store___T = varargin{k+1};
+    elseif prod(varargin{k}=='storeEvnT')
+        storeEvnT = varargin{k+1};
     end
 end
 
@@ -512,14 +512,7 @@ end
 
 if (store__DT == true || store___T == true) || storeEvnT == true 
 
-    %remove extra columns (all zeros)
-    idx=[];
-    for k=1:size(mtotalEvT,3)
-        if all(mtotalEvT(:,:,k)==0,'all')
-            idx=[idx,k];
-        end
-    end
-    mtotalEvT(:,:,idx)=[];
+
 
     check = exist('termoFiles_mat','dir');
     if check == 7
@@ -531,22 +524,36 @@ if (store__DT == true || store___T == true) || storeEvnT == true
     
     cd termoFiles_mat
     if store___T == true
-        save('mtotalT','mtotalT','-mat')
+        mtotalT = delete_zeros(mtotalT);
+        save('mtotalT.mat','mtotalT','-mat')
         m_TmeanStd(:,:,1) = m_TmeanStd(:,:,1)/Nframes;
         m_TmeanStd(:,:,2) = sqrt(m_TmeanStd(:,:,2)/Nframes);
-        save('m_TmeanStd','m_TmeanStd','-mat')
+        m_TmeanStd = delete_zeros(m_TmeanStd);
+        save('m_TmeanStd.mat','m_TmeanStd','-mat')
     end
     if store__DT == true
-        save('mtotalDT','mtotalDT','-mat')
+        mtotalDT = delete_zeros(mtotalDT);
+        save('mtotalDT.mat','mtotalDT','-mat')
         m_DTmeanStd(:,:,1) = m_DTmeanStd(:,:,1)/(Nframes-fr_diff);
         m_DTmeanStd(:,:,2) = sqrt(m_DTmeanStd(:,:,2)/(Nframes-fr_diff));
-        save('m_DTmeanStd','m_DTmeanStd','-mat')
+        m_DTmeanStd = delete_zeros(m_DTmeanStd);
+        save('m_DTmeanStd.mat','m_DTmeanStd','-mat')
     end
-    if storeEvnT == true
-        save('mtotalEvT','mtotalEvT','-mat')
+    if storeEvnT == true    
+        %remove extra columns (all zeros)
+        idx=[];
+        for k=1:size(mtotalEvT,3)
+            if all(mtotalEvT(:,:,k)==0,'all')
+                idx=[idx,k];
+            end
+        end
+        mtotalEvT(:,:,idx)=[];
+        mtotalEvT = delete_zeros(mtotalEvT);
+        save('mtotalEvT.mat','mtotalEvT','-mat')
         m_EvenTmeanStd(:,:,1) = m_EvenTmeanStd(:,:,1)/n_evento;
         m_EvenTmeanStd(:,:,2) = sqrt(m_EvenTmeanStd(:,:,2)/n_evento);
-        save('m_EvenTmeanStd','m_EvenTmeanStd','-mat')
+        m_EvenTmeanStd = delete_zeros(m_EvenTmeanStd);
+        save('m_EvenTmeanStd.mat','m_EvenTmeanStd','-mat')
     end
 
     cd ..

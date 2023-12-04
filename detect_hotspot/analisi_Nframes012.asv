@@ -88,7 +88,7 @@ for k = 1:2:num
     elseif prod(varargin{k}=='store__DT')
         store___T = varargin{k+1};
 
-    elseif prod(varargin{k}=='storeEvenT')
+    elseif prod(varargin{k}=='storeEvnT')
         store___T = varargin{k+1};
     end
 end
@@ -544,8 +544,8 @@ if (store__DT == true || store___T == true) || storeEvnT == true
     end
     if storeEvnT == true
         save('mtotalEvT','mtotalEvT','-mat')
-        m_EvenTmeanStd(:,:,1) = m_EvenTmeanStd(:,:,1)/;
-        m_EvenTmeanStd(:,:,2) = sqrt(m_EvenTmeanStd(:,:,2)/(Nframes-fr_diff));
+        m_EvenTmeanStd(:,:,1) = m_EvenTmeanStd(:,:,1)/n_evento;
+        m_EvenTmeanStd(:,:,2) = sqrt(m_EvenTmeanStd(:,:,2)/n_evento);
         save('m_EvenTmeanStd','m_EvenTmeanStd','-mat')
     end
 
