@@ -1,4 +1,9 @@
 function [eventi_pos, eventi_neg] = cerca_evento_termo_003(rappr_max, rappr_min,switch_resistenza, delta_t, times)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Date: 2023-12-6 Last modification: 2023-12-6
+%Authors: Cristina Zuccali
+%cerca_evento_termo_003(rappr_max, rappr_min,switch_resistenza, delta_t, times)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     eventi_pos = zeros(0,2); %R, delta_T
     eventi_neg = zeros(0,2);
 

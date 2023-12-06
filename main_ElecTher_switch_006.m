@@ -1,6 +1,6 @@
 function main_ElecTher_switch_006(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-11-28
+%Date: 2023-10-12 Last modification: 2023-12-06
 %Authors: Cristina Zuccali, Davide Decastri
 %main_ElecTher_switch(ElectrFilename, ElectrParameters, ThermalFilename, ThermalParameters, coordname, Nframes, frame_start)
 %
@@ -184,9 +184,8 @@ grid on;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %ANALISI
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[max_peaks, min_peaks] = evento_max_temp_002(Th_rs_);
-save('max.mat', 'max_peaks')
-save('min.mat', 'min_peaks')
+[max_peaks, min_peaks] = evento_max_temp_003(Th_rs_);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% T vs A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if plot_TvsA == 1
     figure
@@ -218,8 +217,9 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% R vs T %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if plot_RvsT == 1
-    delta_t = 0.40;
-    [eventi_pos, eventi_neg] = cerca_evento_termo_003(max_peaks, min_peaks, resistance, delta_t, times);
+    delta_t = 0.20;
+    resistance_events = [resistance, El_rs_(:, end-1)];
+    [eventi_pos, eventi_neg] = cerca_evento_termo_004(max_peaks, min_peaks, resistance_events, delta_t);
     %save('switch.mat', 'resistance')
     figure
     sgtitle('R vs T')
