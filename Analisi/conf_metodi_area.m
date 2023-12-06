@@ -108,7 +108,7 @@ hold on
     soglia = append('soglia', num2str(80));
     plot(Th_rs_RGS.(soglia)(:,1), Th_rs_RGS.(soglia)(:,7), 'DisplayName', 'RGS, soglia = 0.8' );
     plot(Th_rs_BiW(:,1), Th_rs_BiW(:,7), 'DisplayName', 'BiW');
-    plot(Th_rs_CWT(:,1), Th_rs_CWT(:,7).^2, 'DisplayName', 'CWT' );
+    plot(Th_rs_CWT(:,1), Th_rs_CWT(:,6).^2, 'DisplayName', 'CWT' );
 
     legend
 hold off

@@ -1,4 +1,4 @@
-function main_ElecTher_switch_004(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start, varargin)
+function main_ElecTher_switch_005(ElectrFilename, ThermalFilename, coordname, Nframes, frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2023-11-28
 %Authors: Cristina Zuccali, Davide Decastri
@@ -16,15 +16,18 @@ function main_ElecTher_switch_004(ElectrFilename, ThermalFilename, coordname, Nf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Inizializzazione
 %PARAMETRI DI DEFAULT
-plot_TvsA = 1;
-trace_peaks = 1;
-couple_comparison = 1;
+plot_TvsA = 0;
+plot_RvsT = 1;
+trace_peaks = 0;
+couple_comparison = 0;
 
 %varagin
 num = length(varargin);
 for k = 1:2:num
     if prod(varargin{k} =='plot_TvsA')
         plot_TvsA = varargin{k+1}; %1 = confronta aree e temperature (sia per max che per min), 0 = non le confronta
+    elseif prod(varargin{k} == 'plot_RvsT')
+        plot_RvsT = varargin{k+1};
     elseif prod(varargin{k} == 'tra_peaks')
         trace_peaks = varargin{k+1};
     elseif prod(varargin{k} == 'comp_coup')
@@ -183,7 +186,7 @@ grid on;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [max_peaks, min_peaks] = evento_max_temp(Th_rs_ );
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tvs A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T vs A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if plot_TvsA == 1
     figure
     sgtitle('T vs A')
@@ -209,6 +212,65 @@ if plot_TvsA == 1
             end
         hold off
     end
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% R vs T %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if plot_RvsT == 1
+    delta_t = 0.20;
+    eventi_positivi = zeros(0,2);
+    eventi_negativi = zeros(0,2);
+    frames_cerca = Th_rs_(:,:);
+
+    for i = 1: length(frames_cerca(:,1))
+        if resistance(i,1) < 0
+            eventi_positivi(end+1, :) = cerca_evento_termo(frames_cerca, times(i,1), delta_t, resistance(i,1));
+
+            if eventi_positivi(end, 2) == 0
+                eventi_positivi(end, :) = [];
+            else
+                frames_cerca(i,:) = [];
+                i = i-1;
+            end
+        end
+
+        if resistance(i,1) > 0
+            eventi_negativi(end+1, :) = cerca_evento_termo(frames_cerca, times(i,1), delta_t, resistance(i,1));
+
+            if eventi_negativi(end, 2) == 0
+                eventi_negativi(end, :) = [];
+            else
+                frames_cerca(i,:) = [];
+                i = i-1;
+            end
+        end    
+    end
+
+    figure
+    sgtitle('R vs T')
+
+    subplot(2,1,1)
+    hold on
+    if isempty(eventi_positivi) == 0   
+        for i = 1 : length(eventi_positivi(:,1))
+            plot(eventi_positivi(i,1), eventi_positivi(i,2), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'blue');
+        end
+    end
+    xlabel('Resistence difference [Ohm]');
+    ylabel('Temperature difference [°C]');
+    title('Positive events');
+
+    subplot(2,1,2)
+    hold on
+    if isempty(eventi_negativi) == 0   
+        for i = 1 : length(eventi_negativi(:,1))
+            plot(eventi_negativi(i,1), eventi_negativi(i,2), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'blue');
+        end
+    end
+    xlabel('Resistence difference [Ohm]');
+    ylabel('Temperature difference [°C]');
+    title('Negative events');
+    
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -47,11 +47,12 @@ num = length(varargin);
 
 %PARAMETRI DI DEFAULT
 smooth = 0;
-method_area = 'RGS';
+method_area = 'BiW';
 soglia_diff = 0.8;
 area = 1;
 dec_centroid = 0;
 video = 1;
+print_allpeaks = 0;
 
 %varagin
 for k = 1:2:num
@@ -72,6 +73,9 @@ for k = 1:2:num
 
     elseif prod(varargin{k}=='ThreshRGS')
         soglia_diff = varargin{k+1};
+
+    elseif prod(varargin{k}=='Allpeakspf')
+        print_allpeaks = varargin{k+1};
     end
 end
 
@@ -272,7 +276,7 @@ for i = 0 : Nframes - fr_diff
     if area == 1  
         if framestates(i+1, 5) ~= 0
             if prod(method_area == 'BiW') | prod(method_area == 'RGS')
-                [area_max, area_min, imsov] = calculate_area_003(imrec, framestates(i+1,:), method_area, soglia_diff);
+                [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
                 Area.(fname) = struct ('Max', area_max, 'Min', area_min);
                 arr_aree(i+1,:) = [area_max(1,1), area_min(1,1)]; 
 
@@ -294,7 +298,7 @@ for i = 0 : Nframes - fr_diff
 
                     max_ampiezze_coeff(j, :) = [massimo(1,1), massimo(1,2), j];                          
                 end
-                
+
                 %trovo il fattore di scala per cui ho le ampiezze massime e
                 %salvo
                 massimo = sortrows(max_ampiezze_coeff, 2, 'descend');
@@ -374,7 +378,7 @@ for i = 0 : Nframes - fr_diff
                         ylabel('[n° pixel]');
                         title('Area event detection');
                         
-                        if prod(method_area == 'BiW') | prod(method_area == 'RGS')
+                        if prod(method_area == 'BiW') | prod(method_area == 'RGS') & print_allpeaks == 1
                             if Area.(fname).Max(1,1) ~= 0
                                 for k = 1 : size(Peaks.(fname).Max)
                                     plot(data_x(Peaks.(fname).Max(k,1)), data_y(Peaks.(fname).Max(k,1)), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'red');

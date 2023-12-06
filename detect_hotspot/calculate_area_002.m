@@ -64,10 +64,6 @@ function [area_max, area_min, imsov] = calculate_area_002(imm, framestates, meth
             elseif prod(method == 'RGS')
                 BW = regional_growth_segmentation_2(framestates(1,1), 1, -imm, thresh);
 
-            elseif prod(method == 'CWT')
-                
-
-
             end
 
             seD = strel('diamond', 1);

@@ -1,4 +1,4 @@
-function [peak_max, peak_min] = evento_max_temp(frames_states)
+function [peak_max, peak_min] = evento_max_temp_002(frames_states)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-12-28 Last modification: 2023-12-28
 %Authors: Cristina Zuccali
@@ -6,8 +6,8 @@ function [peak_max, peak_min] = evento_max_temp(frames_states)
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
 %
-%   peak_max = (position, value, # associated event group) of maximum of max (hot points) of an event
-%   peak_min = (position, value, # associated event group) of minimum of min (cold points) of an event
+%   peak_max = (position, value, # associated event group, index) of maximum of max (hot points) of an event
+%   peak_min = (position, value, # associated event group, index) of minimum of min (cold points) of an event
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %iniziazlizzo variabili
@@ -19,8 +19,8 @@ j = 1;
 while j <= length(frames_states(:,8))
     n_evento = frames_states(j, 8);
     eventi = 0;
-    max_peaks_array = zeros(0, 3); %coord, value, index
-    min_peaks_array = zeros(0, 3); %coord, value, index
+    max_peaks_array = zeros(0, 4); %coord, value, evento, index
+    min_peaks_array = zeros(0, 4); %coord, value, evento, index
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %GET EVENTO
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
