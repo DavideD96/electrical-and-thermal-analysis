@@ -372,7 +372,7 @@ for j = 1:i
         build_path = [path,'\CDT_4sorting_V',num2str(anlR(1,2)),...
             '_sig',num2str(nos),'_deltaT',erase(num2str(deltaT),'.'),'_method-',method,'.fig'];
         %----switching recognition----
-        justSwitches = anlR(anlR(:,end)==1, :);
+        justSwitches = anlR(anlR(:,end-1)==1, :);
         v = countDeltaT(justSwitches, deltaT);
         [N, edg] = histcounts(v, 'BinMethod','integers','Normalization','probability');
         edg = edg + 0.5;
@@ -386,7 +386,7 @@ for j = 1:i
         random_anlR = anlR;
         random_anlR(:,end) = [];
         random_anlR = [random_anlR, random01];
-        random_anlR = random_anlR(random_anlR(:,end)==1, :);
+        random_anlR = random_anlR(random_anlR(:,end-1)==1, :);
         justswitches_rnd = countDeltaT(random_anlR, deltaT);
         [Nrand_, edg_] = histcounts(justswitches_rnd, 'BinMethod','integers','Normalization','probability');
         %centers computation 
@@ -463,16 +463,16 @@ for j = 1:i
         figure;
         subplot(2,1,1);
         title('Not shuffled');
-        plot([anlR(1,1),anlR(end,1)],1, '-');
+        plot([anlR(1,1),anlR(end-1,1)],1, '-');
         hold on;
-        notShuffled = anlR(anlR(:,end)==1,:);
+        notShuffled = anlR(anlR(:,end-1)==1,:);
         gridxy(notShuffled, 'Color','k');
         plot(notShuffled(:,1),1, 'r*');
         hold off;
         
         subplot(2,1,2);
         title('Shuffled');
-        plot([anlR(1,1),anlR(end,1)],1, '-');
+        plot([anlR(1,1),anlR(end-1,1)],1, '-');
         hold on;
         gridxy(random_anlR(:,1), 'Color','k');
         plot(random_anlR(:,1),1, 'r*');

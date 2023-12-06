@@ -43,7 +43,14 @@ function [results, Rows, Columns] = analisi_Nframes012(filename,Nframes, frame_s
 %               ('store___T', true) stores T
 %               ('store__DT', true) store delta T (mdiff)
 %               ('storeEvnT', true) store events only (1 event <-> 1 frame)
-%       
+%
+%       to use a reference frame:
+%               ('rfrcFrame', 0) do not use reference frame
+%               ('rfrcFrame', 1) use the first frame before each detected 
+%                                event as reference frame for the single
+%                                event.
+%               ('rfrcFrame', 2) use the frame indicated by 'Use_Frame' as 
+%                                reference for the entire time serie. 
 %
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
@@ -61,6 +68,9 @@ video = 1;
 store___T = false;
 store__DT = false;
 storeEvnT = false;
+reference = 0;
+Use_Frame = 10;
+ref_before = 1; %go back 1 frame before the start of the event in order to perform difference with a reference frame
 
 %varagin
 for k = 1:2:num
@@ -90,6 +100,12 @@ for k = 1:2:num
 
     elseif prod(varargin{k}=='storeEvnT')
         storeEvnT = varargin{k+1};
+
+    elseif prod(varargin{k}=='rfrcFrame')
+        reference = varargin{k+1};
+
+    elseif prod(varargin{k}=='Use_Frame')
+        Use_Frame = varargin{k+1};
     end
 end
 
@@ -164,6 +180,9 @@ end
 if dec_centroid == 1
     CM = zeros(Nframes-fr_diff+1,2);
 end
+
+%reference frame
+m_ref = zeros(Rows, Columns);
 
 %Salvataggio dei primi dati
 m1 = get_data002(filename, frame_start, coordname);
@@ -336,6 +355,11 @@ for i = 0 : Nframes - fr_diff
                 mtotalEvT(:,:,n_evento) = mdiff;
             end
         end        
+
+        if n_evento > n_evento_old
+            m_ref = get_Data002
+            m_disp = m_memory(:,:,end) - m_ref;
+        end
 
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
