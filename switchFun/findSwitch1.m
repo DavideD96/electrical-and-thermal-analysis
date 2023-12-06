@@ -60,7 +60,7 @@ end
 
 %performed the analysis through the desired method
 if prod(method == 'rel')
-    switchFound = findSwitch_rel(matr,col,sigMatr,ns,true);
+    switchFound = findSwitch_rel2(matr,col,sigMatr,ns,true);
 elseif prod(method == 'adp')
     answer = inputdlg({'Enter the maximum number of clusters to search.'});
     results = find_regimes(matr(:,col), str2num(answer{1}), [],[], true);
@@ -75,7 +75,7 @@ elseif prod(method == 'adp')
     end
     
     for h = 1:results(1).nIntervals
-        datiAnalizzati{h,1} = findSwitch_rel1(matr(((h-1)*200+1):h*200,:), col, cellMeanSigmas{h,2}, ns,false);
+        datiAnalizzati{h,1} = findSwitch_rel2(matr(((h-1)*200+1):h*200,:), col, cellMeanSigmas{h,2}, ns,false);
     end
     
     switchFound = vertcat(datiAnalizzati{:,1});
@@ -94,7 +94,7 @@ elseif prod(method == 'adp')
 elseif prod(method == 'sig')
 
     matMeanSig = IntervalsAnalysis1(matr(:,1),matr(:,col), selectOrNot, folder); 
-    switchFound = findSwitch_rel1(matr,col,matMeanSig,ns,true);
+    switchFound = findSwitch_rel2(matr,col,matMeanSig,ns,true);
     dlmwrite('sigmaLevel.txt',matMeanSig,'delimiter','\t')
       
 elseif prod(method == 'usr')

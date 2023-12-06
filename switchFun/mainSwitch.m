@@ -144,7 +144,7 @@ anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
 
 s.detection = [anlR()];
 
-numberofSwitches = sum(anlR(:,end));
+numberofSwitches = sum((anlR(:,end)~=0));
 
 s.nsw = numberofSwitches;
 
