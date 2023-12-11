@@ -394,7 +394,7 @@ for i = 0 : Nframes - fr_diff
     if area == 1  
         if framestates(i+1, 5) ~= 0
             if prod(method_area == 'BiW') | prod(method_area == 'RGS')
-                [area_max, area_min, imsov] = calculate_area_002(imrec, framestates(i+1,:), method_area, soglia_diff);
+                [area_max, area_min, imsov] = calculate_area_003(imrec, framestates(i+1,:), method_area, soglia_diff);
                 Area.(fname) = struct ('Max', area_max, 'Min', area_min);
                 arr_aree(i+1,:) = [area_max(1,1), area_min(1,1)]; 
 
@@ -443,6 +443,14 @@ for i = 0 : Nframes - fr_diff
         set(gcf, 'Color','white');
     
         T_max_aus = zeros(Rows,1);
+    
+        for k = 1:Rows
+            [T_max_aus(k), ~] = max(abs(imrec(k,:)));
+        end
+
+        [T_max,~] = max(T_max_aus);
+        zMin = -T_max;
+        zMax = T_max;
         
         subplot(1,2,1)
         hold on
@@ -459,13 +467,6 @@ for i = 0 : Nframes - fr_diff
                 imagesc(m_disp); %per ora non ricostruita
                 title('Temperature difference (ref) [°C]');
             else
-                for k = 1:Rows
-                    [T_max_aus(k), ~] = max(abs(imrec(k,:)));
-                end
-
-                [T_max,~] = max(T_max_aus);
-                zMin = -T_max;
-                zMax = T_max;    
                 imagesc(imrec);
                 title('Temperature difference [°C]');
             end
