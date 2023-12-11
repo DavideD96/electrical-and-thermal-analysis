@@ -200,9 +200,6 @@ if plot_TvsA == 1
             xlabel('Temperature difference [°C]');
             ylabel('Area [#pixels]');
             title('Positive events');
-            axis equal
-            ylim([0 Rows]);
-            xlim([0 Columns]);
         hold off
         
         subplot(2,1,2)
@@ -214,9 +211,6 @@ if plot_TvsA == 1
             xlabel('Temperature difference [°C]');
             ylabel('Area [#pixels]');
             title('"Negative events');
-            axis equal
-            ylim([0 Rows]);
-            xlim([0 Columns]);
         hold off
     end
 end
@@ -239,9 +233,6 @@ if plot_RvsT == 1
     xlabel('Resistence difference [Ohm]');
     ylabel('Temperature difference [°C]');
     title('Positive events');
-    axis equal
-    ylim([0 Rows]);
-    xlim([0 Columns]);
     hold off
 
     subplot(1,2,2)
@@ -249,9 +240,6 @@ if plot_RvsT == 1
     if isempty(eventi_neg) == 0
         plot(eventi_neg(:,1), eventi_neg(:,2), 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'blue');
     end
-    axis equal
-    ylim([0 Rows]);
-    xlim([0 Columns]);
     xlabel('Resistence difference [Ohm]');
     ylabel('Temperature difference [°C]');
     title('Negative events');
