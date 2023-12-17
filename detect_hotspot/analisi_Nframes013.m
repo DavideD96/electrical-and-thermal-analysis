@@ -1,6 +1,6 @@
 function [results, Rows, Columns] = analisi_Nframes013(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, method, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-10-12 Last modification: 2023-11-16
+%Date: 2023-10-12 Last modification: 2023-12-12
 %6th edition of analisi_Nframes
 %Author: Cristina Zuccali
 %analisi_Nframes(filename,Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, varargin)
@@ -60,11 +60,12 @@ num = length(varargin);
 
 %PARAMETRI DI DEFAULT
 smooth = 0;
-method_area = 'RGS';
+method_area = 'BiW';
 soglia_diff = 0.8;
 area = 1;
 dec_centroid = 0;
 video = 1;
+
 store___T = false;
 store__DT = false;
 storeEvnT = false;
@@ -386,7 +387,6 @@ for i = 0 : Nframes - fr_diff
         m_DTmeanStd(:,:,1) = m_DTmeanStd(:,:,1) + mdiff;
         m_DTmeanStd(:,:,2) = m_DTmeanStd(:,:,2) + mdiff.^2;
     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Calcolo area senza video
@@ -435,7 +435,7 @@ for i = 0 : Nframes - fr_diff
             end
         end
     end
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -559,9 +559,6 @@ if video == 1
 end
 
 if (store__DT == true || store___T == true) || storeEvnT == true 
-
-
-
     check = exist('termoFiles_mat','dir');
     if check ~= 7
         mkdir termoFiles_mat;
@@ -612,6 +609,11 @@ save('temperature.mat', 'max_temp');
 %area
 if area == 1
     save('area.mat', 'Area');
+end
+
+%potenza
+if power_consideration == 1
+    save('power_results.mat', 'power_results');
 end
 
 %centro di massa con grafico

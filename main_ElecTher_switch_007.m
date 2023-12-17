@@ -16,10 +16,11 @@ function main_ElecTher_switch_007(ElectrFilename, ThermalFilename, coordname, Nf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Inizializzazione
 %PARAMETRI DI DEFAULT
-plot_TvsA = 1;
-plot_RvsT = 1;
+plot_TvsA = 0;
+plot_RvsT = 0;
 trace_peaks = 1;
-couple_comparison = 1;
+couple_comparison = 0;
+power_consideration = 0;
 
 %varagin
 num = length(varargin);
@@ -32,6 +33,8 @@ for k = 1:2:num
         trace_peaks = varargin{k+1};
     elseif prod(varargin{k} == 'comp_coup')
         couple_comparison = varargin{k+1}; %1 = confronta le posizione delle coppie max-min, 0 = non le confronta
+    elseif prod(varargin{k} == 'PowerCons')
+        power_consideration = varargin{k+1}; %1 = confronta le posizione delle coppie max-min, 0 = non le confronta
     end
 end
 
@@ -85,7 +88,7 @@ end
 %El_rs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[Th_rs, Rows, Columns] = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0); %aggiungi 'method', area method, detection method
+[Th_rs, Rows, Columns] = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0, 'PowerCons', power_consideration); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
 %renormalize times
@@ -221,7 +224,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Traccia Picchi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if trace_peaks == 1
-    tracepeaks(max_peaks, min_peaks, Rows, Columns, 1)
+    tracepeaks(max_peaks, min_peaks, Rows, Columns, 0)
 end
 
 %%%%%%%%%%%%%%Comaparison position of couples event%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,6 +236,23 @@ if couple_comparison == 1
 
     %Confronto minimi simili e i loro massimi associati
     associated_points(min_peaks, max_peaks, Rows, Columns, 1)
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%Power consideration%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%utile in particolare per la corrente costante
+if power_consideration == 1
+    potenza = load('power_results.mat');
+    potenza = cell2mat(struct2cell(potenza));
+    figure
+    hold on
+        plot(potenza(:,3), potenza(:,1)./potenza(:,2), 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'red', 'MarkerEdgeColor', 'red');
+        yline(1);
+        %plot(potenza(:,3), potenza(:,2), 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'blue', 'MarkerEdgeColor', 'blue');
+    hold off
+        xlabel('tempo [s]')
+        ylabel('P(diss)/P(ass)')
+        title('Rapporto tra potenza dissipata e assorbita negli eventi coppia')
+        %legend('Potenza dissipata', 'Potenza assorbita')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

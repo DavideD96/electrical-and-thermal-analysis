@@ -74,6 +74,9 @@ for k = 1:2:num
     elseif prod(varargin{k}=='ThreshRGS')
         soglia_diff = varargin{k+1};
 
+    elseif prod(varargin{k}=='PowerCons')
+        power_consideration = varargin{k+1};
+
     elseif prod(varargin{k}=='Allpeakspf')
         print_allpeaks = varargin{k+1};
     end
@@ -123,6 +126,10 @@ framestates = zeros(Nframes-fr_diff+1,6);
 max_temp = zeros(Nframes-fr_diff+1,3); %max_coord, max_value, state_max
 arr_aree = zeros(Nframes-fr_diff+1,2);
 
+%variabili per considerazioni potenza
+if power_consideration == 1
+    power_results = zeros(0,3);
+end
 
 %variabili per video
 if video == 1
@@ -317,6 +324,27 @@ for i = 0 : Nframes - fr_diff
             end
         end
     end
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %Consideranzioni potenza dissipata e assorbita
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    if power_consideration == 1
+        potenza_pos = 0;
+        potenza_neg = 0;
+        if point_state_max == 1 & point_state_min == 1
+            for j = 1 : Columns*Rows
+                if imrec(j) >= soglia_max
+                    potenza_pos = potenza_pos + imrec(j);
+
+                elseif imrec(j) <= soglia_min
+                    potenza_neg = potenza_neg + imrec(j);
+                end
+            end
+            power_results(end+1, 1) = potenza_pos;
+            power_results(end, 2) = -potenza_neg;
+            power_results(end, 3) = framestates(i+1, 6);
+        end   
+    end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
@@ -433,6 +461,11 @@ save('temperature.mat', 'max_temp');
 %area
 if area == 1
     save('area.mat', 'Area');
+end
+
+%area
+if power_consideration == 1
+    save('power_results.mat', 'power_results');
 end
 
 %centro di massa con grafico
