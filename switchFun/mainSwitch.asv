@@ -72,7 +72,7 @@ function s = mainSwitch(nomefile,folder,method,varargin)
 %                       between consecutive switches inside the same burst.
 %               "bNb" - compute the "numBin" analysis inside the bursts,
 %                       using the binlength specified by the input 'bin'.
-%               "cdt" - compute the Barab‡si et al. analysis for the
+%               "cdt" - compute the Barab√†si et al. analysis for the
 %                       correlation between the switches. To simulate the
 %                       stochastic beaviour, the switches are mixed ten times
 %                       and then is taken a mean of the histograms
@@ -147,18 +147,7 @@ s.detection = [anlR()];
 numberofSwitches = sum((anlR(:,end)~=0));
 
 s.nsw = numberofSwitches;
-
-check = exist('switchResults');
-if check ~= 7
-    mkdir switchResults;
-end
-%save the folder path where save data
-cd('switchResults');
-
-
 path = cd;
-
-cd ..
 
 for j = 1:i
     if opt(j) == "ISI"
@@ -478,25 +467,21 @@ for j = 1:i
         figure;
         subplot(2,1,1);
         title('Not shuffled');
-        anlR01 = anlR(:,end-1);
+        anlR01 = anlR(:,end-1)
         anlR01(anlR01~=0) = 1;
-        %plot([anlR(1,1),anlR(end,1)],1, '-');
-        xlim([anlR(1,1),anlR(end,1)]);
+        plot([anlR(1,1),anlR01(end-1,1)],1, '-');
         hold on;
-        notShuffled = anlR(anlR01(:,end)==1,:);
-        gridxy(notShuffled(:,1), 'Color','k');
-        %xline(notShuffled(:,1), 'Color','k');
-        %plot(notShuffled(:,1),1, 'r*');
+        notShuffled = anlR(anlR01(:,end-1)==1,:);
+        gridxy(notShuffled, 'Color','k');
+        plot(notShuffled(:,1),1, 'r*');
         hold off;
         
         subplot(2,1,2);
         title('Shuffled');
-        %plot([anlR(1,1),anlR(end,1)],1, '-');
-        xlim([anlR(1,1),anlR(end,1)]);
+        plot([anlR(1,1),anlR01(end,1)],1, '-');
         hold on;
         gridxy(random_anlR(:,1), 'Color','k');
-        %xline(random_anlR(:,1), 'Color','k');
-        %plot(random_anlR(:,1),1, 'r*');
+        plot(random_anlR(:,1),1, 'r*');
         hold off;
         %----------------------
     end
