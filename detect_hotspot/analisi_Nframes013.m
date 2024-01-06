@@ -65,6 +65,7 @@ soglia_diff = 0.8;
 area = 1;
 dec_centroid = 0;
 video = 1;
+power_consideration = 0;
 
 store___T = false;
 store__DT = false;
