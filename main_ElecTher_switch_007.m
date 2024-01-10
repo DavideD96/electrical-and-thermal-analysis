@@ -88,7 +88,7 @@ end
 %El_rs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[Th_rs, Rows, Columns] = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0, 'PowerCons', power_consideration); %aggiungi 'method', area method, detection method
+[Th_rs, Rows, Columns] = analisi_Nframes013(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0, 'PowerCons', power_consideration); %aggiungi 'method', area method, detection method
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
 %renormalize times
@@ -183,6 +183,10 @@ for i = 1: length(max_peaks(:,1))
 end
 
 resistance = El_rs_(:,end);
+resistance_events = [resistance, El_rs_(:, end-1)];
+
+save("resistance_switch.mat", "resistance_events")
+save("thermal_events.mat", "Th_rs_")
 T_max = Th_rs_(:,4);
 T_min = Th_rs_(:,5);
 area_max = Th_rs_(:,6);

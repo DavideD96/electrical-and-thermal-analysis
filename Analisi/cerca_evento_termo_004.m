@@ -11,8 +11,8 @@ function [eventi_pos, eventi_neg] = cerca_evento_termo_004(rappr_max, rappr_min,
 %   'delta_t' = time tollerance for resistive switching and thermal
 %                   measures
 %
-%   'eventi_pos' = [delta_Res, delta_Temp] (delta_Temp > 0)
-%   'eventi_neg' = [delta_Res, delta_Temp] (delta_Temp < 0)
+%   'eventi_pos' = [delta_Res, index_termo] (delta_Temp > 0)
+%   'eventi_neg' = [delta_Res, index_termo] (delta_Temp < 0)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     eventi_pos = zeros(0,2); %R, delta_T
     eventi_neg = zeros(0,2);

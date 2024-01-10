@@ -575,7 +575,7 @@ if (store__DT == true || store___T == true) || storeEvnT == true
         save('m_TmeanStd.mat','m_TmeanStd','-mat')
     end
     if store__DT == true
-        mtotalDT = delete_zeros(mtotalDT);
+        %mtotalDT = delete_zeros(mtotalDT);
         save('mtotalDT.mat','mtotalDT','-mat')
         m_DTmeanStd(:,:,1) = m_DTmeanStd(:,:,1)/(Nframes-fr_diff);
         m_DTmeanStd(:,:,2) = sqrt(m_DTmeanStd(:,:,2)/(Nframes-fr_diff));
