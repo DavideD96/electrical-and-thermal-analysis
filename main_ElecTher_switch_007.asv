@@ -262,7 +262,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% pca %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd thermoFiles_mat
-data = load('mtotalDT.mat',-mat');
+data = load('mtotalD,'-mat');
 data = cell2mat(struct2cell(data));
 
 if start_end == 0
@@ -293,7 +293,5 @@ clear data
 %di default pca centra i dati, per cui i gradi di libertà massimi sono
 %n-1, non n. Puoi anche impostare 'Centered',false
 [coeff,scores,latent,tsquared,explained,mu1] = pca(data_);
-scores(:,1:7)
-
 cd ..
 end

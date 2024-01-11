@@ -1,4 +1,4 @@
-function coeff = pca_thermal002(filename,start_end)
+function coeff = pca_thermal003(filename,fileres,start_end)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: -
@@ -13,6 +13,9 @@ function coeff = pca_thermal002(filename,start_end)
 
 data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
+
+res = load(fileres);
+res = cell2mat(struct2cell(res));
 
 if start_end == 0
     nframes = size(data,3);
@@ -186,6 +189,31 @@ PC4 = figure;
 imagesc(pc4);
 title('principal component 4')
 colorbar
+
+res_ = zeros(nframes*3,4);
+
+for i=0:nframes
+    scores_(2*i+1,:) = scores(i+1,:);
+    scores_(2*i+2,:) = scores(i+1,:);
+end
+
+res_ = zeros(nframes*3,4);
+
+for i=0:nframes
+    res_(3*i+1,:) = res(i+1,:);
+    res_(3*i+2,:) = res(i+1,:);
+    res_(3*i+3,:) = res(i+1,:);
+end
+
+data = table(res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6));
+data = renamevars(data,'times','times [s]');
+
+data.Properties.VariableUnits = {'[Ohm]','adim','adim','adim','adim','adim','adim'};
+
+degreeSymbol = char(176);
+newYlabels = ["resistance [Ohm]","PC1","PC2","PC3","PC4","PC5","PC6"];
+plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
+grid on;
 
 savefig(PC2, append(filename,'_PC2_','.fig'));
 savefig(PC4, append(filename,'_PC4_','.fig'));

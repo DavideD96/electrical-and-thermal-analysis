@@ -14,7 +14,7 @@ function coeff = pca_thermal002(filename,start_end)
 data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
 
-if start_end == 0;
+if start_end == 0
     nframes = size(data,3);
     starting_frame = 1;
 else
@@ -182,7 +182,13 @@ imagesc(pc2);
 title('principal component 2')
 colorbar
 
+PC4 = figure;
+imagesc(pc4);
+title('principal component 4')
+colorbar
+
 savefig(PC2, append(filename,'_PC2_','.fig'));
+savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
 end
