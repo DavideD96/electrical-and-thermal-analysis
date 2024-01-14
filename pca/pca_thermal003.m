@@ -16,6 +16,7 @@ data = cell2mat(struct2cell(data));
 
 res = load(fileres);
 res = cell2mat(struct2cell(res));
+%res = res(delay:end,:);
 
 if start_end == 0
     nframes = size(data,3);
@@ -29,9 +30,11 @@ end
 data_ = zeros(nframes,rows*col);
 
 %data_: nxp matrix. n sono le osservazioni (frames), p i pixel.
-for i = starting_frame:starting_frame+nframes
-    data_(i,:) = reshape(data(:,:,i),[1,rows*col]); 
+for i = 0:nframes-1
+    data_(i+1,:) = reshape(data(:,:,starting_frame+i),[1,rows*col]); 
 end
+% nframes
+% size(data_)
 
 %per ricostruire data:
 %data = reshape(data_',[rows,col,nframes]); %da testare
@@ -190,29 +193,35 @@ imagesc(pc4);
 title('principal component 4')
 colorbar
 
-scores_ = zeros(nframes*2,size(scores,2));
+%nframes
+check = rem(nframes,3);
 
-for i=0:nframes
-    scores_(2*i+1,:) = scores(i+1,:);
-    scores_(2*i+2,:) = scores(i+1,:);
+if check == 1
+    nframes = nframes-1;
+    scores = scores(1:end-1,:);
+elseif check == 2
+    nframes = nframes-2;
+    scores = scores(1:end-2,:);
 end
 
+res = res(1:(nframes)/1.5,:);
+period = 1/60;
+times = linspace(0,period*nframes*2,nframes*2);
+times = times';
 
-res_ = zeros(nframes*2,4);
+scores_ = repelem(scores,2,1);
+res_ = repelem(res,3,1);
 
-for i=0:nframes/3
-    res_(3*i+1,:) = res(i+1,:);
-    res_(3*i+2,:) = res(i+1,:);
-    res_(3*i+3,:) = res(i+1,:);
-end
+size(res_)
+size(scores_)
 
-data = table(res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6));
+data = table(times,res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6));
 data = renamevars(data,'times','times [s]');
 
-data.Properties.VariableUnits = {'[Ohm]','adim','adim','adim','adim','adim','adim'};
+data.Properties.VariableUnits = {'[s]','[Ohm]','adim','adim','adim','adim','adim','adim'};
 
 degreeSymbol = char(176);
-newYlabels = ["resistance [Ohm]","PC1","PC2","PC3","PC4","PC5","PC6"];
+newYlabels = ["time [s]","resistance [Ohm]","PC1","PC2","PC3","PC4","PC5","PC6"];
 plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
 grid on;
 
