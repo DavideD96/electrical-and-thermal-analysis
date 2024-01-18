@@ -1,4 +1,4 @@
-function rename(in)
+function rename001(in)
 
 %rename CSV files!
 %example:
