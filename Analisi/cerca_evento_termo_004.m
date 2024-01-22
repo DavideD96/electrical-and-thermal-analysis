@@ -37,7 +37,7 @@ function [eventi_pos, eventi_neg] = cerca_evento_termo_004(rappr_max, rappr_min,
 
                 elseif n_frame_ante > 0 & rappr_max(n_frame_ante, 2) ~= 0
                     eventi_pos(end+1, 1) = switch_resistenza(i,1);
-                    eventi_pos(end, 2) = rappr_max(n_frame_post, 2);
+                    eventi_pos(end, 2) = rappr_max(n_frame_ante, 2);
                     eventi_pos(end, 3) = rappr_max(n_frame_ante, 3);
                     rappr_max(n_frame_ante, :) = 0;
                     break
@@ -62,7 +62,7 @@ function [eventi_pos, eventi_neg] = cerca_evento_termo_004(rappr_max, rappr_min,
 
                 elseif n_frame_ante > 0 & rappr_min(n_frame_ante, 2) ~= 0 
                     eventi_neg(end+1, 1) = switch_resistenza(i,1);
-                    eventi_neg(end, 2) = rappr_min(n_frame_post, 2);
+                    eventi_neg(end, 2) = rappr_min(n_frame_ante, 2);
                     eventi_neg(end, 3) = rappr_min(n_frame_ante, 3);
                     rappr_min(n_frame_ante, :) = 0;
                     break

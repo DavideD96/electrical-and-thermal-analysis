@@ -1,4 +1,4 @@
-function [peak_max, peak_min] = evento_max_temp_003(frames_states)
+function [peak_max, peak_min] = evento_max_temp_003(frames_states, frames_states_single)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-28 Last modification: 2023-12-6
 %Authors: Cristina Zuccali
@@ -29,11 +29,18 @@ while j <= length(frames_states(:,8))
             max_peaks_array(end+1, 1) = frames_states(i, 2);
             max_peaks_array(end, 2) = frames_states(i, 4);
             max_peaks_array(end, 3) = frames_states(i, 8);
-            max_peaks_array(end, 4) = i;
+
             min_peaks_array(end+1, 1) = frames_states(i, 3);
             min_peaks_array(end, 2) = frames_states(i, 5);
             min_peaks_array(end, 3) = frames_states(i, 8);
-            min_peaks_array(end, 4) = i;
+
+         %per l'indice
+            for k = 1 : length(frames_states_single(:,1))
+                if (frames_states_single(k, 8) == n_evento & n_evento ~= 0)
+                    max_peaks_array(end, 4) = k;
+                    min_peaks_array(end, 4) = k;
+                end
+            end   
             eventi = eventi + 1;
         end
     end
