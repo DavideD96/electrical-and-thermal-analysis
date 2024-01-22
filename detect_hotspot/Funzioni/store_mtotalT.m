@@ -19,9 +19,8 @@ function [mtotalT] = store_mtotalT(filename, fr_end, coordname)
 
     mtotalT(:,:,1) = m;
     
-    for i = 2 : fr_end    
+    for i = 2 : fr_end
         m = get_data002(filename, i, coordname);
-        i
         mtotalT(:,:,i) = m;
     end
 

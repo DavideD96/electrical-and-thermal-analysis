@@ -16,14 +16,14 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
     times = zeros(1, n_delta_frames);
 
     mtotalDT(:,:,1) = mdiff;
-    times(1,1) = (fr_diff+1)/30; %campionamento a 30Hz
+    times(1,1) = (fr_diff)/30; %campionamento a 30Hz
 
     %altri
     for i = 2 : n_delta_frames   
         mdiff = mtotalT(:,:, fr_diff + i) - mtotalT(:,:, i);
 
         mtotalDT(:,:,i) = mdiff;
-        times(1,i) = (fr_diff + i) / 30; % campionamento a 30Hz
+        times(1,i) = (fr_diff + i-1) / 30; % campionamento a 30Hz
     end
 
     %salvo matrice

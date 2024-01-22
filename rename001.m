@@ -32,7 +32,7 @@ for id = 1:length(files)
     format = append('%',num2str(decimal),'d.CSV');
     new_number = in+number-1;
 
-    movefile(files(id).name, append('_',f,sprintf(format, new_number)));
+    movefile(files(id).name, append(f,sprintf(format, new_number)));
 end
 
 files = dir('*.CSV');

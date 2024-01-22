@@ -22,18 +22,16 @@ function comparison_couple_events( max_peaks, min_peaks, Rows, Columns, grid_dra
             x_max = data_x(max_peaks_couple(:,1));
             y_max = data_y(max_peaks_couple(:,1));
             z_max = max_peaks_couple(:,3);
+            scatter3(x_max,y_max,z_max, 20, z_max, 'o', 'filled', 'MarkerEdgeColor', 'black')
         end
 
         if isempty(max_peaks_couple) == 0
             x_min = data_x(min_peaks_couple(:,1));
             y_min = data_y(min_peaks_couple(:,1));
             z_min = min_peaks_couple(:,3);
-        end
-        
-        scatter3(x_max,y_max,z_max, 20, z_max, 'o', 'filled', 'MarkerEdgeColor', 'black')
-        scatter3(x_min,y_min,z_min,20,z_min, 'Pentagram', 'filled', 'MarkerEdgeColor', 'black')
-        
-        if size(z_min) ~= 1
+            scatter3(x_min,y_min,z_min,20,z_min, 'Pentagram', 'filled', 'MarkerEdgeColor', 'black')
+
+            if size(z_min) ~= 1
             h_max = surf([x_max(:) x_max(:)],[y_max(:) y_max(:)],[z_max(:) z_max(:)]);
             set(h_max,'facecolor','none','edgecolor','interp');
             set(h_max,'linewidth',1)
@@ -42,7 +40,9 @@ function comparison_couple_events( max_peaks, min_peaks, Rows, Columns, grid_dra
             h_min = surf([x_min(:) x_min(:)],[y_min(:) y_min(:)],[z_min(:) z_min(:)]);
             set(h_min,'facecolor','none','edgecolor','interp');
             set(h_min,'linewidth',1)
+            end
         end
+        
 
         % text(x_max, y_max, num2str(max_peaks_couple(:, 3)))
         % text(x_min, y_min, num2str(min_peaks_couple(:, 3)))
@@ -57,6 +57,7 @@ function comparison_couple_events( max_peaks, min_peaks, Rows, Columns, grid_dra
     end
     
     %aggiusto grafico
+    n_eventi
         clim([0 n_eventi])
         colorbar
         view(2)

@@ -1,5 +1,5 @@
 function associated_points(peaks_1,peaks_2, Rows, Columns, grid_draw)
-%peaks1: punti di riferimento
+    %peaks1: punti di riferimento
     max_peaks_couple = zeros(0, 4);
     min_peaks_couple = zeros(0, 4);
     [data_x, data_y] = meshgrid(1:Columns, 1:Rows);

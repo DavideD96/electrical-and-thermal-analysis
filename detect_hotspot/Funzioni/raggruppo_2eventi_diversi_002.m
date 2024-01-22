@@ -1,6 +1,6 @@
 function [state] = raggruppo_2eventi_diversi_002(frame_1, frame_2, Rows, Columns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2024-01-16 Last modification: 2023-11-02
+%Date: 2024-01-16 Last modification: 2024-01-17
 %Author: Cristina Zuccali
 %raggruppo_eventi(peak, type, frame_start)
 %
@@ -80,6 +80,7 @@ function [state] = raggruppo_2eventi_diversi_002(frame_1, frame_2, Rows, Columns
                 coord_primi = [ x_1, y_1; (x_1 - 1) (y_1 - 1); (x_1) (y_1 - 1); (x_1 + 1) (y_1 - 1); (x_1 - 1) (y_1); (x_1 + 1) (y_1); (x_1 - 1) (y_1 + 1); (x_1) (y_1 + 1); (x_1 + 1) (y_1+1)];
                 
                 stato_singolo = 0;
+                j=1;
                 while j <= length(eventi_2(:,1)) & stato_singolo == 0
                     %Coordinate picco_2
                     y_2 = data_y(eventi_2(j,1));

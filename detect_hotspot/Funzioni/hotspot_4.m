@@ -1,4 +1,4 @@
-function [max_hotspot, min_hotspot] = hotspot_3 (mdiff, soglia_max, soglia_min, varargin)
+function [max_hotspot, min_hotspot] = hotspot_4 (mdiff, soglia_max, soglia_min, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-11 Last modification: 2023-11-02
 %Author: Cristina Zuccali
