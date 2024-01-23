@@ -5,7 +5,7 @@ function tracepeaks(max_peaks, min_peaks, Rows, Columns, grid_draw)
     min_peaks_clean = min_peaks;
 
     while i <= length(max_peaks_clean(:,1))
-        if max_peaks_clean(i,1) ==0 & max_peaks_clean(i,2)==0
+        if max_peaks_clean(i,1) == 0 & max_peaks_clean(i,2) == 0
             max_peaks_clean(i,:) = [];
             i = i-1;
         end

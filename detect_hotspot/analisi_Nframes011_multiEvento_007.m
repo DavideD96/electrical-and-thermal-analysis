@@ -1,9 +1,9 @@
-function [results] = analisi_Nframes011_multiEvento_008_multi_elettrodo(frame_start, varargin)
+function [results, Eventi] = analisi_Nframes011_multiEvento_007(frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-10-12 Last modification: 2024-01-15
 %6th edition of analisi_Nframes
 %Author: Cristina Zuccali
-%analisi_Nframes011_multiEvento_008_multi_elettrodo(frame_start, varargin)
+%analisi_Nframes011_multiEvento_004(mtotalDT, soglia_max, soglia_min, varargin)
 %
 % Ricerca dei frames evento
 % Ricerca degli eventi nei frames con evento
@@ -29,6 +29,8 @@ function [results] = analisi_Nframes011_multiEvento_008_multi_elettrodo(frame_st
 %
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
+%
+% salva Eventi_Termo con tutti gli eventi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 num = length(varargin);
@@ -36,7 +38,8 @@ num = length(varargin);
 %PARAMETRI DI DEFAULT
 smooth = 0;
 dec_centroid = 0;
-video = 1;
+video = 0;
+save_results = 1;
 
 %varagin
 for k = 1:2:num
@@ -75,21 +78,6 @@ ThermalParameters_ = load('ThermalParameters.mat');
 ThermalParameters = ThermalParameters_.ThermalParameters;
 cd ..
 
-elettrodi1 = load("coordinate_elettrodi1.mat");
-elettrodi1 = cell2mat(struct2cell(elettrodi1));
-
-elettrodi2 = load("coordinate_elettrodi2.mat");
-elettrodi2 = cell2mat(struct2cell(elettrodi2));
-
-elettrodi3 = load("coordinate_elettrodi3.mat");
-elettrodi3 = cell2mat(struct2cell(elettrodi3));
-
-elettrodi4 = load("coordinate_elettrodi4.mat");
-elettrodi4 = cell2mat(struct2cell(elettrodi4));
-
-elettrodi_film = load("coordinate_elettrodi_film.mat");
-elettrodi_film = cell2mat(struct2cell(elettrodi_film));
-
 %global
 fr_diff = ThermalParameters.fr_diff;
 
@@ -108,7 +96,7 @@ level =1;
 
 %ARRAY PER SALVARE I DATI
 %(coord, value)
-Nframes = length(mtotalDT(1,1,:)) - frame_start + 1;
+Nframes = length(mtotalDT(1,1,:)) - frame_start;
 framestates = zeros(Nframes,6);
 
 %VARIABILI VIDEO
@@ -228,27 +216,18 @@ for i = 0 : Nframes - 1
     end
     
     %salvataggio dati in struct
-    Eventi.(fname) = struct('massimi', {max_evento}, 'minimi', {min_evento}, 'area_max', area_massimi(i+1,1), 'area_min', area_minimi(i+1,1), 'num_evento', 0);
+    Eventi.(fname) = struct('tempo', times(1, frame_start + i),'massimi', {max_evento}, 'minimi', {min_evento}, 'area_max', area_massimi(i+1,1), 'area_min', area_minimi(i+1,1), 'num_evento', 0);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     if video == 1
         set(gcf, 'Color','white');
-        [zmax, zmin] = bounds(imrec, "all"); %metto imrec o mdiff per i limiti??????
+        [zmin, zmax] = bounds(imrec, "all"); %metto imrec o mdiff per i limiti??????
         Tmax = max(zmax, abs(zmin));
         
         subplot(1,2,1)
         hold on
             imagesc(imrec);
-            plot(elettrodi_film(:,1), elettrodi_film(:,2), "-", "LineWidth", 4, "Color", "black")
-
-            fill(elettrodi1(:,1), elettrodi1(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi2(:,1), elettrodi2(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi3(:,1), elettrodi3(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi4(:,1), elettrodi4(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            % plot(elettrodi4(:,1), elettrodi4(:,2), "-o", "LineWidth", 4, "Color", "black", "MarkerFaceColor", "white")
-            
-
             set(subplot(1,2,1), 'YDir', 'normal')
             clim(subplot(1,2,1), [-Tmax Tmax]);
             colormap(subplot(1,2,1), cm);
@@ -355,7 +334,7 @@ end
         n_evento = 1;
     end
 
-    for i=2:Nframes-2
+    for i=1:Nframes-1
         fname = ['frame', num2str(frame_start+ i + fr_diff)];
         if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
         eventi_tutti = [Eventi.(fname).massimi; Eventi.(fname).minimi];
@@ -384,12 +363,13 @@ end
         if isempty(eventi_tutti) == 0
             if state == 1
                 Eventi.(fname).num_evento = n_evento;
-                framestates(i+1,5) = Eventi.(fname_prec).num_evento;
+                framestates(i+1,5) = Eventi.(fname).num_evento;
             
             elseif state == 0
                 n_evento = n_evento + 1;
                 framestates(i+1,5) = n_evento;
                 Eventi.(fname).num_evento = n_evento;
+                 framestates(i+1,5) = Eventi.(fname).num_evento;
             end
         else
             framestates(i+1,5) = 0;
@@ -433,14 +413,17 @@ end
             saveas( gcf , CM_name);
         hold off
     end
-
+    
+    %salva dati
+    save('frames.mat', 'framestates');
+   
     results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4),area_massimi(:,1),area_minimi(:,1),framestates(:,5)];
     
+
     save("Eventi_Termo_principali.mat", 'results');
 
     %salva struttura
     save("Eventi_Termo.mat", "Eventi")
-   
 end
 
 
