@@ -1,5 +1,6 @@
-function [results, Eventi] = analisi_Nframes011_multiEvento_007(frame_start, varargin)
+function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%prova: eseguo primi vicini sull'immagine originale e non ricostruita
 %Date: 2023-10-12 Last modification: 2024-01-15
 %6th edition of analisi_Nframes
 %Author: Cristina Zuccali
@@ -167,7 +168,7 @@ for i = 0 : Nframes - 1
         framestates(i+1, 2) = max_hotspot(1,2);
         
         %primi vicini
-        point_state_max = primi_vicini(max_hotspot(1,:), 1, imrec);
+        point_state_max = primi_vicini(max_hotspot(1,:), 1, mdiff);
 
     else   
         framestates(i+1, 1) = 0;
@@ -184,7 +185,7 @@ for i = 0 : Nframes - 1
         framestates(i+1, 4) = min_hotspot(1,2);
         
         %primi vicini
-        point_state_min = primi_vicini(min_hotspot(1,:), 0,  imrec);
+        point_state_min = primi_vicini(min_hotspot(1,:), 0,  mdiff);
        
     else
         framestates(i+1, 3) = 0;
@@ -204,7 +205,7 @@ for i = 0 : Nframes - 1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002(max_hotspot, min_hotspot, point_state_max, point_state_min, imrec, Rows, Columns);
+    [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
 
     %calcolo area
     for k = 1 : length(area_max(:,1))
@@ -421,7 +422,7 @@ end
     
 
     save("Eventi_Termo_principali.mat", 'results');
-     save("results.mat", 'results');
+    save("results.mat", 'results');
 
     %salva struttura
     save("Eventi_Termo.mat", "Eventi")

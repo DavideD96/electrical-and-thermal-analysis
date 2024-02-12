@@ -1,4 +1,4 @@
-function [peak_max, peak_min, Eventi_supp] = evento_max_temp_007(frames_states, frames_states_single, frame_struct, frame_start, fr_diff)
+function [peak_max, peak_min, Eventi_supp, matriceEventi] = evento_max_temp_007_matriceEventi(frames_states, frames_states_single, frame_struct, frame_start, fr_diff)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-28 Last modification: 2023-12-6
 %Authors: Cristina Zuccali
@@ -8,12 +8,14 @@ function [peak_max, peak_min, Eventi_supp] = evento_max_temp_007(frames_states, 
 %
 %   peak_max = (position, value, # associated event group, i, i_doppio) of maximum of max (hot points) of an event
 %   peak_min = (position, value, # associated event group, i, i_doppio) of minimum of min (cold points) of an event
+%   matrice eventi has [time, state(1/0), delta_T principale, gruppoEvento]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %iniziazlizzo variabili
 frames_states_supp = frames_states;
 peak_max = zeros(length(frames_states_supp(:,1)), 5);
 peak_min = zeros(length(frames_states_supp(:,1)), 5);
+matriceEventi = zeros(length(frames_states_supp(:,1)), 3);
 
 for i = 0 : length(fieldnames(frame_struct)) - 1
     fname = append("frame", num2str(frame_start + fr_diff +  i));
@@ -95,6 +97,13 @@ while j <= length(frames_states_supp(:,8))
             peak_min(max_peaks_array(1,5), 3) = frames_states_single(max_peaks_array(1,4), 8);
             peak_min(max_peaks_array(1,5), 5) = max_peaks_array(1, 5);
             peak_min(max_peaks_array(1,5), 4) = max_peaks_array(1, 4);
+
+            %riempio con i massimi
+            matriceEventi(max_peaks_array(1,5), 1) = frames_states_single(max_peaks_array(1,4), 1);
+            matriceEventi(max_peaks_array(1,5), 2) = 1;
+            matriceEventi(max_peaks_array(1,5), 3) = frames_states_single(max_peaks_array(1,4), 4);
+            matriceEventi(max_peaks_array(1,5), 4) = frames_states_single(max_peaks_array(1,4), 8);
+
         else
             peak_min(min_peaks_array(1,5),:) = min_peaks_array(1, :);
 
@@ -103,6 +112,12 @@ while j <= length(frames_states_supp(:,8))
             peak_max(min_peaks_array(1,5), 3) = frames_states_single(min_peaks_array(1,4), 8);
             peak_max(min_peaks_array(1,5), 5) = min_peaks_array(1, 5);
             peak_max(min_peaks_array(1,5), 4) = min_peaks_array(1, 4);
+
+            %riempio con i minimi
+            matriceEventi(min_peaks_array(1,5), 1) = frames_states_single(min_peaks_array(1,4), 1);
+            matriceEventi(min_peaks_array(1,5), 2) = 1;
+            matriceEventi(min_peaks_array(1,5), 3) = frames_states_single(min_peaks_array(1,4), 5);
+            matriceEventi(min_peaks_array(1,5), 4) = frames_states_single(min_peaks_array(1,4), 8);
         end
 
         fname = append("frame", num2str(frame_start + fr_diff +  max_peaks_array(1,4) - 1));
@@ -112,6 +127,9 @@ while j <= length(frames_states_supp(:,8))
         Eventi_supp.(fname).area_max  = frame_struct.(fname).area_max;
         Eventi_supp.(fname).area_min = frame_struct.(fname).area_min;
         Eventi_supp.(fname).num_evento  = frame_struct.(fname).num_evento;
+
+        %matrice eventi
+        
         
 
     else
