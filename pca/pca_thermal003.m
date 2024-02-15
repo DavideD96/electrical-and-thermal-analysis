@@ -1,4 +1,4 @@
-function pca_thermal003(filename,fileres,start_end, varargin)
+function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: -
@@ -395,7 +395,7 @@ end
 % size(res_)
 % size(scores_)
 
-%plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
+plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
 
 grid on;
 
@@ -405,7 +405,7 @@ savefig(PC2, append(filename,'_PC2_','.fig'));
 savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
-savefig('plt', append(filename,'_stackedPC_','.fig'));
+%savefig('plt', append(filename,'_stackedPC_','.fig'));
 
 %scores ha dimensioni: colonne -> componenti, di righe -> frames
 
@@ -425,4 +425,6 @@ if clustering == true
     figure
     silhouette(scores(:,1:N_significant_PC),cluster_id)
 end
+
+
 end
