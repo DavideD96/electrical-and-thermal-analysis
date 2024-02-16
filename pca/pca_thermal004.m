@@ -14,6 +14,9 @@ function pca_thermal003(filename,fileres,start_end, varargin)
 clustering = false;
 N_significant_PC = 5;
 use_electr = false;
+smooth = 0;
+quadretto = false;
+wname = 'db4';
 
 num = size(varargin,2);
 
@@ -24,11 +27,21 @@ for k = 1:2:num
         N_significant_PC = varargin{k+1};
     elseif prod(varargin{k}=='add_electric_dat')
         use_electr = varargin{k+1};
+    elseif prod(varargin{k}=='smoothing_before')
+        smooth = varargin{k+1};
+    elseif prod(varargin{k}=='remove_0contours')
+        quadretto = varargin{k+1};
     end
 end
 
 data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
+
+if quadretto == true
+    %eliminate zeros
+    data = data(6:end-5,6:end-5,:);
+    %%%%%%%%%%%%%%%%
+end
 
 if use_electr == true
     res = load(fileres);
@@ -48,14 +61,23 @@ end
 data_ = zeros(nframes,rows*col);
 
 %data_: nxp matrix. n sono le osservazioni (frames), p i pixel.
-for i = 0:nframes-1
-    data_(i+1,:) = reshape(data(:,:,starting_frame+i),[1,rows*col]); 
+for i = 0:nframes-1        
+    if smooth ~= 0
+        [C, S] = wavedec2(data(:,:,starting_frame+i), smooth, wname);
+        %ricostruzione immagine
+        imrec = wrcoef2("a",C,S,wname,smooth);
+        %data(:,:,starting_frame+i) = wdenoise(data(:,:,starting_frame+i),smooth); %smooth = level
+        data_(i+1,:) = reshape(imrec,[1,rows*col]); 
+    else
+        data_(i+1,:) = reshape(data(:,:,starting_frame+i),[1,rows*col]); 
+    end
 end
 % nframes
 % size(data_)
 
 %per ricostruire data:
 %data = reshape(data_',[rows,col,nframes]); %da testare
+
 
 clear data
 
@@ -86,7 +108,7 @@ plot(linspace(1,50,50), pcaCSignificance);
 xlabel('n° of pca components');
 ylabel('explained variance %');
 grid on;
-set(gca, 'XTick', 1:50)
+set(gca, 'XTick', 0:5:50)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % %plot eigenvalues of covariance matrix
@@ -98,7 +120,7 @@ set(gca, 'XTick', 1:50)
 
 PC = figure;
 
-subplot(5,4,1);
+subplot(3,4,1);
 hold on;
 %first principal component
 pc1 = reshape(coeff(:,1),[rows,col]);
@@ -109,7 +131,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,2);
+subplot(3,4,2);
 hold on;
 title('pc2');
 %second principal component
@@ -120,7 +142,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,3);
+subplot(3,4,3);
 hold on;
 %third principal component
 pc3 = reshape(coeff(:,3),[rows,col]);
@@ -131,7 +153,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,4);
+subplot(3,4,4);
 hold on;
 %fourth principal component
 pc4 = reshape(coeff(:,4),[rows,col]);
@@ -142,7 +164,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,5);
+subplot(3,4,5);
 hold on;
 %fifth principal component
 pc5 = reshape(coeff(:,5),[rows,col]);
@@ -153,7 +175,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,6);
+subplot(3,4,6);
 hold on;
 %6th principal component
 pc6 = reshape(coeff(:,6),[rows,col]);
@@ -164,7 +186,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,7);
+subplot(3,4,7);
 hold on;
 %7th principal component
 pc7 = reshape(coeff(:,7),[rows,col]);
@@ -175,7 +197,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,8);
+subplot(3,4,8);
 hold on;
 %8th principal component
 pc8 = reshape(coeff(:,8),[rows,col]);
@@ -186,7 +208,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,9);
+subplot(3,4,9);
 hold on;
 %9th principal component
 pc9 = reshape(coeff(:,9),[rows,col]);
@@ -197,7 +219,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,10);
+subplot(3,4,10);
 hold on;
 %10th principal component
 pc10 = reshape(coeff(:,10),[rows,col]);
@@ -208,7 +230,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,11);
+subplot(3,4,11);
 hold on;
 %11th principal component
 pc11 = reshape(coeff(:,11),[rows,col]);
@@ -219,7 +241,8 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,12);
+%subplot(5,4,12);
+subplot(3,4,12);
 hold on;
 %12th principal component
 pc12 = reshape(coeff(:,12),[rows,col]);
@@ -230,93 +253,93 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,13);
-hold on;
-%13th principal component
-pc13 = reshape(coeff(:,13),[rows,col]);
-title('pc13');
-imagesc(pc13);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,14);
-hold on;
-%14th principal component
-pc14 = reshape(coeff(:,14),[rows,col]);
-title('pc14');
-imagesc(pc14);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,15);
-hold on;
+% subplot(5,4,13);
+% hold on;
+% %13th principal component
+% pc13 = reshape(coeff(:,13),[rows,col]);
+% title('pc13');
+% imagesc(pc13);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,14);
+% hold on;
+% %14th principal component
+% pc14 = reshape(coeff(:,14),[rows,col]);
+% title('pc14');
+% imagesc(pc14);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,15);
+% hold on;
 %15th principal component
-pc15 = reshape(coeff(:,15),[rows,col]);
-title('pc15');
-imagesc(pc15);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,16);
-hold on;
-%16th principal component
-pc16 = reshape(coeff(:,16),[rows,col]);
-title('pc16');
-imagesc(pc16);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,17);
-hold on;
-%17th principal component
-pc17 = reshape(coeff(:,17),[rows,col]);
-title('pc17');
-imagesc(pc17);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,18);
-hold on;
-%18th principal component
-pc18 = reshape(coeff(:,18),[rows,col]);
-title('pc18');
-imagesc(pc18);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,19);
-hold on;
-%19th principal component
-pc19 = reshape(coeff(:,19),[rows,col]);
-title('pc19');
-imagesc(pc19);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,20);
-hold on;
-%9th principal component
-pc20 = reshape(coeff(:,20),[rows,col]);
-title('pc20');
-imagesc(pc20);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
+% pc15 = reshape(coeff(:,15),[rows,col]);
+% title('pc15');
+% imagesc(pc15);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,16);
+% hold on;
+% %16th principal component
+% pc16 = reshape(coeff(:,16),[rows,col]);
+% title('pc16');
+% imagesc(pc16);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,17);
+% hold on;
+% %17th principal component
+% pc17 = reshape(coeff(:,17),[rows,col]);
+% title('pc17');
+% imagesc(pc17);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,18);
+% hold on;
+% %18th principal component
+% pc18 = reshape(coeff(:,18),[rows,col]);
+% title('pc18');
+% imagesc(pc18);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,19);
+% hold on;
+% %19th principal component
+% pc19 = reshape(coeff(:,19),[rows,col]);
+% title('pc19');
+% imagesc(pc19);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,20);
+% hold on;
+% %9th principal component
+% pc20 = reshape(coeff(:,20),[rows,col]);
+% title('pc20');
+% imagesc(pc20);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
 
 sgtitle('first principal components')
 
@@ -384,14 +407,15 @@ else
     
     degreeSymbol = char(176);
     newYlabels = ["time [s]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
-    subplot(10,1,1)
-    
+    %subplot(10,1,1)
+
 end
 
 % size(res_)
 % size(scores_)
 
-%plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
+plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
+plt.LineProperties(1).Color = "r";
 
 grid on;
 
@@ -401,7 +425,7 @@ savefig(PC2, append(filename,'_PC2_','.fig'));
 savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
-savefig('plt', append(filename,'_stackedPC_','.fig'));
+%savefig('plt', append(filename,'_stackedPC_','.fig'));
 
 %scores ha dimensioni: colonne -> componenti, di righe -> frames
 
