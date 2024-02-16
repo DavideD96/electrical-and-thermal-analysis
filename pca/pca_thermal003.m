@@ -1,4 +1,4 @@
-function pca_thermal003(filename,fileres,start_end, varargin)
+function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: -
@@ -102,7 +102,7 @@ set(gca, 'XTick', 1:50)
 
 PC = figure;
 
-subplot(5,4,1);
+subplot(3,4,1);
 hold on;
 %first principal component
 pc1 = reshape(coeff(:,1),[rows,col]);
@@ -113,7 +113,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,2);
+subplot(3,4,2);
 hold on;
 title('pc2');
 %second principal component
@@ -124,7 +124,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,3);
+subplot(3,4,3);
 hold on;
 %third principal component
 pc3 = reshape(coeff(:,3),[rows,col]);
@@ -135,7 +135,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,4);
+subplot(3,4,4);
 hold on;
 %fourth principal component
 pc4 = reshape(coeff(:,4),[rows,col]);
@@ -146,7 +146,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,5);
+subplot(3,4,5);
 hold on;
 %fifth principal component
 pc5 = reshape(coeff(:,5),[rows,col]);
@@ -157,7 +157,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,6);
+subplot(3,4,6);
 hold on;
 %6th principal component
 pc6 = reshape(coeff(:,6),[rows,col]);
@@ -168,7 +168,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,7);
+subplot(3,4,7);
 hold on;
 %7th principal component
 pc7 = reshape(coeff(:,7),[rows,col]);
@@ -179,7 +179,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,8);
+subplot(3,4,8);
 hold on;
 %8th principal component
 pc8 = reshape(coeff(:,8),[rows,col]);
@@ -190,7 +190,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,9);
+subplot(3,4,9);
 hold on;
 %9th principal component
 pc9 = reshape(coeff(:,9),[rows,col]);
@@ -201,7 +201,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,10);
+subplot(3,4,10);
 hold on;
 %10th principal component
 pc10 = reshape(coeff(:,10),[rows,col]);
@@ -212,7 +212,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,11);
+subplot(3,4,11);
 hold on;
 %11th principal component
 pc11 = reshape(coeff(:,11),[rows,col]);
@@ -223,7 +223,7 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,12);
+subplot(3,4,12);
 hold on;
 %12th principal component
 pc12 = reshape(coeff(:,12),[rows,col]);
@@ -234,93 +234,93 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,13);
-hold on;
-%13th principal component
-pc13 = reshape(coeff(:,13),[rows,col]);
-title('pc13');
-imagesc(pc13);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,14);
-hold on;
-%14th principal component
-pc14 = reshape(coeff(:,14),[rows,col]);
-title('pc14');
-imagesc(pc14);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,15);
-hold on;
-%15th principal component
-pc15 = reshape(coeff(:,15),[rows,col]);
-title('pc15');
-imagesc(pc15);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,16);
-hold on;
-%16th principal component
-pc16 = reshape(coeff(:,16),[rows,col]);
-title('pc16');
-imagesc(pc16);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,17);
-hold on;
-%17th principal component
-pc17 = reshape(coeff(:,17),[rows,col]);
-title('pc17');
-imagesc(pc17);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,18);
-hold on;
-%18th principal component
-pc18 = reshape(coeff(:,18),[rows,col]);
-title('pc18');
-imagesc(pc18);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,19);
-hold on;
-%19th principal component
-pc19 = reshape(coeff(:,19),[rows,col]);
-title('pc19');
-imagesc(pc19);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,20);
-hold on;
-%9th principal component
-pc20 = reshape(coeff(:,20),[rows,col]);
-title('pc20');
-imagesc(pc20);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
+% subplot(5,4,13);
+% hold on;
+% %13th principal component
+% pc13 = reshape(coeff(:,13),[rows,col]);
+% title('pc13');
+% imagesc(pc13);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,14);
+% hold on;
+% %14th principal component
+% pc14 = reshape(coeff(:,14),[rows,col]);
+% title('pc14');
+% imagesc(pc14);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,15);
+% hold on;
+% %15th principal component
+% pc15 = reshape(coeff(:,15),[rows,col]);
+% title('pc15');
+% imagesc(pc15);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,16);
+% hold on;
+% %16th principal component
+% pc16 = reshape(coeff(:,16),[rows,col]);
+% title('pc16');
+% imagesc(pc16);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,17);
+% hold on;
+% %17th principal component
+% pc17 = reshape(coeff(:,17),[rows,col]);
+% title('pc17');
+% imagesc(pc17);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,18);
+% hold on;
+% %18th principal component
+% pc18 = reshape(coeff(:,18),[rows,col]);
+% title('pc18');
+% imagesc(pc18);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,19);
+% hold on;
+% %19th principal component
+% pc19 = reshape(coeff(:,19),[rows,col]);
+% title('pc19');
+% imagesc(pc19);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,20);
+% hold on;
+% %9th principal component
+% pc20 = reshape(coeff(:,20),[rows,col]);
+% title('pc20');
+% imagesc(pc20);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
 
 sgtitle('first principal components')
 
@@ -368,13 +368,74 @@ if use_electr == true
 
     scores_ = repelem(scores,2,1);
     res_ = repelem(res,3,1);
-    data = table(times,res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6), scores_(:,7), scores_(:,8), scores_(:,9), scores_(:,10));
-    data = renamevars(data,'times','times [s]');
-    
-    data.Properties.VariableUnits = {'[s]','[Ohm]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]'};
-    
-    degreeSymbol = char(176);
-    newYlabels = ["time [s]","resistance [Ohm]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
+    data = table(times,1./res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6), scores_(:,7), scores_(:,8), scores_(:,9), scores_(:,10));
+    % data = renamevars(data,'times','times [s]');
+    % 
+    % data.Properties.VariableUnits = {'[s]','[Ohm^-1]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]'};
+    % 
+    % degreeSymbol = char(176);
+    data_ = table2array(data);
+    newYlabels = ["time [s]","conductance [Ohm^-1]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
+    fig = figure;
+    subplot(10,1,1);
+    plot(data_(:,1),data_(:,2))
+    ylabel('conductance [\Omega^-1]')
+    set(gca,'xtick',[])
+
+    subplot(10,1,2)
+    plot(data_(:,1),data_(:,3))
+    ylabel('PC1')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,3)
+    plot(data_(:,1),data_(:,4))
+    ylabel('PC2')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,4)
+    plot(data_(:,1),data_(:,5))
+    ylabel('PC3')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,5)
+    plot(data_(:,1),data_(:,6))
+    ylabel('PC4')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,6)
+    plot(data_(:,1),data_(:,7))
+    ylabel('PC5')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,7)
+    plot(data_(:,1),data_(:,8))
+    ylabel('PC6')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,8)
+    plot(data_(:,1),data_(:,9))
+    ylabel('PC7')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,9)
+    plot(data_(:,1),data_(:,10))
+    ylabel('PC8')
+    set(gca,'xtick',[])
+    set(gca,'ytick',[])
+
+    subplot(10,1,10)
+    plot(data_(:,1),data_(:,11))
+    ylabel('PC9')
+    set(gca,'ytick',[])
+    xlabel('time [s]')
+
 else
     period = 1/30;
     times = linspace(0,period*nframes,nframes);
@@ -405,7 +466,7 @@ savefig(PC2, append(filename,'_PC2_','.fig'));
 savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
-savefig('plt', append(filename,'_stackedPC_','.fig'));
+savefig(fig, append(filename,'_stackedPC_','.fig'));
 
 %scores ha dimensioni: colonne -> componenti, di righe -> frames
 
@@ -425,4 +486,6 @@ if clustering == true
     figure
     silhouette(scores(:,1:N_significant_PC),cluster_id)
 end
+
+
 end
