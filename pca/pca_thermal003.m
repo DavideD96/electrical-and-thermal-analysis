@@ -234,93 +234,93 @@ ylim([1,rows]);
 colorbar
 hold off;
 
-subplot(5,4,13);
-hold on;
-%13th principal component
-pc13 = reshape(coeff(:,13),[rows,col]);
-title('pc13');
-imagesc(pc13);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,14);
-hold on;
-%14th principal component
-pc14 = reshape(coeff(:,14),[rows,col]);
-title('pc14');
-imagesc(pc14);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,15);
-hold on;
-%15th principal component
-pc15 = reshape(coeff(:,15),[rows,col]);
-title('pc15');
-imagesc(pc15);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,16);
-hold on;
-%16th principal component
-pc16 = reshape(coeff(:,16),[rows,col]);
-title('pc16');
-imagesc(pc16);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,17);
-hold on;
-%17th principal component
-pc17 = reshape(coeff(:,17),[rows,col]);
-title('pc17');
-imagesc(pc17);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,18);
-hold on;
-%18th principal component
-pc18 = reshape(coeff(:,18),[rows,col]);
-title('pc18');
-imagesc(pc18);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,19);
-hold on;
-%19th principal component
-pc19 = reshape(coeff(:,19),[rows,col]);
-title('pc19');
-imagesc(pc19);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
-
-subplot(5,4,20);
-hold on;
-%9th principal component
-pc20 = reshape(coeff(:,20),[rows,col]);
-title('pc20');
-imagesc(pc20);
-xlim([1,col]);
-ylim([1,rows]);
-colorbar
-hold off;
+% subplot(5,4,13);
+% hold on;
+% %13th principal component
+% pc13 = reshape(coeff(:,13),[rows,col]);
+% title('pc13');
+% imagesc(pc13);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,14);
+% hold on;
+% %14th principal component
+% pc14 = reshape(coeff(:,14),[rows,col]);
+% title('pc14');
+% imagesc(pc14);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,15);
+% hold on;
+% %15th principal component
+% pc15 = reshape(coeff(:,15),[rows,col]);
+% title('pc15');
+% imagesc(pc15);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,16);
+% hold on;
+% %16th principal component
+% pc16 = reshape(coeff(:,16),[rows,col]);
+% title('pc16');
+% imagesc(pc16);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,17);
+% hold on;
+% %17th principal component
+% pc17 = reshape(coeff(:,17),[rows,col]);
+% title('pc17');
+% imagesc(pc17);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,18);
+% hold on;
+% %18th principal component
+% pc18 = reshape(coeff(:,18),[rows,col]);
+% title('pc18');
+% imagesc(pc18);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,19);
+% hold on;
+% %19th principal component
+% pc19 = reshape(coeff(:,19),[rows,col]);
+% title('pc19');
+% imagesc(pc19);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
+% 
+% subplot(5,4,20);
+% hold on;
+% %9th principal component
+% pc20 = reshape(coeff(:,20),[rows,col]);
+% title('pc20');
+% imagesc(pc20);
+% xlim([1,col]);
+% ylim([1,rows]);
+% colorbar
+% hold off;
 
 sgtitle('first principal components')
 
@@ -368,13 +368,13 @@ if use_electr == true
 
     scores_ = repelem(scores,2,1);
     res_ = repelem(res,3,1);
-    data = table(times,res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6), scores_(:,7), scores_(:,8), scores_(:,9), scores_(:,10));
+    data = table(times,1./res_(:,4), scores_(:,1),scores_(:,2),scores_(:,3),scores_(:,4), scores_(:,5), scores_(:,6), scores_(:,7), scores_(:,8), scores_(:,9), scores_(:,10));
     data = renamevars(data,'times','times [s]');
     
-    data.Properties.VariableUnits = {'[s]','[Ohm]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]'};
+    data.Properties.VariableUnits = {'[s]','[Ohm^-1]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]','[K]'};
     
     degreeSymbol = char(176);
-    newYlabels = ["time [s]","resistance [Ohm]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
+    newYlabels = ["time [s]","conductance [Ohm^-1]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
 else
     period = 1/30;
     times = linspace(0,period*nframes,nframes);

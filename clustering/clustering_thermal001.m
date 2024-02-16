@@ -65,19 +65,33 @@ clear data
 
 %di default pca centra i dati, per cui i gradi di libertà massimi sono
 %n-1, non n. Puoi anche impostare 'Centered',false
-%[cluster_id, centres_coordinates] = kmeans(data_,q);
+[cluster_id, centres_coordinates] = kmeans(data_,q);
 %[cluster_id, centres_coordinates] = dbscan(data_,sqrt(20*40*0.04),3);
-[cluster_id, centres_coordinates] = clusterdata(data_,4);
+%[cluster_id, centres_coordinates] = clusterdata(data_,4);
 
 figure
 silhouette(data_,cluster_id)
 
 figure
-for i = 1:q/3
-    for j = 1:3
-        subplot(q/3,3,3*(i-1)+j);
-        pc1 = reshape(centres_coordinates(3*(i-1)+j,:),[rows,col]);
-        title_str = num2str(3*(i-1)+j);
+if rem(q,3) == 0
+    for i = 1:q/3
+        for j = 1:3
+            subplot(q/3,3,3*(i-1)+j);
+            pc1 = reshape(centres_coordinates(3*(i-1)+j,:),[rows,col]);
+            title_str = num2str(3*(i-1)+j);
+            title(title_str);
+            imagesc(pc1);
+            xlim([1,col]);
+            ylim([1,rows]);
+            colorbar
+            hold off;
+        end
+    end
+else
+    for i = 1:q
+        subplot(1,q,i);
+        pc1 = reshape(centres_coordinates(i,:),[rows,col]);
+        title_str = num2str(i);
         title(title_str);
         imagesc(pc1);
         xlim([1,col]);
