@@ -119,14 +119,15 @@ savefig(clust, append(filename,'_clust__Nclust',num2str(q),'.fig'));
 
 if interact == true
     answer = inputdlg({'Da quale figura vuoi selezionare i punti?'});
-    ans_ = srt2num(cell2mat(answer));
+    figure
+    ans_ = str2double(cell2mat(answer));
     pc1 = reshape(centres_coordinates(ans_,:),[rows,col]);
     title_str = num2str(i);
     title(title_str);
     imagesc(pc1);
     [x,y]=ginput(2);
     coord = [x,y];
-    save('points_coord',coord,'-mat')
+    save('points_coord.mat',"coord",'-mat')
 end
 
 cd ..                

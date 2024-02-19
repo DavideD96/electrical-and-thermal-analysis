@@ -107,7 +107,7 @@ hold on;
 %first principal component
 pc1 = reshape(coeff(:,1),[rows,col]);
 title('pc1');
-imagesc(pc1);
+imagesc(flip(pc1,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -118,7 +118,7 @@ hold on;
 title('pc2');
 %second principal component
 pc2 = reshape(coeff(:,2),[rows,col]);
-imagesc(pc2);
+imagesc(flip(pc2,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -129,7 +129,7 @@ hold on;
 %third principal component
 pc3 = reshape(coeff(:,3),[rows,col]);
 title('pc3');
-imagesc(pc3);
+imagesc(flip(pc3,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -140,8 +140,7 @@ hold on;
 %fourth principal component
 pc4 = reshape(coeff(:,4),[rows,col]);
 title('pc4');
-imagesc(pc4);
-xlim([1,col]);
+imagesc(flip(pc4,1));
 ylim([1,rows]);
 colorbar
 hold off;
@@ -151,7 +150,7 @@ hold on;
 %fifth principal component
 pc5 = reshape(coeff(:,5),[rows,col]);
 title('pc5');
-imagesc(pc5);
+imagesc(flip(pc5,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -162,7 +161,7 @@ hold on;
 %6th principal component
 pc6 = reshape(coeff(:,6),[rows,col]);
 title('pc6');
-imagesc(pc6);
+imagesc(flip(pc6,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -173,7 +172,7 @@ hold on;
 %7th principal component
 pc7 = reshape(coeff(:,7),[rows,col]);
 title('pc7');
-imagesc(pc7);
+imagesc(flip(pc7,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -184,7 +183,7 @@ hold on;
 %8th principal component
 pc8 = reshape(coeff(:,8),[rows,col]);
 title('pc8');
-imagesc(pc8);
+imagesc(flip(pc8,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -195,7 +194,7 @@ hold on;
 %9th principal component
 pc9 = reshape(coeff(:,9),[rows,col]);
 title('pc9');
-imagesc(pc9);
+imagesc(flip(pc9,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -206,7 +205,7 @@ hold on;
 %10th principal component
 pc10 = reshape(coeff(:,10),[rows,col]);
 title('pc10');
-imagesc(pc10);
+imagesc(flip(pc10,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -217,7 +216,7 @@ hold on;
 %11th principal component
 pc11 = reshape(coeff(:,11),[rows,col]);
 title('pc11');
-imagesc(pc11);
+imagesc(flip(pc11,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar
@@ -228,7 +227,7 @@ hold on;
 %12th principal component
 pc12 = reshape(coeff(:,12),[rows,col]);
 title('pc12');
-imagesc(pc12);
+imagesc(flip(pc12,1));
 xlim([1,col]);
 ylim([1,rows]);
 colorbar

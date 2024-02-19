@@ -20,6 +20,7 @@ plot_TvsA = 1;
 plot_RvsT = 1;
 trace_peaks = 1;
 couple_comparison = 0;
+selectInt = false;
 
 %varagin
 num = length(varargin);
@@ -34,6 +35,8 @@ for k = 1:2:num
         couple_comparison = varargin{k+1}; %1 = confronta le posizione delle coppie max-min, 0 = non le confronta
     elseif prod(varargin{k} == 'PowerCons')
         power_consideration = varargin{k+1}; %1 = confronta le posizione delle coppie max-min, 0 = non le confronta
+    elseif prod(varargin{k} == 'First_Run')
+        selectInt = varargin{k+1};   
     end
 end
 
@@ -81,9 +84,9 @@ Columns = ThermalParameters.Columns;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Electric %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if prod(analysis=='nll') %no analysis => detection only
-    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', 0);
+    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', selectInt);
 else
-    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', 0, 'opt', analysis);
+    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', selectInt, 'opt', analysis);
 end
 
 %El_rs
