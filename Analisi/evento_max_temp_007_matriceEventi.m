@@ -5,6 +5,7 @@ function [peak_max, peak_min, Eventi_supp, matriceEventi] = evento_max_temp_007_
 %evento_max_temp(frames_states, n_evento)
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
+%   'frame_struct' = struct containing 1 struct per each frame.
 %
 %   peak_max = (position, value, # associated event group, i, i_doppio) of maximum of max (hot points) of an event
 %   peak_min = (position, value, # associated event group, i, i_doppio) of minimum of min (cold points) of an event

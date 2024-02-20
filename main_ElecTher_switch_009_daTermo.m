@@ -185,13 +185,13 @@ T_min = Th_rs_(:,5);
 area_max = Th_rs_(:,6);
 area_min = Th_rs_(:,7);
 
-data = table(times, resistance,T_max,T_min,area_max,area_min);
+data = table(times, 1./resistance,T_max,T_min,area_max,area_min);
 data = renamevars(data,'times','times [s]');
 
-data.Properties.VariableUnits = {'[s]','[\Omega]','[°C]','[°C]','[pixel #]','[pixel #]'};
+data.Properties.VariableUnits = {'[s]','[\Omega^-1]','[°C]','[°C]','[pixel #]','[pixel #]'};
 
 degreeSymbol = char(176);
-newYlabels = ["time [s]","R diff [Ohm]"," deltaT massimi [K]","deltaT minimi [K]","area max [pixel #]","area min [pixel #]"];
+newYlabels = ["time [s]","G diff [Ohm^-1]"," deltaT massimi [K]","deltaT minimi [K]","area max [pixel #]","area min [pixel #]"];
 plt = stackedplot(data,'Title','Stacked Data','DisplayLabels',newYlabels, 'XVariable','times [s]');
 grid on;
 %pltax = plt.NodeChildren(end/2+1:end);

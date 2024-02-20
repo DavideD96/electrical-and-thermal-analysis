@@ -1,5 +1,9 @@
 function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min, imrec, mdiff, Rows, Columns)
-   %strel da diamond a disk: i risultati non cambiano ma è più logico!!!!!!!!! 
+
+% max_hotspot = 2D array containing event coordinate (1st column) and value
+%               (2nd column)
+
+%strel da diamond a disk: i risultati non cambiano ma è più logico!!!!!!!!! 
     area_max = zeros(0,1);
     area_min = zeros(0,1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,7 +28,8 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
         y_ref = data_y(max_evento(1,1));
     
         %label principale
-        BWselezionato_max_evento.(name) = bwselect(BWfinal_max, x_ref, y_ref);
+        BWselezionato_max_evento.(name) = bwselect(BWfinal_max, x_ref, y_ref); %seleziono l'oggetto che è stato formato nell'immagine binarizzata
+                                                                               % in corrispondenza del picco trovato in precedenza
         label_max.(name) = bwlabel(BWselezionato_max_evento.(name));
             
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

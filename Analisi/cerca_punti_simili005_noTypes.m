@@ -3,13 +3,17 @@ function [simili] = cerca_punti_simili005_noTypes(Eventi, righe, colonne, frame_
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
 %
 % raggruppa gli eventi che avvengono nello stesso punto (primi vicini)
+%
+%  'Eventi' = struct containing 1 struct per frame: each of this contains 
+%           info about events: time, maximum coord, minimum coord, areas, 
+%           event count.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
 Eventi_supp = Eventi;
 gruppo = 1;
-for i = 1 : length(fieldnames(Eventi_supp))   
-    fname = append("frame", num2str(frame_start + i + fr_diff - 1));
+for i = 1 : length(fieldnames(Eventi_supp))   %ciclo su tutti i frames
+    fname = append("frame", num2str(frame_start + i + fr_diff - 1)); %indice
     eventi_tutti = 0;
     if Eventi_supp.(fname).num_evento ~= 0
         if Eventi_supp.(fname).massimi(1,1) ~= 0 & Eventi_supp.(fname).minimi(1,1) ~= 0
@@ -24,8 +28,8 @@ for i = 1 : length(fieldnames(Eventi_supp))
 
         evento = 1;
 
-        for j = i : length(fieldnames(Eventi_supp))
-            fname_succ = append("frame", num2str(frame_start+ j + fr_diff - 1));
+        for j = i : length(fieldnames(Eventi_supp)) %ciclo sui frame successivi all'i-esimo
+            fname_succ = append("frame", num2str(frame_start+ j + fr_diff - 1)); %indice
                 
              if Eventi_supp.(fname_succ).num_evento ~= 0
                 eventi_tutti_succ = 0;

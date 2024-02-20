@@ -3,6 +3,8 @@ function DD_electric_and_thermo3(filename, varargin)
 num = length(varargin);
 flip = false;
 limCB = [];
+set_area = 1;
+Rname = 'Data.mat';
 
 for k = 1:2:num
     if prod(varargin{k}=='graphType')
@@ -80,7 +82,7 @@ if flip == true
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-rallenty = 2;
+rallenty = 1;
 video = 1;
 colormap_or_height = 0;
 %# create AVI object

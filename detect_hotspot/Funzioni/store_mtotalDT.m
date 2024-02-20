@@ -9,7 +9,9 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 %   'mtotalT': 3D array. mtotalT(:,:,i) is the i-th frame (usually cut
 %       accordind to sample shape).
 %
-%   'fr_diff' = compute temperature difference skipping fr_diff-1 frames (number of start frame(???))
+%   'fr_diff' = compute temperature difference skipping fr_diff frames (number of start frame(???))
+%               OCCHIO che la notazione è diversa da analisi_Nframes013 (in
+%               quel caso fr_diff = 2 significa frames consecutivi)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %primo frame differenza

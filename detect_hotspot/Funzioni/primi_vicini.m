@@ -26,22 +26,28 @@ function [state] = primi_vicini(peak, type, z)
     coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1];
     i = 1;
     
-    if type == 1
+    if type == 1                
+        if any(coord_primi(:,1) > Rows) || any(coord_primi(:,1) < 0) || any(coord_primi(:,2) > Columns) || any(coord_primi(:,2) < 0)
+            state = 0; %non detecto eventi sui bordi
+        else
             while state == 1 && i<8
-                [coord_primi(i,1), coord_primi(i,2)];
-                z(coord_primi(i,1), coord_primi(i,2));
                 if z(coord_primi(i,1), coord_primi(i,2)) < 0
                     state = 0;
                 end
                 i = i+1;              
             end
+       end
         
-    elseif type == 0     
-        while state == 1 && i<8
-            if z( coord_primi(i,1), coord_primi(i,2)) > 0
-                state = 0;
+    elseif type == 0   
+        if any(coord_primi(:,1) > Rows) || any(coord_primi(:,1) < 0) || any(coord_primi(:,2) > Columns) || any(coord_primi(:,2) < 0)
+            state = 0; %non detecto eventi sui bordi
+        else
+            while state == 1 && i<8
+                if z( coord_primi(i,1), coord_primi(i,2)) > 0
+                    state = 0;
+                end
+                i = i+1;              
             end
-            i = i+1;              
         end
     
     else

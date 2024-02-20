@@ -6,6 +6,8 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
 %
 %controlla se frame successivi detectano lo stesso evento
 %
+%   'frame1' = coordinate max e min del primo frame
+%   'frame2' = coordinate max e min del secondo frame
 %
 %   'state' = 1 if the two frames detect the same event, 0 if not
 %
@@ -32,10 +34,10 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
             coord_primi = [ x_1, y_1; (x_1 - 1) (y_1 - 1); (x_1) (y_1 - 1); (x_1 + 1) (y_1 - 1); (x_1 - 1) (y_1); (x_1 + 1) (y_1); (x_1 - 1) (y_1 + 1); (x_1) (y_1 + 1); (x_1 + 1) (y_1+1)];
     
             %cerco sul frame 2
-            stato_singolo = 0;
-            state = 1;
+            stato_singolo = 0; %se diventa 1, allora è stato trovato il match fra i due eventi
+            state = 1; %questa è una variabile globale
             j = 1;
-            while j <= length(eventi_2(:,1)) & stato_singolo == 0
+            while j <= length(eventi_2(:,1)) & stato_singolo == 0 %ciclo sugli eventi presenti nel secondo frame
                 %Coordinate picco_2
                 y_2 = data_y(eventi_2(j,1));
                 x_2 = data_x(eventi_2(j,1));
@@ -71,8 +73,10 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
                     state = 0;
             end 
 
-            %gli altri punti
+            %confronto con gli altri eventi del frame 1
             i = 1;
+
+            %ciclo sugli eventi del frame 1
             while i <= length(eventi_1(:,1)) & state == 1 %se lo state ~= 1 la prima ricerca è fallita
                 
                 %Coordinate picco_1
@@ -84,6 +88,8 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
                 
                 stato_singolo = 0;
                 j=1;
+
+                %faccio il confronto con gli eventi del frame 2
                 while j <= length(eventi_2(:,1)) & stato_singolo == 0
                     %Coordinate picco_2
                     y_2 = data_y(eventi_2(j,1));
@@ -125,7 +131,7 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
                 end
             end
         else
-            %gli eventi sono diversi quindi non sono simili
+            %gli eventi sono diversi in numero quindi non sono simili
             %disp('ciao2')
             state = 0;
         end
