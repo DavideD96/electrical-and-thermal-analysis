@@ -6,8 +6,7 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 %
 %Return the matrix of frames diff
 %
-%   'mtotalT': 3D array. mtotalT(:,:,i) is the i-th frame (usually cut
-%       accordind to sample shape).
+%   mtotalT: 3D array. mtotalT(:,:,i) is the i-th frame (usually
 %
 %   'fr_diff' = compute temperature difference skipping fr_diff-1 frames (number of start frame(???))
 %

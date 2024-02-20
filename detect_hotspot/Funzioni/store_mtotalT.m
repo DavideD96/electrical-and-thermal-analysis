@@ -7,7 +7,9 @@ function [mtotalT] = store_mtotalT(filename, fr_end, coordname)
 %
 %Return the matrix of frames
 %
-%   'filename' = principal part of the file name of frame (without number of frame and .CSV)
+%   'filename' = principal part of the file name of frame (without number
+%        of frame and .CSV: for example 'Example_1V_2mm_(frame).CSV' must
+%        be indicated as 'Example_1V_2mm_'.                 
 %   'fr_start' = number of start frame
 %   'fr_end' = number of end frame
 %   'coordname' = name of file with coordinates of the wanted region
