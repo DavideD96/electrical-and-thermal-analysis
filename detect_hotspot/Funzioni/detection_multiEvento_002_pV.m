@@ -1,5 +1,10 @@
 function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min, imrec, mdiff, Rows, Columns)
 
+%This program receives max_hotspot containing the coordinates of all
+%overthershold pixels. Then, it checks with primi_vicini and tries to
+%separate the areas associated with each event. max_evento is essentially
+%the same of max_hotspot, but with excluding non-separated events.
+%
 % max_hotspot = 2D array containing event coordinate (1st column) and value
 %               (2nd column)
 
@@ -12,7 +17,7 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
     %MASSIMI
     if point_state_max ==1
         %salvo punto negli eventi
-        max_evento = max_hotspot;
+        max_evento = max_hotspot; %then, we will erase max_evento point by point, by means of a selection procedure
     
         %miglioramento immagine
         n_puntoEvento = 1;
@@ -43,7 +48,7 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
 
             name_confronto = append("evento_", num2str(j));
 
-            BWselezionato_max_evento.(name_confronto) = bwselect(BWfinal_max, x_ref, y_ref);
+            BWselezionato_max_evento.(name_confronto) = bwselect(BWfinal_max, x_ref, y_ref); %seleziono oggetto anche per l'evento da cfr
             label_max.(name_confronto) = bwlabel(BWselezionato_max_evento.(name_confronto));
             numero_oggetti = bwconncomp(BWfinal_max);
             numero_oggetti_before = numero_oggetti.NumObjects;
@@ -56,8 +61,8 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
                 %controllo che sia pixel bianco
                 if BWfinal_max(y_controllo, x_controllo) == 1
                     %primi vicini
-                    state = primi_vicini(max_evento(i,:), 1, mdiff);
-    
+                    state = primi_vicini(max_evento(i,:), 1, mdiff); %verifico che sia rispettata la condizione sui primi vicini
+                                                                     %(cioè che sia un vero max)  
                     if state == 1
                         %controllo se è sullo stesso oggetto del principale
                         if label_max.(name_confronto)(y_ref, x_ref) == label_max.(name_confronto)(y_controllo, x_controllo)
@@ -80,7 +85,7 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
         
                                     if numero_oggetti > numero_oggetti_before
                                         BWfinal_max = BWfinal_max_erode;
-                                        %controllo se è stato diviso 
+                                        %controllo se è stato diviso !!!!!!
                                         if label(y_ref, x_ref) ~= label(y_controllo, x_controllo)
                                             %divisione riuscita        
                                             numero_oggetti_before = numero_oggetti;

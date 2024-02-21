@@ -5,7 +5,7 @@ function [state] = primi_vicini(peak, type, z)
 %primi_vicini(peak, type, z)
 %
 %It makes a test on minima and maxima in a frame: it tests if the peak is
-%surrounded by value with the same sign.
+%surrounded by value with the same sign. (only 1 peak per time?)
 %
 %   'peak' = is a line vector --> [coordinate, value]
 %   'type' = 1 if the peak is a maximum, 0 if the peak is a minimum

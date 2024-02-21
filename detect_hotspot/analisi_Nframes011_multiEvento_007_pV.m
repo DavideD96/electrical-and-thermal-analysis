@@ -28,8 +28,10 @@ function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, 
 %               ('detecArea', 1) --> calculate the area, solo con il metodo
 %                                       BiW (Soglia Otsu)    
 %
+%   ('framestates' = [max coord, max value, min coord, min value, nevento, tempo])
 %   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
+%   'Eventi' = è più generale ed è una struct di tante struct (1 per frame)
 %
 % salva Eventi_Termo con tutti gli eventi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -153,7 +155,7 @@ for i = 0 : Nframes - 1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %array massimi e minimi
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [max_hotspot, min_hotspot] = hotspot_4(imrec, soglia_max, soglia_min, 'smoothing', smooth);
+    [max_hotspot, min_hotspot] = hotspot_4(imrec, soglia_max, soglia_min, 'smoothing', smooth); % trovo tutti i pixel sopra soglia
     
     %max_hotspot
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,12 +165,12 @@ for i = 0 : Nframes - 1
     %controllo se ci sono dati o è vuota
     if isempty(max_hotspot) == 0
         %seleziono massimo assoluto
-        max_hotspot = sortrows(max_hotspot, 2, 'descend');
+        max_hotspot = sortrows(max_hotspot, 2, 'descend'); %2 è la colonna dei valori: ordino in base al più alto
         framestates(i+1, 1) = max_hotspot(1,1);
         framestates(i+1, 2) = max_hotspot(1,2);
         
         %primi vicini
-        point_state_max = primi_vicini(max_hotspot(1,:), 1, mdiff);
+        point_state_max = primi_vicini(max_hotspot(1,:), 1, mdiff); %faccio primi vicini su 1 candidato evento
 
     else   
         framestates(i+1, 1) = 0;
@@ -204,7 +206,7 @@ for i = 0 : Nframes - 1
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
     [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
 
     %calcolo area
