@@ -4,7 +4,7 @@ function [state] = raggruppo_2eventi_diversi_005(frame_1, frame_2, Rows, Columns
 %Author: Cristina Zuccali
 %raggruppo_eventi(peak, type, frame_start)
 %
-%controlla se frame successivi detectano lo stesso evento
+%controlla se i due frame generici hanno eventi nelle stesse aree
 %
 %   'frame1' = coordinate max e min del primo frame
 %   'frame2' = coordinate max e min del secondo frame

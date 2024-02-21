@@ -4,6 +4,7 @@ num = length(varargin);
 flip = false;
 limCB = [];
 set_area = 1;
+frameRate = 20;
 Rname = 'Data.mat';
 
 for k = 1:2:num
@@ -150,6 +151,8 @@ for file=1:nFrames
     end
 end
 
+% Tmin = 21;
+% Tmax = 28;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -206,7 +209,7 @@ for i=1:delay*2
         xlabel('time [s]', 'Parent',axres); 
         ylabel('resistance [\Omega]','Parent',axres);
 
-        imagesc(m1, 'Parent',axtemp);
+        imagesc(m2, 'Parent',axtemp);
         colormap(cm);
         clim(axtemp,[Tmin Tmax]);
         colorbar(axtemp);
@@ -299,7 +302,7 @@ for k=termo_time_index:video_length %Cafone, funziona a 30 Hz, cambia
     
         if colormap_or_height == 0
     
-            imagesc(m1, 'Parent',axtemp);
+            imagesc(m2, 'Parent',axtemp);
     
             colormap(cm);
             clim(axtemp,[Tmin Tmax]);

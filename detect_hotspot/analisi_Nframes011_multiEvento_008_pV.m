@@ -207,7 +207,7 @@ for i = 0 : Nframes - 1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
-    [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
+    [max_evento, min_evento, area_max, area_min, imsov, nevents] = detection_multiEvento_003_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
 
     %calcolo area
     for k = 1 : length(area_max(:,1))
@@ -218,8 +218,11 @@ for i = 0 : Nframes - 1
         area_minimi(i+1, 1) = area_minimi(i+1, 1) + area_min(k,1);
     end
     
-    %salvataggio dati in struct
-    Eventi.(fname) = struct('tempo', times(1, frame_start + i),'massimi', {max_evento}, 'minimi', {min_evento}, 'area_max', area_massimi(i+1,1), 'area_min', area_minimi(i+1,1), 'num_evento', 0);
+    %salvataggio dati in struct %NOTA IMPORTANTISSIMA: nevents poi viene
+    %aggiornato con la numerazione (vedi sotto). Per ora nevent indica il
+    %numero totale di eventi. Poi verrà rimpiazzato da un array con la
+    %numerazione dei singoli eventi che avvengono in contemporanea.
+    Eventi.(fname) = struct('tempo', times(1, frame_start + i),'massimi', {max_evento}, 'minimi', {min_evento}, 'area_max', area_massimi(i+1,1), 'area_min', area_minimi(i+1,1), 'num_evento', nevents);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
