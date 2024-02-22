@@ -17,13 +17,13 @@ function [state] = primi_vicini(peak, type, z)
 
     %Coordinate massimo
     [Rows, Columns] = size (z);
-    y = ceil(peak(1,1)/Rows); %%floor up
-    x = peak(1,1) - Rows*(y-1);
+    y = ceil(peak(1,1)/Rows) %%floor up
+    x = peak(1,1) - Rows*(y-1)
         
     %Controllo i primi vicini
     state = 1;
     
-    coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1];
+    coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1]
     i = 1;
     
     if type == 1                
