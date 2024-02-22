@@ -8,6 +8,9 @@ function [simili] = cerca_punti_simili005_noTypes(Eventi, righe, colonne, frame_
 %           info about events: time, maximum coord, minimum coord, areas, 
 %           event count.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%nota: sarebbe importante modificarlo in modo da non usare solo i
+%rappresentanti, ma tutto il gruppo. Migliorerebbe le possibilità di
+%matchare.
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
 Eventi_supp = Eventi;

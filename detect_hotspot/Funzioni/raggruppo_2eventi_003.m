@@ -1,4 +1,4 @@
-function state = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
+function [fr2_ordered, state] = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-16 Last modification: 2024-01-17
 %Author: Cristina Zuccali
@@ -7,18 +7,21 @@ function state = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
 %controlla se frame successivi detectano lo stesso evento
 %
 %
-%   'state' = 1 if the two frames detect the same event, 0 if not
+%   'state' = 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    state = [];   
+    fr2_ordered = [];
     if isempty(frame_1) == 0 & isempty(frame_2) == 0
         numero_eventi_1 = length(frame_1(:,1));
         numero_eventi_2 = length(frame_2(:,1));
-        state = [];
 
         eventi_1 = frame_1;
         eventi_2 = frame_2;
+
         eventi_2_new = [];
         [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
+        not_assigned = ones(1,numero_eventi_2); %per ora sono tutti non assegnati
  
         %gli altri punti
         i = 1; %indice eventi del primo frame. 
@@ -50,6 +53,8 @@ function state = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
                         if x_2 == coord_primi(k,1) && y_2 == coord_primi(k,2)
                             stato_singolo = 1;
                             state = [state; i, j];
+                            fr2_ordered = [fr2_ordered,eventi_2(j,:)];
+                            not_assigned(1,j) = 0;
                         end
                        k = k+1;              
                     end                   
@@ -57,6 +62,12 @@ function state = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
                 j = j + 1;
             end
             i = i +1;
+        end
+        %assegno gli eventi non assegnati
+        for k = 1:numero_eventi_2
+            if not_assigned(1,k) == 1
+                fr2_ordered = [fr2_ordered,eventi_2(k,:)];
+            end
         end
     end
 end

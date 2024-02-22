@@ -207,7 +207,7 @@ function [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEv
                     state = primi_vicini(min_evento(i,:), 0, mdiff);
     
                     if state == 1
-                          if label_min.(name_confronto)(y_ref, x_ref) == label_min.(name_confronto)(y_controllo, x_controllo)
+                         if label_min.(name_confronto)(y_ref, x_ref) == label_min.(name_confronto)(y_controllo, x_controllo)
                             %sono sullo stesso oggetto provo a dividere
                             %verfica solidità
                             solidita = regionprops(BWselezionato_min_evento.(name_confronto), 'Solidity');

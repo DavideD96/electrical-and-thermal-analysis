@@ -34,6 +34,7 @@ while j <= length(frames_states_supp(:,8))
     %GET EVENTO
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+    %identifico i massimi
     if n_evento ~= 0
         max_peaks_array = zeros(0, 5); %coord, value, evento, index
         min_peaks_array = zeros(0, 5); %coord, value, evento, index
@@ -137,4 +138,8 @@ while j <= length(frames_states_supp(:,8))
         j = j+1;
     end
 end
+
+cd termoFiles_mat
+save('matriceEventi',"matriceEventi")
+cd ..
 end

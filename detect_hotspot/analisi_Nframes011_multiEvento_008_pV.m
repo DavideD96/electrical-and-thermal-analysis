@@ -99,7 +99,7 @@ level =1;
 
 %ARRAY PER SALVARE I DATI
 %(coord, value)
-Nframes = length(mtotalDT(1,1,:)) - frame_start;
+Nframes = length(mtotalDT(1,1,:)) - frame_start + 1; %aggiunto da DD
 framestates = zeros(Nframes,6);
 
 %VARIABILI VIDEO
@@ -208,8 +208,8 @@ for i = 0 : Nframes - 1
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
     
-
     [max_evento, min_evento, area_max, area_min, imsov, nevents] = detection_multiEvento_003_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
+    %nevents è la quantità di eventi individuati
 
     %calcolo area
     for k = 1 : length(area_max(:,1))
@@ -241,8 +241,8 @@ for i = 0 : Nframes - 1
             colormap(subplot(1,2,1), cm);
             colorbar (subplot(1,2,1));
     
-            xlabel('[n° pixel]');
-            ylabel('[n° pixel]');
+            xlabel('[x n° pixel]');
+            ylabel('[y n° pixel]');
             title('Temperature difference [°C]');
     
             tempo = append(num2str(framestates(i+1, 6)), ' s');
@@ -339,13 +339,14 @@ end
     end
 
     if isempty(eventi_tutti) == 0
+        n_evento = [];
         for i = 1:Eventi.(fname).num_evento
             n_evento = [n_evento,i];
         end
     end
     Eventi.(fname).num_evento = n_evento;
 
-    for i=1:Nframes-1
+    for i=1:Nframes - 1
         fname = ['frame', num2str(frame_start+ i + fr_diff)];
         if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
         eventi_tutti = [Eventi.(fname).massimi; Eventi.(fname).minimi];
@@ -368,27 +369,38 @@ end
             eventi_tutti_prec = [];
         end
 
-        i
         %se c'è un evento
-        state = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
-        state
-        
+        [eventi_tutti, state] = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
+
+        %obiettivo:
+        % alcuni frame consecutivi in cui si osservano più eventi insieme:
+        %
+        %   Eventi.(1).num_evento = [1]
+        %   Eventi.(2).num_evento = [1 2]
+        %   Eventi.(3).num_evento = [0 2 3 4]
+        %   Eventi.(4).num_evento = [0 2 0 4]
+        %   Eventi.(5).num_evento = [0 0 0 4]
+        %   Eventi.(6).num_evento = [5]
+
+
         n_evento_supp = [];
+        
         if isempty(eventi_tutti) == 0 %se ho eventi in sto frame
             neventi_attuali = Eventi.(fname).num_evento; %numero eventi in sto frame
             nmatch = size(state,1); %numero match con frame precedente
             assegnati = 0;
             ind_old = 0;
-            for j = 1:nmatch %state contiene le coppie matchate: [3,2; 4,5] significa che il terzo del primo frame è il secondo del secondo...
-                ind = min(state(:,1));
+            for j = 1:nmatch %state contiene le coppie matchate: [3,2; 4,5] significa che il terzo evento del primo frame è il secondo del secondo...
+                [~,ind] = min(state(:,1)); %prendo il primo evento detectato e ordinato (anche numericamente) nel frame precedente, e cerco di assegnarlo
                 nevt = Eventi.(fname_prec).num_evento(ind); %numero da assegnare
-                ind_zeros = ind - ind_old - 1;
+                ind_zeros = ind - ind_old - 1; %se non ho assegnato degli eventi devo lasciare degli zeri, in modo che i numeri siano i sequenza corretta
                 n_evento_supp = [n_evento_supp, zeros(1,ind_zeros), nevt];
-                state(ind,:) = [inf, inf];
+                state(ind,:) = [inf, inf]; %in modo che min() mi faccia passare all'evento successivo nell'ordinazione del frame precedente
                 assegnati = assegnati + 1;
                 ind_old = ind;
                 %riorganizzo max e min
             end
+           
             
             if assegnati < neventi_attuali
                 n_evento_supp = [n_evento_supp, zeros(1,size(Eventi.(fname_prec).num_evento,2)-size(n_evento_supp,2))]; %li rendo lunghi =
@@ -398,6 +410,7 @@ end
                 end
 
             end
+            n_evento_supp
             Eventi.(fname).num_evento = n_evento_supp;
             framestates(i+1,5) = Eventi.(fname).num_evento(end);  
         else

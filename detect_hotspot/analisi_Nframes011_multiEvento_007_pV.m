@@ -29,8 +29,9 @@ function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, 
 %                                       BiW (Soglia Otsu)    
 %
 %   ('framestates' = [max coord, max value, min coord, min value, nevento, tempo]) variabile interna
-%   'frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
-%               where state = 0 means that there is no event in the frame
+%   ('frame_states' = is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
+%               where state = 0 means that there is no event in the frame)
+%   'results' = [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %   'Eventi' = è più generale ed è una struct di tante struct (1 per frame)
 %
 % salva Eventi_Termo con tutti gli eventi
@@ -236,8 +237,8 @@ for i = 0 : Nframes - 1
             colormap(subplot(1,2,1), cm);
             colorbar (subplot(1,2,1));
     
-            xlabel('[n° pixel]');
-            ylabel('[n° pixel]');
+            xlabel('[x n° pixel]');
+            ylabel('[y n° pixel]');
             title('Temperature difference [°C]');
     
             tempo = append(num2str(framestates(i+1, 6)), ' s');
@@ -320,8 +321,9 @@ end
     %variabile per contare gli eventi e raggrupparli
     n_evento = 0;
     state_max = 0;
-    state_min = 0;
+    state_min = 0;  
     
+    %primo frame a parte
     fname = ['frame', num2str(frame_start + fr_diff)];
     if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
         eventi_tutti = [Eventi.(fname).massimi; Eventi.(fname).minimi];
@@ -336,6 +338,9 @@ end
     if isempty(eventi_tutti) == 0
         n_evento = 1;
     end
+
+    Eventi.(fname).num_evento = n_evento; %aggiunto da DD
+    framestates(i+1,5) = Eventi.(fname).num_evento; %aggiunto da DD
 
     for i=1:Nframes-1
         fname = ['frame', num2str(frame_start+ i + fr_diff)];
@@ -372,7 +377,7 @@ end
                 n_evento = n_evento + 1;
                 framestates(i+1,5) = n_evento;
                 Eventi.(fname).num_evento = n_evento;
-                 framestates(i+1,5) = Eventi.(fname).num_evento;
+                framestates(i+1,5) = Eventi.(fname).num_evento;
             end
         else
             framestates(i+1,5) = 0;
