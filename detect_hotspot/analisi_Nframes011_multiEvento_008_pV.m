@@ -207,6 +207,8 @@ for i = 0 : Nframes - 1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
+    
+
     [max_evento, min_evento, area_max, area_min, imsov, nevents] = detection_multiEvento_003_pV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
 
     %calcolo area
@@ -366,8 +368,7 @@ end
             eventi_tutti_prec = [];
         end
 
-        eventi_tutti_prec
-        eventi_tutti
+        i
         %se c'è un evento
         state = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
         state

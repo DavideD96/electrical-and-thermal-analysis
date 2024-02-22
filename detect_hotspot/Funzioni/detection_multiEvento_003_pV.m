@@ -281,6 +281,13 @@ function [max_evento, min_evento, area_max, area_min, imsov, n_puntoEvento] = de
         area_min(1,1) = 0;
     end
 
+    if point_state_max == 0 && point_state_min == 0
+        max_evento = 0;
+        min_evento = 0;
+        area_max = 0;
+        area_min = 0;
+        n_puntoEvento = 0;
+    end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %PASSO 5: imsov
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
