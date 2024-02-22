@@ -1,4 +1,4 @@
-function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, varargin)
+function [results, Eventi] = analisi_Nframes011_multiEvento_008_pV(frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prova: eseguo primi vicini sull'immagine originale e non ricostruita
 %Date: 2023-10-12 Last modification: 2024-01-15
@@ -140,7 +140,7 @@ end
 for i = 0 : Nframes - 1
     %stringa per salvataggio dati
     fname = ['frame', num2str(frame_start+ i + fr_diff)];
-    
+
     %calcolo tempo
     framestates(i+1, 6) = times(1, frame_start + i);
 
@@ -203,7 +203,7 @@ for i = 0 : Nframes - 1
         
     end
     
-   
+    %max_hotspot
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
@@ -337,8 +337,11 @@ end
     end
 
     if isempty(eventi_tutti) == 0
-        n_evento = 1;
+        for i = 1:Eventi.(fname).num_evento
+            n_evento = [n_evento,i];
+        end
     end
+    Eventi.(fname).num_evento = n_evento;
 
     for i=1:Nframes-1
         fname = ['frame', num2str(frame_start+ i + fr_diff)];
@@ -363,20 +366,39 @@ end
             eventi_tutti_prec = [];
         end
 
+        eventi_tutti_prec
+        eventi_tutti
         %se c'è un evento
-        state = raggruppo_2eventi_002(eventi_tutti_prec, eventi_tutti, Rows, Columns);
+        state = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
+        state
         
-        if isempty(eventi_tutti) == 0
-            if state == 1
-                Eventi.(fname).num_evento = n_evento;
-                framestates(i+1,5) = Eventi.(fname).num_evento;
-            
-            elseif state == 0
-                n_evento = n_evento + 1;
-                framestates(i+1,5) = n_evento;
-                Eventi.(fname).num_evento = n_evento;
-                 framestates(i+1,5) = Eventi.(fname).num_evento;
+        n_evento_supp = [];
+        if isempty(eventi_tutti) == 0 %se ho eventi in sto frame
+            neventi_attuali = Eventi.(fname).num_evento; %numero eventi in sto frame
+            nmatch = size(state,1); %numero match con frame precedente
+            assegnati = 0;
+            ind_old = 0;
+            for j = 1:nmatch %state contiene le coppie matchate: [3,2; 4,5] significa che il terzo del primo frame è il secondo del secondo...
+                ind = min(state(:,1));
+                nevt = Eventi.(fname_prec).num_evento(ind); %numero da assegnare
+                ind_zeros = ind - ind_old - 1;
+                n_evento_supp = [n_evento_supp, zeros(1,ind_zeros), nevt];
+                state(ind,:) = [inf, inf];
+                assegnati = assegnati + 1;
+                ind_old = ind;
+                %riorganizzo max e min
             end
+            
+            if assegnati < neventi_attuali
+                n_evento_supp = [n_evento_supp, zeros(1,size(Eventi.(fname_prec).num_evento,2)-size(n_evento_supp,2))]; %li rendo lunghi =
+
+                for k = 1:neventi_attuali-nmatch
+                    n_evento_supp = [n_evento_supp,Eventi.(fname_prec).num_evento(end)+k];
+                end
+
+            end
+            Eventi.(fname).num_evento = n_evento_supp;
+            framestates(i+1,5) = Eventi.(fname).num_evento(end);  
         else
             framestates(i+1,5) = 0;
             Eventi.(fname).num_evento = 0;

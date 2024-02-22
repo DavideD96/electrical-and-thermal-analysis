@@ -56,6 +56,7 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
                 if stato_singolo == 0 %non è stato trovato il match
                     state = 0;
                 end
+                i = i +1; % DD aggiunto
             end
         end
     else

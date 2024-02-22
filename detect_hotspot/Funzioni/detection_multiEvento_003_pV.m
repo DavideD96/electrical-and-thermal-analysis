@@ -57,7 +57,7 @@ function [max_evento, min_evento, area_max, area_min, imsov, n_puntoEvento] = de
             while i <= length(max_evento(:,1))
                 x_controllo = data_x(max_evento(i,1));
                 y_controllo = data_y(max_evento(i,1));
-    
+  
                 %controllo che sia pixel bianco
                 if BWfinal_max(y_controllo, x_controllo) == 1
                     %primi vicini
