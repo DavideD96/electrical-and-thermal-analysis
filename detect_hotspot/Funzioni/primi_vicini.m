@@ -25,6 +25,11 @@ function [state] = primi_vicini(peak, type, z)
     
     coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1];
     i = 1;
+
+    if prod(prod(coord_primi)) == 0 %aggiunto da DD per evitare eventi al bordo
+        state = 0;
+        return
+    end
     
     if type == 1                
         if any(coord_primi(:,1) > Rows) || any(coord_primi(:,1) < 0) || any(coord_primi(:,2) > Columns) || any(coord_primi(:,2) < 0)

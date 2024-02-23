@@ -1,9 +1,10 @@
 function ci = STTC_001(time_serieA,time_serieB,deltat)
 
-%compute pairwise correlation index, according to Cutts and Eglen.
+%Compute pairwise correlation index, according to Cutts and Eglen, in
+%"Detecting Pairwise Correlations in Spike Trains: An Objective Comparison 
+%of Methods and Application to the Study of Retinal Waves"
 
 %   ci = STTC_001(time_serieA,time_serieB,deltat)
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  T_A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

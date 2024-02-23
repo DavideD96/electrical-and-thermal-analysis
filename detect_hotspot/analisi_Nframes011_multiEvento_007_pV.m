@@ -138,7 +138,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %DETECTION E ANALISI DATI
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for i = 0 : Nframes - 1
+for i = 0 : Nframes - 3 %cafone
     %stringa per salvataggio dati
     fname = ['frame', num2str(frame_start+ i + fr_diff)];
     
@@ -340,9 +340,9 @@ end
     end
 
     Eventi.(fname).num_evento = n_evento; %aggiunto da DD
-    framestates(i+1,5) = Eventi.(fname).num_evento; %aggiunto da DD
+    framestates(frame_start + fr_diff,5) = Eventi.(fname).num_evento; %aggiunto da DD
 
-    for i=1:Nframes-1
+    for i=1:Nframes-3 %cafone
         fname = ['frame', num2str(frame_start+ i + fr_diff)];
         if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
         eventi_tutti = [Eventi.(fname).massimi; Eventi.(fname).minimi];
