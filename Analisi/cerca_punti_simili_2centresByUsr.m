@@ -28,7 +28,7 @@ end
 
 %primo gruppo
 group1 = zeros(length(fieldnames(Eventi_supp)),2);
-group1(:,1) = times(1:end-(bias+2))';
+group1(:,1) = times(1:end-(bias+-2))';
 
 for i = bias+fr_diff : length(fieldnames(Eventi_supp))+bias-1   %ciclo su tutti i frames
     fname = ['frame', num2str(i)];
@@ -36,14 +36,14 @@ for i = bias+fr_diff : length(fieldnames(Eventi_supp))+bias-1   %ciclo su tutti 
 end
 disp('io')
 %secondo gruppo
-group2 = zeros(length(fieldnames(Eventi_supp)),2);
-group2(:,1) = times(1:end-(bias))';
-
-% for i = bias+fr_diff : length(fieldnames(Eventi_supp))+bias-1   %ciclo su tutti i frames
-%     fname = ['frame', num2str(i)];
-%     group2(i-bias+1,2) = match_evento_area_001(Eventi_supp.(fname),coord2,2);
-% end
-
-%save("Simili.mat", "simili")
+% group2 = zeros(length(fieldnames(Eventi_supp)),2);
+% group2(:,1) = times(1:end-(bias))';
+% 
+% % for i = bias+fr_diff : length(fieldnames(Eventi_supp))+bias-1   %ciclo su tutti i frames
+% %     fname = ['frame', num2str(i)];
+% %     group2(i-bias+1,2) = match_evento_area_001(Eventi_supp.(fname),coord2,2);
+% % end
+% 
+% %save("Simili.mat", "simili")
 end
 
