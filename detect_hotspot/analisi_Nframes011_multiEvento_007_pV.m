@@ -11,6 +11,9 @@ function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, 
 % Aggiornamento: salvataggio dei dati in struct e area totale interessanta
 % dagli eventi
 %
+%   'frame_start' = starting frame, according to mtotalDT. Thus, is application
+%                   starts at frame 50 in mtotalT, here frame_start = 50 - fr_diff 
+%
 %   'mtotalDT' = matrice dei frames differenza in termoFiles_mat
 %   'soglia_max' = threshold for the selection of maxima
 %   'soglia_min' = threshold for the selection of minima
@@ -70,10 +73,10 @@ check = exist(['ThermoResults\frStart', num2str(frame_start)]);
 %CARICA DATI
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 cd termoFiles_mat 
-    mtotalDT = load("mtotalDT.mat");
+    mtotalDT = load("mtotalDT.mat"); %mtotalDT has Nframes - fr_diff elements 
     mtotalDT = cell2mat(struct2cell(mtotalDT));
 
-    times = load("timesDT.mat");
+    times = load("timesDT.mat"); %timesDT has Nframes - fr_diff elements
     times = cell2mat(struct2cell(times));
 cd ..
 
