@@ -46,10 +46,8 @@ function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, 
 % IRRESPECTIVE of the presence of events.
 % max_value stores the value of overthreshold pixels,
 % IRRESPECTIVE of the presence of events.
-% max/min_area stores the size of areas associated with min and max. it is
-% filled ONLY if events have been detected.
-% state is 0 is no events have been detected. Otherwise is an integer that 
-% works as an index (see 'raggruppo_2_eventi').
+% max/min_area stores the size of areas associated with min and max.
+% state is 0 is no event have been detected. 
 %
 % salva Eventi_Termo con tutti gli eventi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -13,7 +13,8 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 %               OCCHIO che la notazione è diversa da analisi_Nframes013 (in
 %               quel caso fr_diff = 2 significa frames consecutivi)
 %
-%   'mtotalDT'
+%   'mtotalDT' = difference mtotalT(:,:,i+fr_diff+1)-mtotalT(:,:,i). It has
+%               dimension length(mtotal(1,1,:))-fr_diff
 %   'timesDT' = time istants associated to mtotalDT (length Nframes_tot - fr_diff)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %primo frame differenza
