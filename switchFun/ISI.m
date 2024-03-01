@@ -21,7 +21,7 @@ if prod(method == 'full')
     t1 = analyzed(firstInd,1);
 
     for i=firstInd+1:1:s
-        if (analyzed(i,end-1) == 1)
+        if (analyzed(i,end-1) ~= 0)
             t2 = analyzed(i,1);
             int(j,1) = t2-t1;
             j=j+1;
@@ -35,10 +35,10 @@ elseif prod(method == 'half')
     k = 0;
     j = 1;
     for i=1:s
-        if (analyzed(i,end-1) == 1) & (k==0)
+        if (analyzed(i,end-1) ~= 0) & (k==0)
             k =1;
             t1 = analyzed(i,1);
-        elseif (analyzed(i,end-1) == 1) & (k==1)
+        elseif (analyzed(i,end-1) ~= 0) & (k==1)
             k =0;
             t2 = analyzed(i,1);
             int(j,1) = t2-t1;
