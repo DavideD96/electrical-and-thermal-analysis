@@ -56,4 +56,17 @@ for k=1:ind
     %burst_isi(burst_isi(:,2)==k)
     mean_isi_in_burst(k) = mean(burst_isi(burst_isi(:,2)==k),1);
 end
+
+mean_ = mean(mean_isi_in_burst(~isnan(mean_isi_in_burst)));
+std_ = std(mean_isi_in_burst(~isnan(mean_isi_in_burst)));
+
+plot(mean_isi_in_burst, 'o')
+grid on
+ylabel('mean isi in bursts [s]')
+hold on
+yline(mean_)
+yline(mean_+std_,"LineStyle","--")
+yline(mean_-std_,"LineStyle","--")
+hold off
+
 end

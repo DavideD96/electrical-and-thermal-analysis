@@ -152,7 +152,7 @@ if Th_sampl_fr == 30 && El_sampl_fr == 20
 elseif Th_sampl_fr == 10 && El_sampl_fr == 20
     % electrical 20 Hz
     El_rs_ = El_rs;
-    stop = size(Eh_rs_,1);
+    stop = size(El_rs.detection,1);
 
     % thermal 10 Hz
     Th_rs_ = repelem(Th_rs,2,1);

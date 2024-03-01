@@ -1,4 +1,4 @@
-function switchFound = findSwitch1(matr,sigMatr, col, ns, method, sel, selectOrNot, folder, varargin)
+function switchFound = findSwitch1(matr,sigMatr, col, ns, method, sel, selectOrNot, folder,RoG, varargin)
 
 %Date: 2019-02-18 Last Modification: 2019-06-27
 %Author: M. Camponovo, D. Decastri, M. Mirigliano
@@ -94,7 +94,7 @@ elseif prod(method == 'adp')
 elseif prod(method == 'sig')
 
     matMeanSig = IntervalsAnalysis1(matr(:,1),matr(:,col), selectOrNot, folder); 
-    switchFound = findSwitch_rel2(matr,col,matMeanSig,ns,true);
+    switchFound = findSwitch_rel2(matr,col,matMeanSig,ns,true,RoG);
     dlmwrite('sigmaLevel.txt',matMeanSig,'delimiter','\t')
       
 elseif prod(method == 'usr')

@@ -1,4 +1,4 @@
-function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize)
+function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize,RoG)
 
 %Date: 2019-02-18 Last Modification: 2019-03-19
 %Author: M. Camponovo, D. Decastri
@@ -52,7 +52,11 @@ n_event = 0;
                 if rel(i)*rel(i-1) > 0 %sono nello stesso evento
                     analyzed(i,end-1) = 0; %detected yet
                 else %il primo evento finisce e ne inizia un altro
-                    analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                    if RoG == 0
+                        analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                    else
+                        analyzed(event_happening,end) = 1./matr(i,col) - 1./matr(event_happening,col);
+                    end
                     event_happening = i;
                     n_event = n_event + 1;
                     analyzed(i,end-1) = n_event; %detected now
@@ -84,7 +88,11 @@ n_event = 0;
 
             if i > 1
                 if event_happening ~= 0
-                    analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                    if RoG == 0
+                        analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                    else
+                        analyzed(event_happening,end) = 1./matr(i,col) - 1./matr(event_happening,col);
+                    end
                     plot(matr(i,1), matr(i,col), 'or');
                     event_happening = 0;
                 end
