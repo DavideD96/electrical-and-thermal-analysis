@@ -1,0 +1,21 @@
+Per analizzare i dati della termocamera, occorrono i file .csv dei vari frame. Successivamente si procede come segue:
+
+(1) plotRS_Keithley2606B("Data.txt", 0 for V cost or 1 for I cost): crea Data.mat della traccia resistiva
+
+(2) locate_CAF("nomefile_senza_numero_frame", numero_frame): selezionare la regione del film che si vuole analizzare. Il file delle coordiate è <nomefile_senza_numero_frame>_CAF.mat
+
+(3) locate_CAF_rumore("nomefile_senza_numero_frame", numero_frame): selezionare la regione di un film non sottoposto a stimoli elettrici per il calcolo della deviazione standard. Il file delle coordiate è <nomefile_senza_numero_frame>_rumore_CAF.mat
+
+(4) get_store_data("nomefile_senza_numero_frame", numero_frame_finale, frame_differenza, file_coordinate): resistuisce il numero di righe e colonne che va aggiunto parameters/ThermalParameters.mat assieme al frame differenza. Inoltre riporta la matrice dei frames e dei frames differenza.
+
+(5) get_store_data_rumore("nomefile_senza_numero_frame", numero_frame_finale, frame_differenza, file_coordinate_rumore): riporta la matrice dei frames e dei frames differenza per la caratterizzazione del rumore termico.
+
+(6) dev_std_rumore: ritorna media e dev_std. La soglia va aggiornata in parameters/ThermalParameters.mat a seconda di quante dev_std si scelgono (soglia_max > 0, soglia_min < 0).
+
+(7) select_noise("Data.mat"): apre la traccia resistiva, va selezionata una regione in cui non sono presenti resistive switching.
+
+(8) main_ElecTherm_switch_009_daTermo("Data.mat", frame_start): una volta individuato il frame_start che allinea traccia termica ed elettrica, va aggiornato in parameters/ThermalParameters.mat. Questo programma salva la matrice degli eventi termici rappresentati a 30 Hz e a 60 Hz (_doppi)
+
+(9) app_mostra_picchi: è un applicazione che mostra le posizioni di tutti gli eventi termici che possono essere sovrapposte con un'immagine termica dei primi 100 frames.
+
+(10) app_punti_simili_011_multiEvento_002_noTypes_daTermo: fissato il delta_t, associa eventi resistivi e termici e traccia il grafico dei punti simili associando resistenza, temperatura e area. (Salva figura non funziona). Inoltre salva la matrice dei frames simili Simili.mat che va usata per il calcolo di ISI e Barabasi (per essere utilizzata va aperta nel workspace).
