@@ -421,6 +421,7 @@ end
     
 
     save("Eventi_Termo_principali.mat", 'results');
+     save("results.mat", 'results');
 
     %salva struttura
     save("Eventi_Termo.mat", "Eventi")

@@ -1,4 +1,4 @@
-function [peak_max, peak_min, Eventi_supp] = evento_max_temp_005(frames_states, frames_states_single, frame_struct, frame_start, fr_diff)
+function [peak_max, peak_min, Eventi_supp] = evento_max_temp_007(frames_states, frames_states_single, frame_struct, frame_start, fr_diff)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-28 Last modification: 2023-12-6
 %Authors: Cristina Zuccali
@@ -111,7 +111,8 @@ while j <= length(frames_states_supp(:,8))
         Eventi_supp.(fname).minimi  = frame_struct.(fname).minimi;
         Eventi_supp.(fname).area_max  = frame_struct.(fname).area_max;
         Eventi_supp.(fname).area_min = frame_struct.(fname).area_min;
-        Eventi_supp.(fname).num_evento  = frame_struct.(fname). num_evento;
+        Eventi_supp.(fname).num_evento  = frame_struct.(fname).num_evento;
+        
 
     else
         j = j+1;

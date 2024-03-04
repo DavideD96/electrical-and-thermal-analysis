@@ -2,16 +2,25 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-01-15
 %Author: Cristina Zuccali
-%store_mtotalDT(fr_diff)
+%   store_mtotalDT(fr_diff, mtotalT)
+%
 %Return the matrix of frames diff
 %
-%   'fr_diff' = number of start frame
+%   'mtotalT': 3D array. mtotalT(:,:,i) is the i-th frame (usually cut
+%       accordind to sample shape).
 %
+%   'fr_diff' = compute temperature difference skipping fr_diff-1 frames
+%               OCCHIO che la notazione è diversa da analisi_Nframes013 (in
+%               quel caso fr_diff = 2 significa frames consecutivi)
+%
+%   'mtotalDT' = difference mtotalT(:,:,i+fr_diff+1)-mtotalT(:,:,i). It has
+%               dimension length(mtotal(1,1,:))-fr_diff
+%   'timesDT' = time istants associated to mtotalDT (length Nframes_tot - fr_diff)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %primo frame differenza
-    mdiff = mtotalT(:,:, fr_diff + 1) - mtotalT(:,:, 1);
+    mdiff = mtotalT(:,:, fr_diff + 1) - mtotalT(:,:, 1); %fr_diff = 3 => m(:,:,4)-m(:,:,1), skipping 2,3
     [Rows, Columns] = size(mdiff);
-    n_delta_frames = length(mtotalT(1,1,:))-fr_diff;
+    n_delta_frames = length(mtotalT(1,1,:))-fr_diff; %[1,2,3,4,5,6,7], fr_diff = 3 => [4-1,5-2,6-3,7-4] (length = 7-3)
     mtotalDT = zeros(Rows,Columns, n_delta_frames);
     times = zeros(1, n_delta_frames);
 

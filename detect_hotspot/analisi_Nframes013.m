@@ -246,7 +246,7 @@ for i = 0 : Nframes - fr_diff
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %salvataggio dati
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+    %disp(i);
     %update data
     m_memory(:,:,end) = get_data002(filename, frame_start + i + fr_diff , coordname);
     mdiff = m_memory(:,:,end)-m_memory(:,:,1);

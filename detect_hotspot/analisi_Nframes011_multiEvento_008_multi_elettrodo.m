@@ -216,7 +216,7 @@ for i = 0 : Nframes - 1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002(max_hotspot, min_hotspot, point_state_max, point_state_min, imrec, Rows, Columns);
+    [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_pV(max_hotspot, min_hotspot, point_state_max, point_state_min, imrec, mdiff, Rows, Columns);
 
     %calcolo area
     for k = 1 : length(area_max(:,1))
@@ -242,10 +242,10 @@ for i = 0 : Nframes - 1
             imagesc(imrec);
             plot(elettrodi_film(:,1), elettrodi_film(:,2), "-", "LineWidth", 4, "Color", "black")
 
-            fill(elettrodi1(:,1), elettrodi1(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi2(:,1), elettrodi2(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi3(:,1), elettrodi3(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
-            fill(elettrodi4(:,1), elettrodi4(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
+            % fill(elettrodi1(:,1), elettrodi1(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
+            % fill(elettrodi2(:,1), elettrodi2(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
+            % fill(elettrodi3(:,1), elettrodi3(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
+            % fill(elettrodi4(:,1), elettrodi4(:,2), 'yellow', 'EdgeColor', 'black', 'LineWidth', 0.5);
             % plot(elettrodi4(:,1), elettrodi4(:,2), "-o", "LineWidth", 4, "Color", "black", "MarkerFaceColor", "white")
             
 

@@ -47,7 +47,6 @@ function m = get_data002(filename, fr_evento, coordname)
         for j=1:640 %colonne
             if j >= boundaries(i,1) && j <= boundaries(i,2)
                 n_pixel = n_pixel + 1;
-
                 m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m(i,j);
             end
         end

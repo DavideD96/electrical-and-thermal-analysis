@@ -24,6 +24,8 @@ for i = 1 : length(fieldnames(Eventi_supp))
 
         evento = 1;
 
+        %controllo tutti i frames con eventi successivi a quello che sto
+        %cosiderando (indice i)
         for j = i : length(fieldnames(Eventi_supp))
             fname_succ = append("frame", num2str(frame_start+ j + fr_diff - 1));
                 
@@ -39,6 +41,7 @@ for i = 1 : length(fieldnames(Eventi_supp))
                     eventi_tutti_succ = [];
                 end
 
+                %vedo se i due eventi appartengono allo stesso "cluster"
                 stato = raggruppo_2eventi_diversi_005(eventi_tutti, eventi_tutti_succ, righe, colonne);
     
                 if stato == 1

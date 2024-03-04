@@ -10,6 +10,7 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
 %   'state' = 1 if the two frames detect the same event, 0 if not
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     if isempty(frame_1) == 0 & isempty(frame_2) == 0
         numero_eventi_1 = length(frame_1(:,1));
         numero_eventi_2 = length(frame_2(:,1));
@@ -19,11 +20,11 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
             eventi_1 = frame_1;
             eventi_2 = frame_2;
             [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
-     
+
             %gli altri punti
             i = 1;
     
-            while i <= length(eventi_1(:,1)) & state == 1
+            while i <= length(eventi_1(:,1)) & state == 1 %ciclo sugli eventi del primo frame
                 
                 %Coordinate picco_1
                 y_1 = data_y(eventi_1(i,1));
@@ -34,6 +35,8 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
                 
                 stato_singolo = 0;
                 j = 1;
+
+
                 while j <= length(eventi_2(:,1)) & stato_singolo == 0
                     %Coordinate picco_2
                     y_2 = data_y(eventi_2(j,1));
@@ -56,7 +59,10 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
                 if stato_singolo == 0 %non è stato trovato il match
                     state = 0;
                 end
+                i = i +1; % DD aggiunto
             end
+        else %DD aggiunto
+            state = 0; %DD aggiunto
         end
     else
         state = 0;

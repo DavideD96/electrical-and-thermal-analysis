@@ -5,7 +5,7 @@ function [state] = primi_vicini(peak, type, z)
 %primi_vicini(peak, type, z)
 %
 %It makes a test on minima and maxima in a frame: it tests if the peak is
-%surrounded by value with the same sign.
+%surrounded by value with the same sign. (only 1 peak per time?)
 %
 %   'peak' = is a line vector --> [coordinate, value]
 %   'type' = 1 if the peak is a maximum, 0 if the peak is a minimum
@@ -25,23 +25,34 @@ function [state] = primi_vicini(peak, type, z)
     
     coord_primi = [ x-1 y-1; x y-1; x+1 y-1; x-1 y; x+1 y; x-1 y+1; x y+1; x+1 y+1];
     i = 1;
+
+    if prod(prod(coord_primi)) == 0 %aggiunto da DD per evitare eventi al bordo
+        state = 0;
+        return
+    end
     
-    if type == 1
+    if type == 1                
+        if any(coord_primi(:,1) > Rows) || any(coord_primi(:,1) < 0) || any(coord_primi(:,2) > Columns) || any(coord_primi(:,2) < 0)
+            state = 0; %non detecto eventi sui bordi
+        else
             while state == 1 && i<8
-                [coord_primi(i,1), coord_primi(i,2)];
-                z(coord_primi(i,1), coord_primi(i,2));
                 if z(coord_primi(i,1), coord_primi(i,2)) < 0
                     state = 0;
                 end
                 i = i+1;              
             end
+       end
         
-    elseif type == 0     
-        while state == 1 && i<8
-            if z( coord_primi(i,1), coord_primi(i,2)) > 0
-                state = 0;
+    elseif type == 0   
+        if any(coord_primi(:,1) > Rows) || any(coord_primi(:,1) < 0) || any(coord_primi(:,2) > Columns) || any(coord_primi(:,2) < 0)
+            state = 0; %non detecto eventi sui bordi
+        else
+            while state == 1 && i<8
+                if z( coord_primi(i,1), coord_primi(i,2)) > 0
+                    state = 0;
+                end
+                i = i+1;              
             end
-            i = i+1;              
         end
     
     else

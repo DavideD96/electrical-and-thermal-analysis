@@ -89,6 +89,7 @@ timeLength = 1;
 nlags = 30;
 meanByUser = 0;
 sigmaByUser = 0;
+ResOrCond = 0;
 i = 0; %index to take account of the number of otpions to be performed
 
 R = load(nomefile).R;
@@ -123,6 +124,8 @@ else
             timeLength = varargin{k+1};
         elseif prod(varargin{k}=='nvt')
             selOrNot = varargin{k+1};
+        elseif prod(varargin{k}=='RoG')
+            ResOrCond = varargin{k+1};
         elseif prod(varargin{k}=='opt')
             i = i + 1;
             opt(i) = varargin{k+1};
@@ -139,7 +142,7 @@ R = [R(:,1:3), Resistance];
 sigLev = 1; %%cafone
 
 %--------------FIND SWITCH--------------
-anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder);
+anlR = findSwitch1(R,sigLev,col, nos, method, false, selOrNot, folder,ResOrCond);
 %---------------------------------------
 
 s.detection = [anlR()];
