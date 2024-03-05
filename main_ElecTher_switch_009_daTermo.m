@@ -13,6 +13,13 @@ function main_ElecTher_switch_009_daTermo(ElectrFilename, frame_start, varargin)
 %   'coordname' = name of file with coordinates of the wanted region
 %   'Nframes' = number of frames to be analysed.
 %   'frame_start' = frame corresponding to electrical measumerement start
+%
+%   'Eventi_Termo_principali' = (Nframe x 8) array containing: time, max location,
+%                               max temperature, min location, min temperature, 
+%                               max area, min area, event number.
+%   'Eventi_Termo_principali_doppi' = (2*Nframe x 8) array. Same as 'Eventi_Termo_principali'
+%                                      duplicated.
+%   'resistance_switch' = 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Inizializzazione
 %PARAMETRI DI DEFAULT
@@ -95,7 +102,7 @@ end
 
 %[Th_rs, Rows, Columns] = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0, 'PowerCons', power_consideration); %aggiungi 'method', area method, detection method
 [Th_rs, Eventi_Termo] = analisi_Nframes011_multiEvento_007_pV(frame_start, 'makeVideo', 0);
-size(Th_rs)
+%size(Th_rs)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
 %renormalize times
@@ -173,7 +180,7 @@ end
 %line5: area min
 
 resistance = El_rs_(:,end);
-resistance_events = [resistance, El_rs_(:, end-1)];
+resistance_events = [resistance, El_rs_(:, end-1)]; %[event number, Delta resistance]
 size(resistance);
 size(Th_rs_);
 

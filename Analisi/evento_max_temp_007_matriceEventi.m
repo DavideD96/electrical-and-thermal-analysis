@@ -59,6 +59,8 @@ while j <= length(frames_states_supp(:,8))
         frames_states_supp(j,:) = [];
 
         i = j;
+
+        %raggruppo eventi
         while i <= length(frames_states_supp(:,1))
             
             if (frames_states_supp(i, 8) == n_evento & n_evento ~= 0)
@@ -88,6 +90,7 @@ while j <= length(frames_states_supp(:,8))
 
         %selezione rappresentante
 
+        
         max_peaks_array = sortrows(max_peaks_array, 2, "descend");
         min_peaks_array = sortrows(min_peaks_array, 2, "ascend");
 
@@ -140,6 +143,6 @@ while j <= length(frames_states_supp(:,8))
 end
 
 cd termoFiles_mat
-save('matriceEventi',"matriceEventi")
+save('matriceEventi',"matriceEventi") %
 cd ..
 end

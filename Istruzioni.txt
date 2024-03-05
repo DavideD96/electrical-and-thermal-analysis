@@ -2,7 +2,7 @@ Per analizzare i dati della termocamera, occorrono i file .csv dei vari frame. S
 
 (1) plotRS_Keithley2606B("Data.txt", 0 for V cost or 1 for I cost): crea Data.mat della traccia resistiva
 
-(2) locate_CAF("nomefile_senza_numero_frame", numero_frame): selezionare la regione del film che si vuole analizzare. Il file delle coordiate è <nomefile_senza_numero_frame>_CAF.mat
+(2) locate_CAF("nomefile_senza_numero_frame", numero_frame): selezionare la regione del film che si vuole analizzare. Il file delle coordiate è <nomefile_senza_numero_frame>_CAF_coordinates.mat
 
 (3) locate_CAF_rumore("nomefile_senza_numero_frame", numero_frame): selezionare la regione di un film non sottoposto a stimoli elettrici per il calcolo della deviazione standard. Il file delle coordiate è <nomefile_senza_numero_frame>_rumore_CAF.mat
 

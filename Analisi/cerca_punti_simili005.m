@@ -3,6 +3,10 @@ function [simili] = cerca_punti_simili005(Eventi, righe, colonne, frame_start, f
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
 %
 % raggruppa gli eventi che avvengono nello stesso punto (primi vicini)
+% output:
+% Simili = struct -> gruppo_simili -> evento_rappresentante (struct with
+% fields: tempo, massimi (coord, values), minimi (coord, values), area max,
+% area min, numero evento, numero di eventi, DeltaR.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano

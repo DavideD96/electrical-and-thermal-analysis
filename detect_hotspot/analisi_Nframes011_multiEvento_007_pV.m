@@ -445,13 +445,13 @@ end
     end
     
     %salva dati
-    save('frames.mat', 'framestates');
+    save('frames.mat', 'framestates'); %array con colonne invertite
    
     results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4),area_massimi(:,1),area_minimi(:,1),framestates(:,5)];
     
 
-    save("Eventi_Termo_principali.mat", 'results');
-    save("results.mat", 'results');
+    %save("Eventi_Termo_principali.mat", 'results');
+    %save("results.mat", 'results');
 
     %salva struttura
     save("Eventi_Termo.mat", "Eventi")
