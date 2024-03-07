@@ -34,7 +34,7 @@ function m = get_data002(filename, fr_evento, coordname)
 
     y_ridotta = round(y_bl)-round(y(2));
     x_ridotta = round(x(3))-round(x(1));
-    m1_ridotta = zeros(y_ridotta+10,x_ridotta+10);
+    m1_ridotta = zeros(y_ridotta+1,x_ridotta+1); %+10
 
     %store data
     m1=readtable(sprintf(append(filename,'%d.CSV'), fr_evento),'Range','B9:XQ488'); %dimentions = (480x640)
@@ -47,7 +47,7 @@ function m = get_data002(filename, fr_evento, coordname)
         for j=1:640 %colonne
             if j >= boundaries(i,1) && j <= boundaries(i,2)
                 n_pixel = n_pixel + 1;
-                m1_ridotta(i-round(y(2))+6,j-round(x(1))+6) = m(i,j);
+                m1_ridotta(i-round(y(2))+1,j-round(x(1))+1) = m(i,j); %+6
             end
         end
     end

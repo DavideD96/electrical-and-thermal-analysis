@@ -22,6 +22,9 @@ function [mtotalT] = store_mtotalT_rumore(filename, fr_end, coordname)
     for i = 2 : fr_end
         m = get_data002(filename, i, coordname);
         mtotalT(:,:,i) = m;
+        if rem(i,100) == 0
+            disp(i)
+        end
     end
 
     %salvo matrice

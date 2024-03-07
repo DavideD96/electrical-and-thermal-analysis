@@ -91,7 +91,7 @@ Columns = ThermalParameters.Columns;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Electric %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if prod(analysis=='nll') %no analysis => detection only
-    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', selectInt);
+    El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', selectInt, 'RoG',1);
 else
     El_rs = mainSwitch(ElectrFilename, 'parameters', ElectMethod, 'col', column, 'nos', nsigma, 'nvt', selectInt, 'opt', analysis);
 end
@@ -101,7 +101,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Thermal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %[Th_rs, Rows, Columns] = analisi_Nframes011(ThermalFilename, Nframes, frame_start, fr_diff, coordname, soglia_max, soglia_min, 'ThreshNN', 'makeVideo',0,'smoothing',0, 'PowerCons', power_consideration); %aggiungi 'method', area method, detection method
-[Th_rs, Eventi_Termo] = analisi_Nframes011_multiEvento_007_pV(frame_start, 'makeVideo', 0);
+[Th_rs, Eventi_Termo] = analisi_Nframes011_multiEvento_007_NOpV(frame_start, 'makeVideo', 0);
 %size(Th_rs)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% plot results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Th_rs
@@ -179,9 +179,9 @@ end
 %line4: area max
 %line5: area min
 
-resistance = El_rs_(:,end);
-resistance_events = [resistance, El_rs_(:, end-1)]; %[event number, Delta resistance]
-size(resistance);
+DeltaConduct = El_rs_(:,end);
+resistance_events = [DeltaConduct, El_rs_(:, end-1)]; %[event number, Delta resistance]
+size(DeltaConduct);
 size(Th_rs_);
 
 save("resistance_switch.mat", "resistance_events")
@@ -192,7 +192,7 @@ T_min = Th_rs_(:,5);
 area_max = Th_rs_(:,6);
 area_min = Th_rs_(:,7);
 
-data = table(times, 1./resistance,T_max,T_min,area_max,area_min);
+data = table(times, DeltaConduct,T_max,T_min,area_max,area_min);
 data = renamevars(data,'times','times [s]');
 
 data.Properties.VariableUnits = {'[s]','[\Omega^-1]','[°C]','[°C]','[pixel #]','[pixel #]'};
@@ -204,62 +204,69 @@ grid on;
 %pltax = plt.NodeChildren(end/2+1:end);
 %for K = pltax.'; K.YLabel.Interpreter = 'tex'; end
 
+subplot(3,1,1)
+plot(times, DeltaConduct)
+subplot(3,1,2)
+plot(times, T_max)
+subplot(3,1,3)
+plot(times, T_min)
+
 %stackedplot(times,tabella_5);
 %xlabel('time [s]');
 %stackname = [filename,'_calibFr_', num2str(calibr_frame),'_stack5pixel_',num2str(pixel_away_from_CAF),'_frames_', num2str(Frames(1)),'-',num2str(Frames(2)),'.fig'];
 %savefig(stacked,[path,stackname]); %'\'
 
 %get y position
-[max_peaks, min_peaks, Eventi_termo_ripuliti, matriceEventi] = evento_max_temp_007_matriceEventi(Th_rs_, Th_rs, Eventi_Termo, frame_start, fr_diff);
-y_max = zeros(length(max_peaks(:,1)),1);
-y_min = zeros(length(min_peaks(:,1)),1);
-for i = 1: length(max_peaks(:,1))
-    x_max = ceil(max_peaks(i,1)./Rows);
-    x_min = ceil(min_peaks(i,1)./Rows);
-    
-    if x_max == 0
-        y_max(i,1) = 0;
-    else
-        y_max(i,1) = max_peaks(i,1) - Rows*(x_max-1);
-    end
-    
-    if x_min == 0
-        y_min(i,1) = 0;
-    else
-        y_min(i,1) = min_peaks(i,1) - Rows*(x_min-1);
-    end
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%ANALISI
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T vs A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if plot_TvsA == 1
-    plotTvsA(max_peaks, min_peaks, T_max, T_min, area_max, area_min)
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% R vs T %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if plot_RvsT == 1
-    delta_t = 0.20;
-    plotRvsT_daTermo(delta_t, resistance, El_rs_, matriceEventi)    
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Traccia Picchi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if trace_peaks == 1
-    tracepeaks(max_peaks, min_peaks, Rows, Columns, 0)
-end
-
-%%%%%%%%%%%%%%Comaparison position of couples event%%%%%%%%%%%%%%%%%%%%%%%
-if couple_comparison == 1
-    comparison_couple_events(max_peaks, min_peaks, Rows, Columns,0)
-    
-    %Confronto massimi simili e i loro minimi associati
-    associated_points(max_peaks, min_peaks, Rows, Columns, 1)
-
-    %Confronto minimi simili e i loro massimi associati
-    associated_points(min_peaks, max_peaks, Rows, Columns, 1)
-end
+% % [max_peaks, min_peaks, Eventi_termo_ripuliti, matriceEventi] = evento_max_temp_007_matriceEventi(Th_rs_, Th_rs, Eventi_Termo, frame_start, fr_diff);
+% % y_max = zeros(length(max_peaks(:,1)),1);
+% % y_min = zeros(length(min_peaks(:,1)),1);
+% % for i = 1: length(max_peaks(:,1))
+% %     x_max = ceil(max_peaks(i,1)./Rows);
+% %     x_min = ceil(min_peaks(i,1)./Rows);
+% % 
+% %     if x_max == 0
+% %         y_max(i,1) = 0;
+% %     else
+% %         y_max(i,1) = max_peaks(i,1) - Rows*(x_max-1);
+% %     end
+% % 
+% %     if x_min == 0
+% %         y_min(i,1) = 0;
+% %     else
+% %         y_min(i,1) = min_peaks(i,1) - Rows*(x_min-1);
+% %     end
+% % end
+% % 
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % %ANALISI
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % 
+% % 
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%% T vs A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % if plot_TvsA == 1
+% %     plotTvsA(max_peaks, min_peaks, T_max, T_min, area_max, area_min)
+% % end
+% % 
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%% R vs T %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % if plot_RvsT == 1
+% %     delta_t = 0.20;
+% %     plotRvsT_daTermo(delta_t, resistance, El_rs_, matriceEventi)    
+% % end
+% % 
+% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Traccia Picchi %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % if trace_peaks == 1
+% %     tracepeaks(max_peaks, min_peaks, Rows, Columns, 0)
+% % end
+% % 
+% % %%%%%%%%%%%%%%Comaparison position of couples event%%%%%%%%%%%%%%%%%%%%%%%
+% % if couple_comparison == 1
+% %     comparison_couple_events(max_peaks, min_peaks, Rows, Columns,0)
+% % 
+% %     %Confronto massimi simili e i loro minimi associati
+% %     associated_points(max_peaks, min_peaks, Rows, Columns, 1)
+% % 
+% %     %Confronto minimi simili e i loro massimi associati
+% %     associated_points(min_peaks, max_peaks, Rows, Columns, 1)
+% % end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

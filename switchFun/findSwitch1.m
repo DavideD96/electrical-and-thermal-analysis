@@ -111,7 +111,7 @@ else
 end
 
 %------------------ tolgo i -1 ---------------------
-switchFound(switchFound(:,end) == -1,end) = 0;
+%switchFound(switchFound(:,end) == -1,end) = 0;
 %---------------------------------------------------
 
 end
