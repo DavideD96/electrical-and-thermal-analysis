@@ -116,14 +116,14 @@ while j <= length(frames_states_supp(:,8))
             end
         end
 
+        endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
+        endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %selezione rappresentante
         max_peaks_array = sortrows(max_peaks_array, 2, "descend");
-        min_peaks_array = sortrows(min_peaks_array, 2, "ascend"); %il primo è il più basso
+        min_peaks_array = sortrows(min_peaks_array, 2, "ascend");
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
-        endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
 
         if max_peaks_array(1, 2) >= abs(min_peaks_array(1,2)) %se il max di questo frame è > del abs(minimo), allora l'evento + importante è lui
             peak_max(max_peaks_array(1,5),:) = max_peaks_array(1, :); %assegno a peack max il picco massimo individuato
@@ -141,7 +141,7 @@ while j <= length(frames_states_supp(:,8))
             matriceEventi(max_peaks_array(1,5), 3) = frames_states_single(max_peaks_array(1,4), 4); %max val
             matriceEventi(max_peaks_array(1,5), 4) = frames_states_single(max_peaks_array(1,4), 8); %stato
 
-            matriceEventi(max_peaks_array(1,5), 5) = endT_h-startT_h;
+            matriceEventi(max_peaks_array(1,5), 5) = endT-startT;
 
         else
             peak_min(min_peaks_array(1,5),:) = min_peaks_array(1, :);
@@ -157,8 +157,6 @@ while j <= length(frames_states_supp(:,8))
             matriceEventi(min_peaks_array(1,5), 2) = 1;
             matriceEventi(min_peaks_array(1,5), 3) = frames_states_single(min_peaks_array(1,4), 5); %min value
             matriceEventi(min_peaks_array(1,5), 4) = frames_states_single(min_peaks_array(1,4), 8); %stato
-
-            matriceEventi(max_peaks_array(1,5), 5) = endT_l-startT_l;
         end
 
         fname = append("frame", num2str(frame_start + fr_diff +  max_peaks_array(1,4) - 1));
