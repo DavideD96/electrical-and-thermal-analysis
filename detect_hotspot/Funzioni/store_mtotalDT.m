@@ -16,6 +16,16 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 %   'mtotalDT' = difference mtotalT(:,:,i+fr_diff+1)-mtotalT(:,:,i). It has
 %               dimension length(mtotal(1,1,:))-fr_diff
 %   'timesDT' = time istants associated to mtotalDT (length Nframes_tot - fr_diff)
+%
+% Schematization:
+%             fr_diff = 3
+%              ________
+%             |        |
+%             1  2  3  4  5                                N
+% mtotal    = |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | 
+%
+%                4-1 5-2                              N-(N-3)
+% mtotalDT  =     1   2  ...                            N-3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %primo frame differenza
     mdiff = mtotalT(:,:, fr_diff + 1) - mtotalT(:,:, 1); %fr_diff = 3 => m(:,:,4)-m(:,:,1), skipping 2,3

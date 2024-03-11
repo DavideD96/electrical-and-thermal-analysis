@@ -62,12 +62,12 @@ while j <= length(frames_states_supp(:,8))
 
         max_peaks_array(end+1, 1) = frames_states_supp(j, 2); %max coord
         max_peaks_array(end, 2) = frames_states_supp(j, 4); %max val
-        max_peaks_array(end, 3) = frames_states_supp(j, 8); %max area
+        max_peaks_array(end, 3) = frames_states_supp(j, 8); 
         max_peaks_array(end, 5) = indice;
 
         min_peaks_array(end+1, 1) = frames_states_supp(j, 3); %min coord
-        min_peaks_array(end, 2) = frames_states_supp(j, 5); %max val
-        min_peaks_array(end, 3) = frames_states_supp(j, 8); %max area
+        min_peaks_array(end, 2) = frames_states_supp(j, 5); %min val
+        min_peaks_array(end, 3) = frames_states_supp(j, 8); 
         min_peaks_array(end, 5) = indice; %servirà come indice per accedere a frame_state
                     
         for k = 1 : length(frames_states_single(:,1))
@@ -84,9 +84,14 @@ while j <= length(frames_states_supp(:,8))
         frames_states_supp(j,:) = [];
 
         i = j; %parto dal "successivo" (ho eliminato quello attuale).
-                                                                                        % indice+delay+fr_diff-1 è il frame di mtotalT corrispondente a indice
-        startT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),indice+frame_start+fr_diff-1-1);
-        startT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),indice+frame_start+fr_diff-1-1);
+
+        % indice+delay+fr_diff-1 è il frame di mtotalT corrispondente a indice
+        if max_peaks_array(end, 1) ~= 0 %se c'è un massimo
+            startT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(j/2)+frame_start+fr_diff-1-1);
+        end
+        if min_peaks_array(end, 1) ~= 0 %se c'è un minimo
+            startT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(j/2)+frame_start+fr_diff-1-1);
+        end
 
         %raggruppo eventi (FRAMES LEGATI ALLO STESSO EVENTO?)
         while i <= length(frames_states_supp(:,1)) %cerco fra i frames successivi se ce ne sono altri associati (non ottimale)
@@ -95,7 +100,7 @@ while j <= length(frames_states_supp(:,8))
                 indice = indice + 1;
                 max_peaks_array(end+1, 1) = frames_states_supp(i, 2); %max coord %STESSE ASSEGNAZIONI DI PRIMA, OVVIO
                 max_peaks_array(end, 2) = frames_states_supp(i, 4); %max val
-                max_peaks_array(end, 3) = frames_states_supp(i, 8); %max area
+                max_peaks_array(end, 3) = frames_states_supp(i, 8); 
                 max_peaks_array(end, 5) = indice;
     
                 min_peaks_array(end+1, 1) = frames_states_supp(i, 3);
@@ -122,8 +127,12 @@ while j <= length(frames_states_supp(:,8))
         min_peaks_array = sortrows(min_peaks_array, 2, "ascend"); %il primo è il più basso
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
-        endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),indice+frame_start+fr_diff-1);
+        if max_peaks_array(end, 1) ~= 0 %se c'è un minimo
+            endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(i/2)+frame_start+fr_diff-1);
+        end
+        if min_peaks_array(end, 1) ~= 0 %se c'è un minimo
+            endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(i/2)+frame_start+fr_diff-1);
+        end
 
         if max_peaks_array(1, 2) >= abs(min_peaks_array(1,2)) %se il max di questo frame è > del abs(minimo), allora l'evento + importante è lui
             peak_max(max_peaks_array(1,5),:) = max_peaks_array(1, :); %assegno a peack max il picco massimo individuato
@@ -131,7 +140,7 @@ while j <= length(frames_states_supp(:,8))
 
             peak_min(max_peaks_array(1,5), 1) = frames_states_single(max_peaks_array(1,4), 3); %min coord
             peak_min(max_peaks_array(1,5), 2) = frames_states_single(max_peaks_array(1,4), 5); %min value
-            peak_min(max_peaks_array(1,5), 3) = frames_states_single(max_peaks_array(1,4), 8); %min area
+            peak_min(max_peaks_array(1,5), 3) = frames_states_single(max_peaks_array(1,4), 8); 
             peak_min(max_peaks_array(1,5), 5) = max_peaks_array(1, 5); %indice
             peak_min(max_peaks_array(1,5), 4) = max_peaks_array(1, 4); %indice ripetuto
 

@@ -11,7 +11,7 @@ function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, 
 % Aggiornamento: salvataggio dei dati in struct e area totale interessanta
 % dagli eventi
 %
-%   'frame_start' = starting frame, ACCORDING TO mtotalDT. Thus, if application
+%   'frame_start' = starting frame, ACCORDING TO mtotalDT. Thus, if V application
 %                   starts at frame 50 in mtotalT, here frame_start = 50 - fr_diff
 %                   note that frame_start is the nuber of frames that you
 %                   discard in mtotalDT. The first element that is taken
