@@ -74,7 +74,7 @@ for k = 1:2:num
     elseif prod(varargin{k}=='dCentroid')
         dec_centroid = varargin{k+1}; % 1 = trova i centri di massa dei frame con evento
     elseif prod(varargin{k}=='adaptiveT') %adaptive threshold
-        dec_centroid = varargin{k+1}; % 1 = trova i centri di massa dei frame con evento
+        adpt = varargin{k+1};
     end
 end
 

@@ -167,7 +167,7 @@ while j <= length(frames_states_supp(:,8))
             matriceEventi(min_peaks_array(1,5), 3) = frames_states_single(min_peaks_array(1,4), 5); %min value
             matriceEventi(min_peaks_array(1,5), 4) = frames_states_single(min_peaks_array(1,4), 8); %stato
 
-            matriceEventi(max_peaks_array(1,5), 5) = endT_l-startT_l;
+            matriceEventi(min_peaks_array(1,5), 5) = endT_l-startT_l;
         end
 
         fname = append("frame", num2str(frame_start + fr_diff +  max_peaks_array(1,4) - 1));

@@ -19,7 +19,7 @@ function main_ElecTher_switch_009_daTermo(ElectrFilename, frame_start, varargin)
 %                               max area, min area, event number.
 %   'Eventi_Termo_principali_doppi' = (2*Nframe x 8) array. Same as 'Eventi_Termo_principali'
 %                                      duplicated.
-%   'resistance_switch' = 
+%   'resistance_switch' = [delta conductance, event]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Inizializzazione
 %PARAMETRI DI DEFAULT

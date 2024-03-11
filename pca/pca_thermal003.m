@@ -101,26 +101,29 @@ set(gca, 'XTick', 1:50)
 % set(gca, 'XTick', 1:10)
 
 PC = figure;
+colormap(winter)
 
 subplot(3,4,1);
 hold on;
 %first principal component
 pc1 = reshape(coeff(:,1),[rows,col]);
-title('pc1');
+title('PC1');
 imagesc(flip(pc1,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
 subplot(3,4,2);
 hold on;
-title('pc2');
+title('PC2');
 %second principal component
 pc2 = reshape(coeff(:,2),[rows,col]);
 imagesc(flip(pc2,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -128,10 +131,11 @@ subplot(3,4,3);
 hold on;
 %third principal component
 pc3 = reshape(coeff(:,3),[rows,col]);
-title('pc3');
+title('PC3');
 imagesc(flip(pc3,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -139,9 +143,11 @@ subplot(3,4,4);
 hold on;
 %fourth principal component
 pc4 = reshape(coeff(:,4),[rows,col]);
-title('pc4');
+title('PC4');
 imagesc(flip(pc4,1));
+xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -149,10 +155,11 @@ subplot(3,4,5);
 hold on;
 %fifth principal component
 pc5 = reshape(coeff(:,5),[rows,col]);
-title('pc5');
+title('PC5');
 imagesc(flip(pc5,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -160,10 +167,11 @@ subplot(3,4,6);
 hold on;
 %6th principal component
 pc6 = reshape(coeff(:,6),[rows,col]);
-title('pc6');
+title('PC6');
 imagesc(flip(pc6,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -171,10 +179,11 @@ subplot(3,4,7);
 hold on;
 %7th principal component
 pc7 = reshape(coeff(:,7),[rows,col]);
-title('pc7');
+title('PC7');
 imagesc(flip(pc7,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -182,10 +191,11 @@ subplot(3,4,8);
 hold on;
 %8th principal component
 pc8 = reshape(coeff(:,8),[rows,col]);
-title('pc8');
+title('PC8');
 imagesc(flip(pc8,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -193,10 +203,11 @@ subplot(3,4,9);
 hold on;
 %9th principal component
 pc9 = reshape(coeff(:,9),[rows,col]);
-title('pc9');
+title('PC9');
 imagesc(flip(pc9,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -204,10 +215,11 @@ subplot(3,4,10);
 hold on;
 %10th principal component
 pc10 = reshape(coeff(:,10),[rows,col]);
-title('pc10');
+title('PC10');
 imagesc(flip(pc10,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -215,10 +227,11 @@ subplot(3,4,11);
 hold on;
 %11th principal component
 pc11 = reshape(coeff(:,11),[rows,col]);
-title('pc11');
+title('PC11');
 imagesc(flip(pc11,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 
@@ -226,10 +239,11 @@ subplot(3,4,12);
 hold on;
 %12th principal component
 pc12 = reshape(coeff(:,12),[rows,col]);
-title('pc12');
+title('PC12');
 imagesc(flip(pc12,1));
 xlim([1,col]);
 ylim([1,rows]);
+axis off
 colorbar
 hold off;
 

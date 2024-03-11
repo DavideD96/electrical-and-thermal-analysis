@@ -6,6 +6,7 @@ limCB = [];
 set_area = 1;
 frameRate = 20;
 Rname = 'Data.mat';
+fr_diff = 1;
 
 for k = 1:2:num
     if prod(varargin{k}=='graphType')
@@ -28,6 +29,8 @@ for k = 1:2:num
         delay = varargin{k+1};
     elseif prod(varargin{k}=='flipimage')
         flip = varargin{k+1};
+    elseif prod(varargin{k}=='framediff')
+        fr_diff = varargin{k+1};
     end
 end
 
@@ -163,6 +166,7 @@ close all;
 R_ = load(Rname);
 Res = R_.R;
 Res(:,1) = Res(:,1)-Res(1,1);
+Res(:,4) = 1./Res(:,4);
 nres = size(Res,1);
 termo_times = zeros(nFrames,1);
 termo_fr_over_res_fr = 1.5; %0.5;
@@ -202,7 +206,7 @@ start_video = 30;
 for i=1:delay*2
 
     m1 = frames(:,:,floor(termo_time_index));
-    m2 = frames(:,:,floor(termo_time_index+1));
+    m2 = frames(:,:,floor(termo_time_index+fr_diff));
 
     if colormap_or_height == 0
 
@@ -256,9 +260,9 @@ for i=1:delay*2
         %title(filename, 'Interpreter','none','Parent',axtemp);
     end
 
-    title('Electrical resistance [\Omega]','Parent',axres)
+    title('Electrical conductance [\Omega^{-1}]','Parent',axres)
     title('Temperature [°C]','Parent',axtemp)
-    title('Difference between consecutive frames [°C]','Parent',axdiff)
+    title('Difference between frames [°C]','Parent',axdiff)
 
     for j=1:termo_fr_over_res_fr+0.5 %%% cafone, serve a fare 2 frame uguali in successione
         
