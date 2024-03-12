@@ -1,4 +1,4 @@
-function histo_ISI_PuntiSimili_001_delenda(intervals1, intervals2)
+function [center, altezze] = histo_ISI_PuntiSimili_001_delenda(intervals1, intervals2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %24/01/2024
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
@@ -43,6 +43,23 @@ hold on
     title('Analisi ISI (gruppo 2)')
     xlabel('tempo [s]');
     ylabel('frequenza');
+
+    centre_for_fit = center(altezze ~= 0);
+    altezze_for_fit = altezze(altezze ~= 0);
+    centre_for_fit = centre_for_fit(1:9);
+    altezze_for_fit = altezze_for_fit(1:9);
+    lincoeff = polyfit(log10(centre_for_fit(1:5)), log10(altezze_for_fit(1:5)), 1);
+    fit_data = centre_for_fit.^lincoeff(1)*10^lincoeff(2);
+%     ft = fittype( '(x+x0).^n', 'independent', 'x', 'dependent', 'y' );
+%     opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
+%     opts.StartPoint = [10 2];
+%     opts.Display = 'Off';
+% 
+% % Fit model to data.
+% [fitresult, gof] = fit( centre_for_fit', altezze_for_fit', ft, opts );
+% h = plot( fitresult, centre_for_fit, altezze_for_fit );
+hold on
+plot(centre_for_fit,fit_data,'r');
 
 hold off
 
