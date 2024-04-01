@@ -1,4 +1,4 @@
-function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
+function pc2 = pca_thermal004(filename,fileres,start_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: -
@@ -8,11 +8,10 @@ function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 %related to the same event), or all the frames together.
 %
 % filename: name of the Thermal file
-%
+% fileres: 'Data.mat'
+% start_end: [frame start, frame end]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-nrighe = 3;
-ncolonne = 4;
 clustering = false;
 N_significant_PC = 5;
 use_electr = false;
@@ -103,167 +102,218 @@ set(gca, 'XTick', 1:50)
 % set(gca, 'XTick', 1:10)
 
 PC = figure;
-%colormap(cm)
-figure
-for k = 1:ncolonne*nrighe
-    subplot(nrighe,ncolonne,k);
-    hold on;
-    pc = reshape(coeff(:,k),[rows,col]);
-    title(append('PC',num2str(k)));
-    imagesc(flip(pc,1));
-    xlim([1,col]);
-    ylim([1,rows]);
-    axis off
-    colorbar
-    hold off;
-end
+colormap(winter)
 
-% figure
-% subplot(2,6,1);
-% hold on;
-% %first principal component
-% pc1 = reshape(coeff(:,1),[rows,col]);
-% title('PC1');
-% imagesc(flip(pc1,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,2);
-% hold on;
-% title('PC2');
-% % %second principal component
-% pc2 = reshape(coeff(:,2),[rows,col]);
-% imagesc(flip(pc2,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,3);
-% hold on;
-% %third principal component
-% pc3 = reshape(coeff(:,3),[rows,col]);
-% title('PC3');
-% imagesc(flip(pc3,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,4);
-% hold on;
-% %fourth principal component
-% pc4 = reshape(coeff(:,4),[rows,col]);
-% title('PC4');
-% imagesc(flip(pc4,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,5);
-% hold on;
-% %fifth principal component
-% pc5 = reshape(coeff(:,5),[rows,col]);
-% title('PC5');
-% imagesc(flip(pc5,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,6);
-% hold on;
-% %6th principal component
-% pc6 = reshape(coeff(:,6),[rows,col]);
-% title('PC6');
-% imagesc(flip(pc6,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,7);
-% hold on;
-% %7th principal component
-% pc7 = reshape(coeff(:,7),[rows,col]);
-% title('PC7');
-% imagesc(flip(pc7,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,8);
-% hold on;
-% %8th principal component
-% pc8 = reshape(coeff(:,8),[rows,col]);
-% title('PC8');
-% imagesc(flip(pc8,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,9);
-% hold on;
-% %9th principal component
-% pc9 = reshape(coeff(:,9),[rows,col]);
-% title('PC9');
-% imagesc(flip(pc9,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,10);
-% hold on;
-% %10th principal component
-% pc10 = reshape(coeff(:,10),[rows,col]);
-% title('PC10');
-% imagesc(flip(pc10,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,11);
-% hold on;
-% %11th principal component
-% pc11 = reshape(coeff(:,11),[rows,col]);
-% title('PC11');
-% imagesc(flip(pc11,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
-% 
-% subplot(2,6,12);
-% hold on;
-% %12th principal component
-% pc12 = reshape(coeff(:,12),[rows,col]);
-% title('PC12');
-% imagesc(flip(pc12,1));
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis off
-% colorbar
-% hold off;
+figure(1);
+clf();
+hold on;
 
-% subplot(5,4,13);
+% Get the width and height of the figure
+lbwh = get(1, 'position');
+figw = lbwh(3);
+figh = lbwh(4);
+
+ncols = 6;
+nrows = 2;
+
+% for ii = 1:6
+% 
+%     % w and h of each axis in normalized units
+%     axisw = (1 / ncols) * 0.95;
+%     axish = (1 / nrows) * 0.95;
+% 
+%     row = floor( ii/(ncols+1) ) + 1;
+%     col_ = mod( ii-1, ncols ) + 1;
+% 
+%     % calculate the left, bottom coordinate of this subplot
+%     axisl = (axisw+0.02) * (col_-1);
+%     axisb = (axish+0.02) * (row-1);
+% 
+%     %  plot the subplot
+%     h= subplot('position', [axisl, axisb, axisw, axish] ); 
+%     hold on;
+%     %first principal component
+%     pc1 = reshape(coeff(:,ii),[rows,col]);
+%     title_ = ['PC',num2str(ii)];
+%     title(title_);
+%     imagesc(flip(pc1',1));
+%     %imshow(flip(pc1',1)); 
+%     xlim([1,col]);
+%     ylim([1,rows]);
+%     axis off
+%     colorbar
+%     hold off;
+%     pause
+% end
+figure;
+hold on;
+title('PC1');
+%second principal component
+pc1 = reshape(coeff(:,1),[rows,col]);
+imagesc(flip(pc1,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+
+figure;
+hold on;
+title('PC2');
+%second principal component
+ pc2 = reshape(coeff(:,2),[rows,col]);
+imagesc(flip(pc2,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%third principal component
+pc3 = reshape(coeff(:,3),[rows,col]);
+title('PC3');
+imagesc(flip(pc3,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+colorbar
+axis equal
+hold off;
+
+figure;
+hold on;
+%fourth principal component
+ pc4 = reshape(coeff(:,4),[rows,col]);
+title('PC4');
+imagesc(flip(pc4,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%fifth principal component
+pc5 = reshape(coeff(:,5),[rows,col]);
+title('PC5');
+imagesc(flip(pc5,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%6th principal component
+pc6 = reshape(coeff(:,6),[rows,col]);
+title('PC6');
+imagesc(flip(pc6,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%7th principal component
+pc7 = reshape(coeff(:,7),[rows,col]);
+title('PC7');
+imagesc(flip(pc7,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%8th principal component
+pc8 = reshape(coeff(:,8),[rows,col]);
+title('PC8');
+imagesc(flip(pc8,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%9th principal component
+pc9 = reshape(coeff(:,9),[rows,col]);
+title('PC9');
+imagesc(flip(pc9,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%10th principal component
+pc10 = reshape(coeff(:,10),[rows,col]);
+title('PC10');
+imagesc(flip(pc10,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%11th principal component
+pc11 = reshape(coeff(:,11),[rows,col]);
+title('PC11');
+imagesc(flip(pc11,1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%12th principal component
+pc12 = reshape(coeff(:,12),[rows,col]);
+title('PC12');
+imagesc(flip(pc12,1));
+axis off
+axis equal
+colorbar
+hold off;
+
+figure;
+hold on;
+%11th principal component
+pc11 = reshape(coeff(:,13),[rows,col]);
+title('PC13');
+imagesc(flip(pc13',1));
+xlim([1,col]);
+ylim([1,rows]);
+axis off
+axis equal
+colorbar
+hold off;
+
+% figure;
 % hold on;
 % %13th principal component
 % pc13 = reshape(coeff(:,13),[rows,col]);
@@ -351,150 +401,6 @@ end
 % colorbar
 % hold off;
 
-figure;
-hold on;
-%9th principal component
-pc1 = reshape(coeff(:,1),[rows,col]);
-title('pc1');
-imagesc(pc1);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc2 = reshape(coeff(:,2),[rows,col]);
-title('pc2');
-imagesc(pc2);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc3 = reshape(coeff(:,3),[rows,col]);
-title('pc3');
-imagesc(pc3);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc4 = reshape(coeff(:,4),[rows,col]);
-title('pc4');
-imagesc(pc4);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc5 = reshape(coeff(:,5),[rows,col]);
-title('pc5');
-imagesc(pc5);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc6 = reshape(coeff(:,6),[rows,col]);
-title('pc6');
-imagesc(pc6);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc7 = reshape(coeff(:,7),[rows,col]);
-title('pc7');
-imagesc(pc7);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc8 = reshape(coeff(:,8),[rows,col]);
-title('pc8');
-imagesc(pc8);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc9 = reshape(coeff(:,9),[rows,col]);
-title('pc9');
-imagesc(pc9);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc10 = reshape(coeff(:,10),[rows,col]);
-title('pc10');
-imagesc(pc10);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc11 = reshape(coeff(:,11),[rows,col]);
-title('pc11');
-imagesc(pc11);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
-figure;
-hold on;
-%9th principal component
-pc12 = reshape(coeff(:,12),[rows,col]);
-title('pc12');
-imagesc(pc12);
-xlim([1,col]);
-ylim([1,rows]);
-axis equal
-colorbar
-hold off;
-
 sgtitle('first principal components')
 
 % figure
@@ -511,16 +417,16 @@ sgtitle('first principal components')
 % imagesc(fr1);
 % colorbar
 % 
-
-PC2 = figure;
-imagesc(pc2);
-title('principal component 2')
-colorbar
-
-PC4 = figure;
-imagesc(pc4);
-title('principal component 4')
-colorbar
+% 
+% PC2 = figure;
+% imagesc(pc2);
+% title('principal component 2')
+% colorbar
+% 
+% PC4 = figure;
+% imagesc(pc4);
+% title('principal component 4')
+% colorbar
 
 if use_electr == true
     %nframes
@@ -639,7 +545,7 @@ savefig(PC2, append(filename,'_PC2_','.fig'));
 savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
-%savefig(fig, append(filename,'_stackedPC_','.fig'));
+savefig(fig, append(filename,'_stackedPC_','.fig'));
 
 %scores ha dimensioni: colonne -> componenti, di righe -> frames
 

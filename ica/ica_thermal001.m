@@ -4,7 +4,7 @@ function ica_thermal001(filename,fileres,start_end, q, varargin)
 %Date: 2023-11-29 Last modification: -
 %
 %Author: Davide Decastri
-%perform pca analysis using detected events (but excluding multiple frames
+%perform ica analysis using detected events (but excluding multiple frames
 %related to the same event), or all the frames together.
 %
 % filename: name of the Thermal file

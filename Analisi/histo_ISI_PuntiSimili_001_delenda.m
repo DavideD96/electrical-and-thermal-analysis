@@ -50,22 +50,34 @@ hold on
     altezze_for_fit = altezze_for_fit(1:7);
     %lincoeff = polyfit(log10(centre_for_fit(1:5)), log10(altezze_for_fit(1:5)), 1);
     %fit_data = centre_for_fit.^lincoeff(1)*10^lincoeff(2); 
-    ft = fittype( 'lambda*exp(-(x*lambda))', 'independent', 'x', 'dependent', 'y' );
+    ft = fittype( 'lambda*exp(-((x+x0)*lambda))', 'independent', 'x', 'dependent', 'y' );
     opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
-    opts.StartPoint = 1;
+    %opts.StartPoint = 10;
     [fitresult, gof] = fit( centre_for_fit', altezze_for_fit', ft, opts );
-    h = plot( fitresult, center, altezze);
+    fit_data = exp(-(centre_for_fit-fitresult(2)).*fitresult(1))*fitresult(1); 
+    figure
+    loglog(center, altezze);
+    hold on
+    loglog(centre_for_fit, fit_data);
+    %h = plot( fitresult, center, altezze);
+    xlabel('tempo [s]');
+    ylabel('frequenza');
+    grid on
     gof
 
     ft = fittype( 'A*(x)^(-n)', 'independent', 'x', 'dependent', 'y' );
     opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
     opts.StartPoint = [1 2];
     [fitresult, gof] = fit( centre_for_fit', altezze_for_fit', ft, opts );
-    h = plot( fitresult, centre_for_fit, altezze_for_fit );
+    %h = plot( fitresult, centre_for_fit, altezze_for_fit );
     fit_data = centre_for_fit.^(-fitresult(2))*fitresult(1); 
+    figure
     loglog(center, altezze);
     hold on
     loglog(centre_for_fit, fit_data);
+    xlabel('tempo [s]');
+    ylabel('frequenza');
+    grid on
     hold off
     gof
 

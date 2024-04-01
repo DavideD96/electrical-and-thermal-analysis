@@ -49,6 +49,15 @@ build_path = [path,'\resistance_',nomefile,'_',num2str(voltage(1,1)),'V.fig'];
 savefig(build_path);
 
 figure;
+plot(R(:,1), 1./R(:,end));
+title(['entire evolution of the conductance (',num2str(voltage(1,1)),' V)'])
+grid on;
+xlabel('time [s]'); 
+ylabel('conductance [\Omega^{-1}]');
+build_path = [path,'\conductance_',nomefile,'_',num2str(voltage(1,1)),'V.fig'];
+savefig(build_path);
+
+figure;
 plot(R(:,1), R(:,end-1));
 title(['entire evolution of the current (',num2str(voltage(1,1)),' V)'])
 grid on;
