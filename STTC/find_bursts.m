@@ -69,4 +69,21 @@ yline(mean_+std_,"LineStyle","--")
 yline(mean_-std_,"LineStyle","--")
 hold off
 
+figure
+iISI = isi(1:end-1);
+iplus1ISI = isi(2:end);
+
+scatter(iISI,iplus1ISI);
+hold on;
+set(gca, 'XScale', 'log');
+set(gca, 'YScale', 'log');
+yline(m_l);
+xline(m_l);
+xline(mean_,"LineStyle","--")
+yline(mean_,"LineStyle","--")
+grid on
+xlabel('i^{th} ISI [s]')
+ylabel('i+1^{th} ISI [s]')
+hold off
+
 end
