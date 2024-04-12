@@ -1,14 +1,18 @@
 function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2023-11-29 Last modification: -
+%Date: 2023-11-29 Last modification: 07/04/24
 %
 %Author: Davide Decastri
 %perform pca analysis using detected events (but excluding multiple frames
 %related to the same event), or all the frames together.
 %
 % filename: name of the Thermal file
-%
+% fileres: name of the file containing electric measurements
+% start_end: start frame and end frame (e.g. [30,1200])
+% varargin: 
+%   'N_significant_PC' number of PCs to plot
+%   'add_electric_dat' plot time evolution of PCs and conductance together
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 nrighe = 3;
