@@ -1,10 +1,15 @@
 function coordinates = locate_CAF(filename,frame)
 
 %importante! inizia sempre a selezionare dall'angolo in alto a sinistra.
-
+AvioFlir = 1;
 load('ThermoColorMap1.mat');
 colormap(cm);
-m=readtable(sprintf(append(filename,'%d.CSV'),frame),'Range','B9:XQ488');
+
+if AvioFlir == 0
+    m=readtable(sprintf(append(filename,'%d.CSV'),frame),'Range','B9:XQ488');
+elseif AvioFlir == 1
+    m=readtable(sprintf(append(filename,'%d.csv'),frame));
+end
 m= m{:,:};
 imagesc(m);
 

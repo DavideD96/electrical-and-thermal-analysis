@@ -1,7 +1,7 @@
 function [mtotalT] = store_mtotalT(filename, fr_end, coordname)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Date: 2024-01-15 Last modification: 2024-01-15
+%Date: 2024-01-15 Last modification: 2024-04-12
 %Author: Cristina Zuccali
 %store_mtotalT(filename, fr_end,fr_diff, coordname)
 %
@@ -14,14 +14,16 @@ function [mtotalT] = store_mtotalT(filename, fr_end, coordname)
 %   'coordname' = name of file with coordinates of the wanted region
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    m = get_data002(filename, 1, coordname);
+    Flir = 1;
+
+    m = get_data002(filename, 1, coordname, Flir);
     [Rows, Columns] = size(m);
     mtotalT = zeros(Rows,Columns,fr_end);
 
     mtotalT(:,:,1) = m;
     
     for i = 2 : fr_end
-        m = get_data002(filename, i, coordname);
+        m = get_data002(filename, i, coordname, Flir);
         mtotalT(:,:,i) = m;
     end
 
