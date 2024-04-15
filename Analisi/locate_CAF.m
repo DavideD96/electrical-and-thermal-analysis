@@ -14,9 +14,11 @@ m= m{:,:};
 imagesc(m);
 
 pause;
-[x,y]=ginput(3); % select the left top corner, top right corner and the right bottom corner of the CAF
-
+%[x,y]=ginput(3); % select the left top corner, top right corner and the right bottom corner of the CAF
+[x,y] = ginput(2); %top left bottom right
 coordinates = [x,y];
+coordinates = [coordinates;x(2),y(2)];
+coordinates(2,:) = [x(2),y(1)];
 
 matfilename=sprintf(append(filename,'CAF_coordinates.mat'));
 save(matfilename,'coordinates','filename');
