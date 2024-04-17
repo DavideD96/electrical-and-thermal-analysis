@@ -1,0 +1,64 @@
+function setAndCheck_refPoint(filename,frame,reffolder, refcoordname,refpointname)
+
+%
+%   Author: Davide Decastri
+%
+%   folder: folder containing new data to analyze (you want to set CAF area 
+%        on these data, according to a fixed reference).
+%   filename: name of the .csv file
+%   frame: integer indicating the frame to analyze
+%   reffolder: folder containing the reference data
+%   refcoordname: .mat containing CAF coordinates in the reference files
+%       ([topleft; topright; bottomright])
+%   refpointname: coordinates of the reference point WITH RESPECT TO
+%       topleft.
+
+path = pwd;
+
+%%%%%% references %%%%%
+cd(reffolder)
+
+CAF_coord = load(append(refname,'_CAF_coordinates.mat'));
+x_CAF = CAF_coord.coordinates(:,1);
+y_CAF = CAF_coord.coordinates(:,2);
+
+ref_coord_ = load(refpointname);
+x_ref = ref_coord_.ref_coordinates(1,1);
+y_ref = ref_coord_.ref_coordinates(1,2);
+
+%optional, for check
+m_ = get_data002_matCoord(filename,1,[x_CAF,y_CAF],1);
+cd ..
+
+cd(path)
+
+reftrial = append(filename,frame,'_ref1_coordinates.mat');
+check = exist(reftrial,"file");
+
+%%%%%%%%%%%%%%%%%%%%%%%%% compute coordinates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if check == 0
+    m=readtable(sprintf(append(filename,'%d.csv'),frame));
+    m= m{:,:};
+    imagesc(m);
+    pause;
+    [x,y] = ginput(1);
+    ref_new = [x,y];
+    save(append(filename,num2str(frame),'_ref1_coordinates.mat'),'ref_new','filename');
+end
+
+% coordname = cellstr(coordname);
+% coordname = coordname{1};
+% 
+% isa(coordname,'string')
+
+area_size = [x_CAF(3)-x_CAF(1)+1,y_CAF(3)-y_CAF(1)+1];
+coord_trial = setArea_FromRefPoint([x,y],[x_ref,y_ref],area_size);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% combaciano col frame 1?
+
+m_trial = get_data002_matCoord(filename,frame,coord_trial,1);
+cd ..
+
+imagesc(m_trial-m_)
+end

@@ -20,8 +20,8 @@ pause;
 [x,y] = ginput(1); %ref1, respect to new boundaries! ref2 (avoid rotations)
 ref_coordinates = [x,y];
 
-matfilename=sprintf(append(filename,'CAF_coordinates.mat'));
+matfilename=sprintf(append(filename,num2str(frame),'_CAF_coordinates.mat'));
 save(matfilename,'coordinates','filename');
-save(append(filename,'ref1_Coordinates.mat'),'ref_coordinates','filename');
+save(append(filename,num2str(frame),'_ref1_coordinates.mat'),'ref_coordinates','filename');
 
 end

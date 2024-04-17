@@ -18,12 +18,16 @@ function coord = setArea_FromRefPoint(reference_point,coord_from_point,area_size
 %
 % --> x  
 % 
-% result = [2,2; 6,2; 6,7] ([top left, top right, bottom right])
+% result = [2,2; 6,2; 6,7] ([top left; top right; bottom right])
 %
 
-topLeft = [reference_point(1)-area_size(1)+coord_from_point(1),reference_point(2)-area_size(2)+coord_from_point(2)];
-topRight = [topLeft(1)+area_size(1)-1,topLeft(1)];
-bottomRight = [topRight(1),topRight(2)+area_size(2)];
+% area_size = [5,7]
+% coord_from_point = [3,2]
+% reference_point = [8,9]
+
+topLeft = [reference_point(1)-coord_from_point(1)+1,reference_point(2)-coord_from_point(2)+1];
+topRight = [topLeft(1)+area_size(1)-1,topLeft(2)];
+bottomRight = [topRight(1),topRight(2)+area_size(2)-1];
 
 coord = [topLeft;topRight;bottomRight];
 
