@@ -7,15 +7,15 @@ function [R1,R2,R3] = FindGrooveResistances(Rab,Rbc,Rca)
 %  ° electrodes
 %  / grooves
 %
-%           c
-%     Rca   °   Rbc
-%        \     /
-%         \   /
-%          \ / 
-%           |    
-%    a °    |    ° b
-%           |
-%          Rab
+%             c
+%     Rca --> ° <-- Rbc
+%     |    \     /   |
+%     |  R3 \   / R2 |
+%     |      \ /     |
+%     v       |      v
+%   a °       |R1    ° b
+%             |
+%            Rab
 %
 % finds grooves resistances, knowing resistances between all the electrodes
 % couples.

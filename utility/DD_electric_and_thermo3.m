@@ -86,7 +86,7 @@ if flip == true
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-rallenty = 1;
+rallenty = 2;
 video = 1;
 colormap_or_height = 0;
 %# create AVI object
@@ -193,6 +193,9 @@ dist_da_prec = 1;
 dist_da_succ = 1;
 f = figure('position',[200 100 1000 500]);
 
+Tmin = 24;
+Tmax = 30;
+
 axres = axes(f,'outerPosition', [0.05 0 0.31 1]); %subplot(1,3,1);
 axtemp = axes(f,'outerPosition', [0.375 0 0.31 1]);
 axdiff = axes(f,'outerPosition', [0.7 0 0.31 1]);
@@ -211,7 +214,7 @@ for i=1:delay*2
     if colormap_or_height == 0
 
         xlabel('time [s]', 'Parent',axres); 
-        ylabel('resistance [\Omega]','Parent',axres);
+        ylabel('conductance [\Omega^{-1}]','Parent',axres);
 
         imagesc(m2, 'Parent',axtemp);
         colormap(cm);
@@ -392,10 +395,10 @@ for k=termo_time_index:video_length %Cafone, funziona a 30 Hz, cambia
     end    
 
     xlabel('time [s]', 'Parent',axres); 
-    ylabel('resistance [\Omega]','Parent',axres);
-    title('Electrical resistance [\Omega]','Parent',axres)
+    ylabel('conductance [\Omega^{-1}]','Parent',axres);
+    title('Electrical conductance [\Omega^{-1}]','Parent',axres)
     title('Temperature [°C]','Parent',axtemp)
-    title('Difference between consecutive frames [°C]','Parent',axdiff)
+    title('Difference between frames [°C]','Parent',axdiff)
 
         frame = getframe(gcf);        % costruisco il
         writeVideo(vidObj, frame);    % filmato  puoi usare im2frame(m,cm) al posto di frame

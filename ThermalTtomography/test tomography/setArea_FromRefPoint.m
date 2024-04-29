@@ -4,7 +4,7 @@ function coord = setArea_FromRefPoint(reference_point,coord_from_point,area_size
 % example:
 % area_size = [5,5]
 % coord_from_point = [4,3]
-% ref_point = [3,4]
+% ref_point = [5,4]
 %
 % . . . . . . . . . .     |
 % . o o o o o . . . . 1   v y
@@ -18,7 +18,7 @@ function coord = setArea_FromRefPoint(reference_point,coord_from_point,area_size
 %
 % --> x  
 % 
-% result = [2,2; 6,2; 6,7] ([top left; top right; bottom right])
+% result = [2,2; 6,2; 6,6] ([top left; top right; bottom right])
 %
 
 % area_size = [5,7]
