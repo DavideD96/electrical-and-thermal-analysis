@@ -2,11 +2,14 @@ function [state] = raggruppo_2eventi_002(frame_1, frame_2, Rows, Columns)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-16 Last modification: 2024-01-17
 %Author: Cristina Zuccali
-%raggruppo_eventi(peak, type, frame_start)
+%raggruppo_2eventi(peak, type, frame_start)
 %
 %controlla se frame successivi detectano lo stesso evento
 %
-%
+%   'frame_1' = vector containing [coordinates, peaks] (peaks can be either
+%       positive or negative) of the first frame
+%   'frame_2' = ... same
+%   
 %   'state' = 1 if the two frames detect the same event, 0 if not
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

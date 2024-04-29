@@ -6,7 +6,8 @@ function m = get_data002_matCoord(filename, fr_evento, coord, AvioFlir)
 %get_data(filename, fr_evento, fr_diff, coordname)
 %
 %Return the data of a frame in a wanted ragione and the difference of
-%temperature value between fr_evento+fr_diff and fr_evento.
+%temperature value between fr_evento+fr_diff and fr_evento. this version
+%does not load coordname, as get_data002. Uses coord instead.
 %
 %   'filename' = principal part of the file name of frame (without number of frame and .CSV)
 %   'fr_evento' = number of start frame

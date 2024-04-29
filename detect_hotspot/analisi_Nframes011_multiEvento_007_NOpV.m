@@ -1,4 +1,4 @@
-function [results, Eventi] = analisi_Nframes011_multiEvento_007_pV(frame_start, varargin)
+function [results, Eventi] = analisi_Nframes011_multiEvento_007_NOpV(frame_start, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prova: eseguo primi vicini sull'immagine originale e non ricostruita
 %Date: 2023-10-12 Last modification: 2024-01-15
@@ -229,7 +229,8 @@ for i = 0 : Nframes - 1 %cafone
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Cerco altri eventi nello stesso frame e ne calcolo l'area
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    %  max_evento = 2D array [coord, intensity]                                           tutti i sopra soglia trovati,   stato: (1 o 0),   immagine ricostruita e originale
     [max_evento, min_evento, area_max, area_min, imsov] = detection_multiEvento_002_NOpV(max_hotspot, min_hotspot, point_state_max, point_state_min,imrec, mdiff, Rows, Columns);
 
     %calcolo area

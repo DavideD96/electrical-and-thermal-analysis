@@ -35,7 +35,7 @@ Columns = ThermalParameters.Columns;
 frames_states_supp = frames_states;
 peak_max = zeros(length(frames_states_supp(:,1)), 5);
 peak_min = zeros(length(frames_states_supp(:,1)), 5);
-matriceEventi = zeros(length(frames_states_supp(:,1)), 4); %DD AGGIUNTA UNA COLONNA per DeltaT
+matriceEventi = zeros(length(frames_states_supp(:,1)), 5); %DD AGGIUNTA UNA COLONNA per DeltaT
 
 for i = 0 : length(fieldnames(frame_struct)) - 1
     fname = append("frame", num2str(frame_start + fr_diff +  i));
