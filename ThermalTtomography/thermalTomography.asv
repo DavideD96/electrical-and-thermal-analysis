@@ -36,10 +36,7 @@ for k = 1:2:num
         bc_fname = varargin{k+1};
     elseif prod(varargin{k}=='cpl_ca')
         ca_fname = varargin{k+1}; 
-    elseif prod(varargin{k}=='_IFOV_')
-        IFOV = varargin{k+1}; 
     end
-
 end
 
 check1 = exist(ab_fname,"dir");
@@ -98,20 +95,17 @@ G3 = 1/R3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Groove1_nonCond = [];
-Groove1_cond = []; %matrix
+Groove1 = []; %matrix
 
 if size(Groove1,2) > size(Groove1,1)
-    Groove1_cond = Groove1_cond';
+    Groove1 = Groove1';
     Groove1_nonCond = Groove1_nonCond';
 end
 
-Groove1 = Groove1_cond - Groove1_nonCond;
-
 axis1 = round(size(Groove1,2)/2);
 
-partitionFunction = sum(Groove1(:,axis1));
-
-G1_i = (G1/partitionFunction)*IFOV*Groove1(axis,i)
+partitionFunction = sum(Groove1(:,axis1)-Groove1_nonCond(:,axis1));
+G_over_Wt = 
 
 
 
