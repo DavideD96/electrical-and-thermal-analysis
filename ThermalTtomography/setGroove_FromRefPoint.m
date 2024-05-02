@@ -18,7 +18,7 @@ function coord = setGroove_FromRefPoint(reference_point,coord_from_point,groove_
 %
 % --> x  
 % 
-% result = [2,2; 3,2; 2,7] ([top left; top right; bottom right])
+% result = [2,2; 3,2; 3,6] ([top left; top right; bottom right])
 %
 
 % area_size = [5,7]

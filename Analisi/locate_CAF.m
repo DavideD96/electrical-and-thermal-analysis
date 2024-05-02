@@ -12,7 +12,7 @@ elseif AvioFlir == 1
 end
 m= m{:,:};
 imagesc(m);
-
+title('set CAF area')
 pause;
 %[x,y]=ginput(3); % select the left top corner, top right corner and the right bottom corner of the CAF
 [x,y] = ginput(2); %top left bottom right
