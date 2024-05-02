@@ -62,21 +62,13 @@ if check == 0
     imagesc(m);
     pause;
     [x,y] = ginput(1);
-    ref_new = [x,y];
     area_size = [x_CAF(3)-x_CAF(1)+1,y_CAF(3)-y_CAF(1)+1];
     
-    x
-    y
-    x_ref
-    y_ref
     answer{1} = 0;
     while answer{1} ~= '1'   
-    
-
         coord_trial = setArea_FromRefPoint([x,y],[x_ref,y_ref],area_size); %x,y are ref point coordinates in the reference of the image
                                                                            %x_ref,y_ref are the coordinates of the refpoint in the reference of CAF             
-        coord_trial
-                                                                          % combaciano col frame 1?
+        coord_trial = round(coord_trial);   % combaciano col frame 1?
         m_trial = get_data002_matCoord(filename,frame,coord_trial,1);
         imagesc(m_trial-m_)
         colorbar
@@ -91,19 +83,15 @@ if check == 0
             x = x+1;
         end
     end
+
+    ref_new = [x,y];
 % else
 %     ref_coord_trial = load(append(filename,num2str(frame),'_ref1_coordinates.mat'));
 %     x = ref_coord_trial.ref_new(:,1);
 %     y = ref_coord_trial.ref_new(:,2);
+    save(append(filename,num2str(frame),'_CAF_coordinates.mat'),'coord_trial');
     save(append(filename,num2str(frame),'_ref1_coordinates.mat'),'ref_new');
 end
-
-% coordname = cellstr(coordname);
-% coordname = coordname{1};
-% 
-% isa(coordname,'string')
-
-%%%%%%%%%%%%%%%%%%%%%%% Set CAF area, grooves %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %cd ..
 
