@@ -22,10 +22,11 @@ function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
         coordname = varargin{1};
     end
 
-    check = exist(append(filename,'CAF_coordinates.mat'),"file");
-    if check ~= 0
-        coordname = append(filename,'CAF_coordinates.mat');
-    end
+    %load(append(filename,'CAF_coordinates.mat'))
+    % check = exist(append(filename,'CAF_coordinates.mat'),"file");
+    % if check ~= 0
+    %     coordname = append(filename,'CAF_coordinates.mat');
+    % end
 
     %coordname
     m = get_data002(filename, 1, coordname, Flir);

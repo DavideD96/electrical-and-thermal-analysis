@@ -9,7 +9,7 @@ function setAndCheck_refPoint(filename,frame,reffolder,refname)
 %
 %   folder: folder containing new data to analyze (you want to set CAF area 
 %        on these data, according to a fixed reference).
-%   filename: name of the .csv file
+%   filename: name of the .csv file. INCLUDE frame.
 %   frame: integer indicating the frame to analyze
 %   reffolder: folder containing the reference data (set before using
 %               'setInitialRefPoint.m')
@@ -35,14 +35,18 @@ y_ref = y_ref - y_CAF(1,1) + 1;
 groove1_coord_ = load(append(refname,'_groove_a-b_3-6_coordinates.mat'));
 x_groove1 = round(groove1_coord_.groove1_coordinates(:,1)); %sdr è CAF
 y_groove1 = round(groove1_coord_.groove1_coordinates(:,2));
+groove1_coordinates = [x_groove1, y_groove1];
 
 groove2_coord_ = load(append(refname,'_groove_b-c_3-8_coordinates.mat'));
 x_groove2 = groove2_coord_.groove2_coordinates(:,1);
 y_groove2 = groove2_coord_.groove2_coordinates(:,2);
+groove2_coordinates = [x_groove2, y_groove2];
+
 
 groove3_coord_ = load(append(refname,'_groove_c-a_2-8_coordinates.mat'));
 x_groove3 = groove3_coord_.groove3_coordinates(:,1);
 y_groove3 = groove3_coord_.groove3_coordinates(:,2);
+groove3_coordinates = [x_groove3, y_groove3];
 
 %optional, for check
 m_ = get_data002_matCoord(refname,1,[x_CAF,y_CAF],1);
@@ -51,6 +55,10 @@ cd ..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 cd(path)
+
+save(append(filename,'_groove_a-b_3-6_coordinates.mat'),'groove1_coordinates')
+save(append(filename,'_groove_b-c_3-8_coordinates.mat'),'groove2_coordinates')
+save(append(filename,'_groove_c-a_2-8_coordinates.mat'),'groove3_coordinates')
 
 reftrial = append(filename,num2str(frame),'_ref1_coordinates.mat');
 check = exist(reftrial,"file");
@@ -89,8 +97,11 @@ if check == 0
 %     ref_coord_trial = load(append(filename,num2str(frame),'_ref1_coordinates.mat'));
 %     x = ref_coord_trial.ref_new(:,1);
 %     y = ref_coord_trial.ref_new(:,2);
-    save(append(filename,num2str(frame),'_CAF_coordinates.mat'),'coord_trial');
-    save(append(filename,num2str(frame),'_ref1_coordinates.mat'),'ref_new');
+
+    coordinates = coord_trial;
+
+    save(append(filename,'_CAF_coordinates.mat'),'coordinates');
+    save(append(filename,'_ref1_coordinates.mat'),'ref_new');
 end
 
 %cd ..

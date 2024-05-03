@@ -19,8 +19,8 @@ coldData = mtot(:,:,1:(start - transient/2)); %-1
 coldData = cat(3,coldData,mtot(:,:,(start + transient/2 + nframesHot + 1):(nframesHot + nframesHot + 1)));
 hotData = mtot(:,:,(start + transient/2):(start - transient/2 + nframesHot - 1));
 
-size(coldData)
-size(hotData)
+%size(coldData)
+%size(hotData)
 
 % se vuoi le cose più precise
 % if start - nframesHot/2 > 0
@@ -35,6 +35,9 @@ size(hotData)
 
 coldMean = mean(coldData,3);
 hotMean = mean(hotData,3);
+
+save('coldMean.mat','coldMean');
+save('hotMean.mat','hotMean');
 
 imagesc(hotMean-coldMean);
 
