@@ -27,8 +27,10 @@ function findRiseFall(frame1,frame2)
     temp = squeeze(temp(1,1,:));
     plot(temp)
     grid on
+    title('select start-end of application')
     pause
     [t_startEnd,~] = ginput(2)
+    t_startEnd = round(t_startEnd);
     save('PULSE_startEnd.mat','t_startEnd','-mat')
     
     cd ..

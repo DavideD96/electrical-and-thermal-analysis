@@ -1,4 +1,4 @@
-function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
+function [mtotalT] = store_mtotalT_tomography(filename, fr_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-04-12
@@ -22,13 +22,13 @@ function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
         coordname = varargin{1};
     end
 
-    load(append(filename,'CAF_coordinates.mat'))
-    check = exist(append(filename,'CAF_coordinates.mat'),"file");
-    if check ~= 0
-        coordname = append(filename,'CAF_coordinates.mat');
-    end
+    %load(append(filename,'CAF_coordinates.mat'))
+    % check = exist(append(filename,'CAF_coordinates.mat'),"file");
+    % if check ~= 0
+    %     coordname = append(filename,'CAF_coordinates.mat');
+    % end
 
-    coordname
+    %coordname
     m = get_data002(filename, 1, coordname, Flir);
     [Rows, Columns] = size(m);
     mtotalT = zeros(Rows,Columns,fr_end);

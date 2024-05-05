@@ -21,29 +21,29 @@ cd ..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% references %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd(reffolder)
 
-CAF_coord = load(append(refname,'_CAF_coordinates.mat'));
+CAF_coord = load(append(refname,'CAF_coordinates.mat'));
 x_CAF = CAF_coord.CAF_coordinates(:,1); %sdr è immagine totale
 y_CAF = CAF_coord.CAF_coordinates(:,2);
 
-ref_coord_ = load(append(refname,'_ref1_coordinates.mat'));
+ref_coord_ = load(append(refname,'ref1_coordinates.mat'));
 x_ref = ref_coord_.ref_coordinates(1,1); %sdr è immagine totale
 y_ref = ref_coord_.ref_coordinates(1,2);
 
 x_ref = x_ref - x_CAF(1,1) + 1; %sdr ora è CAF
 y_ref = y_ref - y_CAF(1,1) + 1;
 
-groove1_coord_ = load(append(refname,'_groove_a-b_3-6_coordinates.mat'));
+groove1_coord_ = load(append(refname,'groove_a-b_3-6_coordinates.mat'));
 x_groove1 = round(groove1_coord_.groove1_coordinates(:,1)); %sdr è CAF
 y_groove1 = round(groove1_coord_.groove1_coordinates(:,2));
 groove1_coordinates = [x_groove1, y_groove1];
 
-groove2_coord_ = load(append(refname,'_groove_b-c_3-8_coordinates.mat'));
+groove2_coord_ = load(append(refname,'groove_b-c_3-8_coordinates.mat'));
 x_groove2 = groove2_coord_.groove2_coordinates(:,1);
 y_groove2 = groove2_coord_.groove2_coordinates(:,2);
 groove2_coordinates = [x_groove2, y_groove2];
 
 
-groove3_coord_ = load(append(refname,'_groove_c-a_2-8_coordinates.mat'));
+groove3_coord_ = load(append(refname,'groove_c-a_2-8_coordinates.mat'));
 x_groove3 = groove3_coord_.groove3_coordinates(:,1);
 y_groove3 = groove3_coord_.groove3_coordinates(:,2);
 groove3_coordinates = [x_groove3, y_groove3];
@@ -56,16 +56,16 @@ cd ..
 
 cd(path)
 
-save(append(filename,'_groove_a-b_3-6_coordinates.mat'),'groove1_coordinates')
-save(append(filename,'_groove_b-c_3-8_coordinates.mat'),'groove2_coordinates')
-save(append(filename,'_groove_c-a_2-8_coordinates.mat'),'groove3_coordinates')
+save(append(filename,'groove_a-b_3-6_coordinates.mat'),'groove1_coordinates')
+save(append(filename,'groove_b-c_3-8_coordinates.mat'),'groove2_coordinates')
+save(append(filename,'groove_c-a_2-8_coordinates.mat'),'groove3_coordinates')
 
-reftrial = append(filename,num2str(frame),'_ref1_coordinates.mat');
+reftrial = append(filename,'ref1_coordinates.mat');
 check = exist(reftrial,"file");
 
 %%%%%%%%%%%%%%%%%%%%%%%%% compute coordinates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if check == 0
-    m=readtable(append(filename,'.csv'));
+    m=readtable(sprintf(append(filename,'%d.csv'), frame));
     m= m{:,:};
     imagesc(m);
     pause;
@@ -100,8 +100,8 @@ if check == 0
 
     coordinates = coord_trial;
 
-    save(append(filename,'_CAF_coordinates.mat'),'coordinates');
-    save(append(filename,'_ref1_coordinates.mat'),'ref_new');
+    save(append(filename,'CAF_coordinates.mat'),'coordinates');
+    save(append(filename,'ref1_coordinates.mat'),'ref_new');
 end
 
 %cd ..

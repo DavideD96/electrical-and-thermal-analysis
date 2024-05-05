@@ -1,4 +1,4 @@
-function mean_ColdAndHot(nframesHot)
+function mean_ColdAndHot(varargin)
 
 % given a video for conduction mapping, this function computes the mean of
 % the frames when current flows and subtracts it to mean computed when the
@@ -6,9 +6,19 @@ function mean_ColdAndHot(nframesHot)
 % 3 frames before and after each transient are excluded.
 %
 
+
+
 cd termoFiles_mat\
 startEnd = load('PULSE_startEnd.mat');
 startEnd = startEnd.t_startEnd;
+nframesHot = startEnd(2)-startEnd(1);
+
+num = length(varargin);
+
+if num > 0
+    nframesHot = varargin{1};
+end
+
 mtot = load('mtotalT.mat');
 mtot = mtot.mtotalT;
 start = startEnd(1);

@@ -3,7 +3,7 @@ function setInitialRefPoint(filename,frame)
 % This function is called at the beginning of each tomography session in
 % wich is required to compare different thermal images (different folders)
 % You need to specify the filename (something like 
-% 'E26_4Elst_C1_2mm_3-8_IMP1V_f44_-098_'), and a frame.
+% 'E26_4Elst_C1_2mm_3-8_IMP1V_f44_-098_'), and a frame BE CAREFULL, INCLUDE '_'.
 % The program saves:
 %
 % CAF_coordinates.mat
@@ -35,9 +35,9 @@ pause;
 [x,y] = ginput(1); %ref1, respect to new boundaries! ref2 (avoid rotations)
 ref_coordinates = [round(x+CAF_coordinates(1,1)-1),round(y+CAF_coordinates(1,2)-1)];
 
-matfilename=sprintf(append(filename,num2str(frame),'_CAF_coordinates.mat'));
+matfilename=sprintf(append(filename,'CAF_coordinates.mat'));
 save(matfilename,'CAF_coordinates','filename');
-save(append(filename,num2str(frame),'_ref1_coordinates.mat'),'ref_coordinates','filename');
+save(append(filename,'ref1_coordinates.mat'),'ref_coordinates','filename');
 close all;
 
 %set grooves
@@ -53,7 +53,7 @@ groove1_coordinates(2,:) = [x(2),y(1)];
 
 groove1_coordinates(:,1) = round(groove1_coordinates(:,1));
 groove1_coordinates(:,2) = round(groove1_coordinates(:,2));
-save(append(filename,num2str(frame),'_groove_a-b_3-6_coordinates.mat'),'groove1_coordinates','filename');
+save(append(filename,'groove_a-b_3-6_coordinates.mat'),'groove1_coordinates','filename');
  
 title('set b-c/2-3 groove');
 pause
@@ -64,7 +64,7 @@ groove2_coordinates(2,:) = [x(2),y(1)];
 
 groove2_coordinates(:,1) = round(groove2_coordinates(:,1));
 groove2_coordinates(:,2) = round(groove2_coordinates(:,2));
-save(append(filename,num2str(frame),'_groove_b-c_3-8_coordinates.mat'),'groove2_coordinates','filename');
+save(append(filename,'groove_b-c_3-8_coordinates.mat'),'groove2_coordinates','filename');
 
 title('set c-a/1-3 groove');
 pause
@@ -75,6 +75,6 @@ groove3_coordinates(2,:) = [x(2),y(1)];
 
 groove3_coordinates(:,1) = round(groove3_coordinates(:,1));
 groove3_coordinates(:,2) = round(groove3_coordinates(:,2));
-save(append(filename,num2str(frame),'_groove_c-a_2-8_coordinates.mat'),'groove3_coordinates','filename');
+save(append(filename,'groove_c-a_2-8_coordinates.mat'),'groove3_coordinates','filename');
  
 end

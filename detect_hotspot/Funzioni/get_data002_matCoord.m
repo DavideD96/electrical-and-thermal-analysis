@@ -30,10 +30,10 @@ function m = get_data002_matCoord(filename, fr_evento, coord, AvioFlir)
 
     %store data
     if AvioFlir == 0                                               % range di lettura per evitare l'intestazione
-        m1=readtable(append(filename,'.CSV'),'Range','B9:XQ488'); %dimentions = (480x640)
+        m1=readtable(sprintf(append(filename,'%d.CSV'), fr_evento),'Range','B9:XQ488'); %dimentions = (480x640)
         m = m1{:,:};
     elseif AvioFlir == 1
-        m1=readtable(append(filename,'.csv'));%'Range','B9:XQ488');
+        m1=readtable(sprintf(append(filename,'%d.csv'), fr_evento));%'Range','B9:XQ488');
         m = m1{:,:};
     end
     clear m1;
