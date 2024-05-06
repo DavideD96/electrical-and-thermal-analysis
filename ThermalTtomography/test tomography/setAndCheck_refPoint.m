@@ -22,8 +22,8 @@ cd ..
 cd(reffolder)
 
 CAF_coord = load(append(refname,'CAF_coordinates.mat'));
-x_CAF = CAF_coord.CAF_coordinates(:,1); %sdr è immagine totale
-y_CAF = CAF_coord.CAF_coordinates(:,2);
+x_CAF = CAF_coord.coordinates(:,1); %sdr è immagine totale
+y_CAF = CAF_coord.coordinates(:,2);
 
 ref_coord_ = load(append(refname,'ref1_coordinates.mat'));
 x_ref = ref_coord_.ref_coordinates(1,1); %sdr è immagine totale

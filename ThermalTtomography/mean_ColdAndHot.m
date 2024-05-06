@@ -6,9 +6,11 @@ function mean_ColdAndHot(varargin)
 % 3 frames before and after each transient are excluded.
 %
 
+check = exist("termoFiles_mat\","dir");
+if check ~= 0
+    cd termoFiles_mat\
+end
 
-
-cd termoFiles_mat\
 startEnd = load('PULSE_startEnd.mat');
 startEnd = startEnd.t_startEnd;
 nframesHot = startEnd(2)-startEnd(1);
@@ -51,6 +53,8 @@ save('hotMean.mat','hotMean');
 
 imagesc(hotMean-coldMean);
 
-cd ..
+if check ~= 0
+    cd ..
+end
 
 end

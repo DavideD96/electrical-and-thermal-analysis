@@ -1,4 +1,4 @@
-function findRiseFall(frame1,frame2)
+function findRiseFall(frame1,frame2,varargin)
 
 % this function asks to the user to identify an active site (hotspot). Then
 % it shows the evolution of the temperature of the hotspot, and ask to
@@ -6,6 +6,7 @@ function findRiseFall(frame1,frame2)
 % one pulse should have been applied!).
 %
 
+    num = length(varargin);
     cd termoFiles_mat\
     
     figure
@@ -20,19 +21,32 @@ function findRiseFall(frame1,frame2)
     [x,y] = ginput(1);
     x = round(x);
     y = round(y);
-    
+
     %plot(dat(x,y,frame1))
     figure
     temp = dat(x,y,:);
     temp = squeeze(temp(1,1,:));
     plot(temp)
     grid on
-    title('select start-end of application')
-    pause
-    [t_startEnd,~] = ginput(2)
+    
+    if num > 0
+        title('select start of application')
+        pause
+        application_frames = varargin{1};
+        [t_startEnd,~] = ginput(1);
+        t_startEnd = [t_startEnd; t_startEnd+application_frames];
+    else
+        title('select start-end of application')
+        pause
+        [t_startEnd,~] = ginput(2);
+        application_frames = t_startEnd(2)-t_startEnd(1);
+    end
+
     t_startEnd = round(t_startEnd);
     save('PULSE_startEnd.mat','t_startEnd','-mat')
     
     cd ..
+
+    mean_ColdAndHot(application_frames)
 
 end

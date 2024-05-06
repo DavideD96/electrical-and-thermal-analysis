@@ -36,7 +36,8 @@ pause;
 ref_coordinates = [round(x+CAF_coordinates(1,1)-1),round(y+CAF_coordinates(1,2)-1)];
 
 matfilename=sprintf(append(filename,'CAF_coordinates.mat'));
-save(matfilename,'CAF_coordinates','filename');
+coordinates = CAF_coordinates;
+save(matfilename,'coordinates','filename');
 save(append(filename,'ref1_coordinates.mat'),'ref_coordinates','filename');
 close all;
 
