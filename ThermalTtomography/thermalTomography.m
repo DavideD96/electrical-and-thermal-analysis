@@ -13,6 +13,8 @@ function thermalTomography(varargin)
 %    (store_mtotalT in every folder.)
 %    (findRiseFall in every folder.
 %       (it runs also mean_ColdAndHot automatically))
+%    you can run checkGrooves to see if you have located the grooves
+%    correctly.
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % now you have all the information to perform tomography.
