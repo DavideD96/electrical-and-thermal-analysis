@@ -10,9 +10,9 @@ function thermalTomography(varargin)
 % 1) setInitialRefPoint in reference folder.
 %
 % 2) setAndCheck in every folder (except reference).
-%    (store_mtotalT in every folder.)
-%    (findRiseFall in every folder.
-%       (it runs also mean_ColdAndHot automatically))
+%    store_mtotalT in every folder.
+%    findRiseFall in every folder.
+%       (it runs also mean_ColdAndHot automatically)
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % now you have all the information to perform tomography.
@@ -162,8 +162,8 @@ hotMean2 = hotMean2.hotMean;
 Groove2 = hotMean2 - coldMean2;
 Groove2_ = Groove2(coord_Groove_bc(2,2):coord_Groove_bc(3,2),coord_Groove_bc(1,1):coord_Groove_bc(2,1));
 
-if size(Groove2_,2) > size(Groove2_,1)
-    Groove2_ = Groove2_';
+if size(Groove2,2) > size(Groove2,1)
+    Groove2 = Groove2';
 end
 
 cd ..
@@ -188,8 +188,8 @@ hotMean3 = hotMean3.hotMean;
 Groove3 = hotMean3 - coldMean3;
 Groove3_ = Groove3(coord_Groove_ca(2,2):coord_Groove_ca(3,2),coord_Groove_ca(1,1):coord_Groove_ca(2,1));
 
-if size(Groove3_,2) > size(Groove3_,1)
-    Groove3_ = Groove3_';
+if size(Groove3,2) > size(Groove3,1)
+    Groove3 = Groove3';
 end
 
 cd ..
@@ -216,25 +216,25 @@ end
 
 for j = 1:size(ax_mea,2)
 
-    if ax_mea(1,j) == 0 %all
-        Groove1 = mean(Groove1_,2);
-    elseif ax_mea(1,j) == 1 %only axis
-        axis1 = round(size(Groove1_,2)/2);
-        Groove1 = Groove1_(:,axis1);
+    if ax_mea == 0 %all
+        Groove1 = mean(Groove1,2);
+    elseif ax_mea == 1 %only axis
+        axis1 = round(size(Groove1,2)/2);
+        Groove1 = Groove1(:,axis1);
     end
     
-    if ax_mea(1,j) == 0 %all
-        Groove2 = mean(Groove2_,2);
-    elseif ax_mea(1,j) == 1 %only axis
-        axis2 = round(size(Groove2_,2)/2);
-        Groove2 = Groove2_(:,axis2);
+    if ax_mea == 0 %all
+        Groove2 = mean(Groove2,2);
+    elseif ax_mea == 1 %only axis
+        axis2 = round(size(Groove2,2)/2);
+        Groove2 = Groove2(:,axis2);
     end
     
-    if ax_mea(1,j) == 0 %all
-        Groove3 = mean(Groove3_,2);
-    elseif ax_mea(1,j) == 1 %only axis
-        axis3 = round(size(Groove3_,2)/2);
-        Groove3 = Groove3_(:,axis3);
+    if ax_mea == 0 %all
+        Groove3 = mean(Groove3,2);
+    elseif ax_mea == 1 %only axis
+        axis3 = round(size(Groove3,2)/2);
+        Groove3 = Groove3(:,axis3);
     end
 
     %%%%%%%%%%%%%%%%%%%% find global groove resistances %%%%%%%%%%%%%%%%%%%%%%%
@@ -261,48 +261,42 @@ for j = 1:size(ax_mea,2)
 
     figure
     subplot(2,1,1)
-    plot(Groove1)
-    grid on
+    imagesc(Groove1)
     title('temperature along groove1')
-
-    subplot(2,1,2)
-    plot(G_Groove1)
-    grid on
+    colorbar
+    subplot(1,2,2)
+    imagesc(G_Groove1)
     title('conductivity along groove1')
-
+    colorbar
     hold off
     %sum(G_Groove1(:))
     
     figure
     subplot(2,1,1)
-    plot(Groove2)
-    grid on
+    imagesc(Groove2)
     title('temperature along groove2')
-
+    colorbar
     subplot(2,1,2)
-    plot(G_Groove2)
-    grid on
+    imagesc(G_Groove2)
     title('conductivity along groove2')
-
+    colorbar
     hold off
     %sum(G_Groove2(:))
     
     figure
     subplot(2,1,1)
-    plot(Groove3)
-    grid on
+    imagesc(Groove3)
     title('temperature along groove3')
-
+    colorbar
     subplot(2,1,2)
-    plot(G_Groove3)
-    grid on
+    imagesc(G_Groove3)
     title('conductivity along groove3')
-
+    colorbar
     hold off 
     %sum(G_Groove3(:))
-    if ax_mea(1,j) == 0
+    if ax_mea == 0
         analysis_type = '_mean';
-    elseif ax_mea(1,j) == 1 
+    elseif ax_mea == 1 
         analysis_type = '_axis';
     end
 

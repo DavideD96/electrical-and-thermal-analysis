@@ -1,0 +1,150 @@
+function compareAnalysis(step,TorG)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+cd('Tomography results')
+cd(step)
+
+fname = pwd;
+listing = dir(fname);
+
+if TorG == 'T'
+
+    str1_ax = '_axis_Tgroove_a-b_3-6';
+    str2_ax = '_axis_Tgroove_b-c_3-8';
+    str3_ax = '_axis_Tgroove_c-a_2-8';
+    
+    str1_me = '_mean_Tgroove_a-b_3-6';
+    str2_me = '_mean_Tgroove_b-c_3-8';
+    str3_me = '_mean_Tgroove_c-a_2-8';
+
+    figname = 'compareAnalysisT.png';
+    title1_lab = append('temperature a-b/3-6 groove (step ',step,')');
+    title2_lab = append('temperature b-c/3-8 groove (step ',step,')');
+    title3_lab = append('temperature c-a/2-8 groove (step ',step,')');
+    y_lab = '[°C]';
+
+    for k = 1:length(listing)
+       
+        str_complete = listing(k).name;
+    
+        find1_ax = strfind(str_complete,str1_ax);
+        find2_ax = strfind(str_complete,str2_ax);
+        find3_ax = strfind(str_complete,str3_ax);
+    
+        find1_me = strfind(str_complete,str1_me);
+        find2_me = strfind(str_complete,str2_me);
+        find3_me = strfind(str_complete,str3_me);
+    
+        if size(find1_ax,1) ~= 0
+            step_ax_Tgroove1 = load(str_complete);
+            step_ax_Tgroove1 = step_ax_Tgroove1.Groove1;
+        elseif size(find2_ax,1) ~= 0
+            step_ax_Tgroove2 = load(str_complete);
+            step_ax_Tgroove2 = step_ax_Tgroove2.Groove2;
+        elseif size(find3_ax,1) ~= 0
+            step_ax_Tgroove3 = load(str_complete);
+            step_ax_Tgroove3 = step_ax_Tgroove3.Groove3;
+        elseif size(find1_me,1) ~= 0
+            step_me_Tgroove1 = load(str_complete);
+            step_me_Tgroove1 = step_me_Tgroove1.Groove1;
+        elseif size(find2_me,1) ~= 0
+            step_me_Tgroove2 = load(str_complete);
+            step_me_Tgroove2 = step_me_Tgroove2.Groove2;
+        elseif size(find3_me,1) ~= 0
+            step_me_Tgroove3 = load(str_complete);
+            step_me_Tgroove3 = step_me_Tgroove3.Groove3;
+        end
+    end
+
+elseif TorG
+
+    str1_ax = '_axis_Ggroove_a-b_3-6';
+    str2_ax = '_axis_Ggroove_b-c_3-8';
+    str3_ax = '_axis_Ggroove_c-a_2-8';
+    
+    str1_me = '_mean_Ggroove_a-b_3-6';
+    str2_me = '_mean_Ggroove_b-c_3-8';
+    str3_me = '_mean_Ggroove_c-a_2-8';
+
+    figname = 'compareAnalysisG.png';
+    title1_lab = append('conductivity a-b/3-6 groove (step ',step,')');
+    title2_lab = append('conductivity b-c/3-8 groove (step ',step,')');
+    title3_lab = append('conductivity c-a/2-8 groove (step ',step,')');
+    y_lab = '[\Omega^{-1}]';
+
+    for k = 1:length(listing)
+       
+        str_complete = listing(k).name;
+    
+        find1_ax = strfind(str_complete,str1_ax);
+        find2_ax = strfind(str_complete,str2_ax);
+        find3_ax = strfind(str_complete,str3_ax);
+    
+        find1_me = strfind(str_complete,str1_me);
+        find2_me = strfind(str_complete,str2_me);
+        find3_me = strfind(str_complete,str3_me);
+    
+        if size(find1_ax,1) ~= 0
+            step_ax_Tgroove1 = load(str_complete);
+            step_ax_Tgroove1 = step_ax_Tgroove1.G_Groove1;
+        elseif size(find2_ax,1) ~= 0
+            step_ax_Tgroove2 = load(str_complete);
+            step_ax_Tgroove2 = step_ax_Tgroove2.G_Groove2;
+        elseif size(find3_ax,1) ~= 0
+            step_ax_Tgroove3 = load(str_complete);
+            step_ax_Tgroove3 = step_ax_Tgroove3.G_Groove3;
+        elseif size(find1_me,1) ~= 0
+            step_me_Tgroove1 = load(str_complete);
+            step_me_Tgroove1 = step_me_Tgroove1.G_Groove1;
+        elseif size(find2_me,1) ~= 0
+            step_me_Tgroove2 = load(str_complete);
+            step_me_Tgroove2 = step_me_Tgroove2.G_Groove2;
+        elseif size(find3_me,1) ~= 0
+            step_me_Tgroove3 = load(str_complete);
+            step_me_Tgroove3 = step_me_Tgroove3.G_Groove3;
+        end
+    end
+
+end
+
+a = figure('Position',[300 300 1700 400]);
+
+subplot(1,3,1)
+x1 = linspace(1,size(step_ax_Tgroove1,1),size(step_ax_Tgroove1,1));
+plot(x1,step_ax_Tgroove1)
+hold on
+plot(x1,step_me_Tgroove1)
+title(title1_lab)
+xlabel('pixel')
+ylabel(y_lab)
+legend('axis','mean');
+grid on
+
+subplot(1,3,2)
+x2 = linspace(1,size(step_ax_Tgroove2,1),size(step_ax_Tgroove2,1));
+plot(x2,step_ax_Tgroove2)
+hold on
+plot(x2,step_me_Tgroove2)
+title(title2_lab)
+xlabel('pixel')
+ylabel(y_lab)
+legend('axis','mean');
+grid on
+
+subplot(1,3,3)
+x3 = linspace(1,size(step_ax_Tgroove3,1),size(step_ax_Tgroove3,1));
+plot(x3,step_ax_Tgroove3)
+hold on
+plot(x3,step_me_Tgroove3)
+title(title3_lab)
+xlabel('pixel')
+ylabel(y_lab)
+legend('axis','mean');
+grid on
+
+hold off
+
+saveas(a,figname)
+cd ..
+cd ..
+end

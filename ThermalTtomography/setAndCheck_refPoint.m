@@ -80,6 +80,7 @@ if check == 0
         m_trial = get_data002_matCoord(filename,frame,coord_trial,1);
         imagesc(m_trial-m_)
         colorbar
+        title('1 + Enter to finish')
         answer = inputdlg({'Move: up-down (8-2), left-right (4-6)'});
         if answer{1} == '8'
             y = y+1;
@@ -104,7 +105,13 @@ if check == 0
     save(append(filename,'ref1_coordinates.mat'),'ref_new');
 end
 
-%cd ..
-
-colorbar
+    %cd ..
+    
+    colorbar
+    
+    answer = inputdlg({'store mtotalT (1) or not (0)?'});
+    if answer{1} == '1'
+        store_mtotalT(filename,399,append(filename,'CAF_coordinates.mat'));
+        findRiseFall(2,200,150);
+    end
 end
