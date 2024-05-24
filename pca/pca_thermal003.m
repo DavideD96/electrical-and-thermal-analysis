@@ -15,6 +15,7 @@ function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 %   'add_electric_dat' plot time evolution of PCs and conductance together
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+select_point = 0;
 nrighe = 3;
 ncolonne = 4;
 clustering = false;
@@ -33,6 +34,8 @@ for k = 1:2:num
         use_electr = varargin{k+1};
     elseif prod(varargin{k}=='smoothing_before')
         smooth = varargin{k+1};
+    elseif prod(varargin{k}=='select_STTCpoint')
+        select_point = varargin{k+1};
 
     end
 end
@@ -664,5 +667,11 @@ if clustering == true
     silhouette(scores(:,1:N_significant_PC),cluster_id)
 end
 
-
+if select_point == 1
+    figure
+    imagesc(pc4)
+    [x,y] = ginput(1);
+    g2 = round([x,y]);
+    save("g2.mat","g2")
+end
 end

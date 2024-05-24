@@ -32,6 +32,14 @@ for i = 2:neventiA
     end
 end
 
+%cut the edges in order to avoid t < 0 or t > T
+if intervalli_realiA(1,1) < 0
+    intervalli_realiA(1,1) = 0;
+end
+if intervalli_realiA(end,2) > time_serieA(end,1)
+    intervalli_realiA(end,2) = time_serieA(end,1);
+end
+
 %compute T_A
 T_A = sum(intervalli_realiA(:,2)-intervalli_realiA(:,1),"all")/(time_serieA(end,1)-time_serieA(1,1));
 
@@ -61,6 +69,14 @@ for i = 2:neventiB
         intervalli_realiB = [intervalli_realiB; Tempi_occupatiB(i,:)];
         intervallone_indexB = intervallone_indexB + 1;
     end
+end
+
+%cut the edges in order to avoid t < 0 or t > T
+if intervalli_realiB(1,1) < 0
+    intervalli_realiB(1,1) = 0;
+end
+if intervalli_realiB(end,2) > time_serieB(end,1)
+    intervalli_realiB(end,2) = time_serieB(end,1);
 end
 
 %compute T_B
