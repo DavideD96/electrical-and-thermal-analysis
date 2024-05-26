@@ -81,7 +81,7 @@ if set_area == 1
 
     figure;
     zMin = 23;
-    zMax = 27;
+    zMax = 28;
     %clim([zMin, zMax]);
     colormap(cm);
     %surf(m_ridotta);
@@ -121,6 +121,6 @@ else
     %colormap(cm);
     %colorbar
 end
-matr = m;
+matr = m_ridotta;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
