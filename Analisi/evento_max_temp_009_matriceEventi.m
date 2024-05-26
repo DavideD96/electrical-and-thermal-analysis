@@ -1,4 +1,4 @@
-function [peak_max, peak_min, Eventi_supp, matriceEventi] = evento_max_temp_008_matriceEventi(frames_states, frames_states_single, frame_struct, frame_start, fr_diff)
+function [peak_max, peak_min, Eventi_supp, matriceEventi] = evento_max_temp_009_matriceEventi(Events,in_or_mid)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-28 Last modification: 2023-12-6
@@ -8,6 +8,7 @@ function [peak_max, peak_min, Eventi_supp, matriceEventi] = evento_max_temp_008_
 %   'frame_states' = this object is saved in 'Matrice_eventi_doppi' 
 %               is an array --> [time [s], max_coordinate [n° pixel], min_coordinate [n° pixel], max_value, min_value, max_area, min_area, state]
 %               where state = 0 means that there is no event in the frame
+
 %   'frames_states_single' = same as 'frame_state', but without doubling each row. (indice di riga 1 corrisponde a DeltaT calcolata con mtotal(:,:,delay+fr_diff)-mtotal(:,:,delay))
 %   'frame_struct' = struct containing 1 struct per each frame.
 %
@@ -26,6 +27,26 @@ ThermalParameters_ = load('ThermalParameters.mat');
 ThermalParameters = ThermalParameters_.ThermalParameters;
 cd ..
 
+for i = 0 : length(fieldnames(frame_struct)) - 1
+    fname = append("frame", num2str(frame_start-fr_diff + fr_diff +  i));
+    Eventi_supp.(fname)=struct('tempo', 0, 'coordmax', 0, 'coordmin', 0, 'massimi', 0, 'minimi', 0, 'area_max', 0, 'area_min', 0, 'num_evento', 0);
+end
+
+Nframes = size(Events,1);
+
+if in_or_mid == 0 %uso solo inizio per ogni evento
+    fname = append("frame", num2str(frame_start-fr_diff + fr_diff +  i));
+
+    for i = 1:Nframes
+        if Events.(i,2) ~= 0 || Events(i,3) ~= 0
+            
+        end
+    end
+else
+
+
+end
+
 % delay = 100, fr_diff = 3 => mtotalDT(:,:,1) = mtotalT(:,:,103)-mtotal(:,:,100)
 Rows = ThermalParameters.Rows;
 Columns = ThermalParameters.Columns;
@@ -33,15 +54,12 @@ Columns = ThermalParameters.Columns;
 [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
 
 %iniziazlizzo variabili
-frames_states_supp = frames_states;
+frames_states_supp = Events;
 peak_max = zeros(length(frames_states_supp(:,1)), 5);
 peak_min = zeros(length(frames_states_supp(:,1)), 5);
 matriceEventi = zeros(length(frames_states_supp(:,1)), 5); %DD AGGIUNTA UNA COLONNA per DeltaT
 
-for i = 0 : length(fieldnames(frame_struct)) - 1
-    fname = append("frame", num2str(frame_start + fr_diff +  i));
-    Eventi_supp.(fname)=struct('tempo', 0, 'massimi', 0, 'minimi', 0, 'area_max', 0, 'area_min', 0, 'num_evento', 0);
-end
+
 
 %prendo massimi e minimi di ogni evento
 j = 1;
@@ -88,10 +106,10 @@ while j <= length(frames_states_supp(:,8))
 
         % indice+delay+fr_diff-1 è il frame di mtotalT corrispondente a indice
         if max_peaks_array(end, 1) ~= 0 %se c'è un massimo
-            startT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(j/2)+frame_start+fr_diff-1-1);
+            startT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(j/2)+frame_start-fr_diff+fr_diff-1-1);
         end
         if min_peaks_array(end, 1) ~= 0 %se c'è un minimo
-            startT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(j/2)+frame_start+fr_diff-1-1);
+            startT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(j/2)+frame_start-fr_diff+fr_diff-1-1);
         end
 
         %raggruppo eventi (FRAMES LEGATI ALLO STESSO EVENTO?)
@@ -129,10 +147,10 @@ while j <= length(frames_states_supp(:,8))
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         if max_peaks_array(end, 1) ~= 0 %se c'è un minimo
-            endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(i/2)+frame_start+fr_diff-1);
+            endT_h = mtotalT(data_x(max_peaks_array(end, 1)), data_y(max_peaks_array(end, 1)),floor(i/2)+frame_start-fr_diff+fr_diff-1);
         end
         if min_peaks_array(end, 1) ~= 0 %se c'è un minimo
-            endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(i/2)+frame_start+fr_diff-1);
+            endT_l = mtotalT(data_x(min_peaks_array(end, 1)), data_y(min_peaks_array(end, 1)),floor(i/2)+frame_start-fr_diff+fr_diff-1);
         end
 
         if max_peaks_array(1, 2) >= abs(min_peaks_array(1,2)) %se il max di questo frame è > del abs(minimo), allora l'evento + importante è lui
@@ -171,7 +189,7 @@ while j <= length(frames_states_supp(:,8))
             matriceEventi(min_peaks_array(1,5), 5) = endT_l-startT_l;
         end
 
-        fname = append("frame", num2str(frame_start + fr_diff +  max_peaks_array(1,4) - 1));
+        fname = append("frame", num2str(frame_start-fr_diff + fr_diff +  max_peaks_array(1,4) - 1));
         Eventi_supp.(fname).tempo  = frame_struct.(fname).tempo;
         Eventi_supp.(fname).massimi  = frame_struct.(fname).massimi;
         Eventi_supp.(fname).minimi  = frame_struct.(fname).minimi;

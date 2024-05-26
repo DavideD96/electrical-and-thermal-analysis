@@ -32,7 +32,7 @@ group1(:,1) = times(bias+1:end)';
 
 for i = bias+fr_diff : length(fieldnames(Eventi_supp))+bias-1  %ciclo su tutti i frames
     fname = ['frame', num2str(i)];
-    group1(i-bias-fr_diff+1,2) = match_evento_area_001(Eventi_supp.(fname),coord1,2);
+    group1(i-bias-fr_diff+1,2) = match_evento_area_001(Eventi_supp.(fname),coord1,1);
 end
 disp('io')
 %secondo gruppo

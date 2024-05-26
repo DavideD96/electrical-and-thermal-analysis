@@ -157,7 +157,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %DETECTION E ANALISI DATI
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for i = 0 : Nframes -1 %cafone
+for i = 0 : Nframes-1 %cafone
     %stringa per salvataggio dati           % DD ha aggiunto +1                             start! | considering frame_start=3
     fname = ['frame', num2str(frame_start-fr_diff+ i + fr_diff)]; %T = [1,2,3,4,5,6,7,8,9], DT = [4-1,5-2,6-3,7-4,8-5,9-6]
     
@@ -347,7 +347,7 @@ end
     state_min = 0;  
     
     %primo frame a parte
-    fname = ['frame', num2str(frame_start)];
+    fname = ['frame', num2str(frame_start-fr_diff + fr_diff)];
     if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
         eventi_tutti = [Eventi.(fname).massimi; Eventi.(fname).minimi];
     elseif Eventi.(fname).massimi(1,1) ~= 0
