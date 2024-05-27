@@ -31,6 +31,7 @@ group1(:,1) = Eventi(:,1);
 
 for i = 1 : size(Eventi,1)  %ciclo su tutti i frames
     %fname = ['frame', num2str(i)];
+    waitbar(i/size(Eventi,1));
     group1(i,2) = match_evento_area_002(Eventi(i,:),coord1,1); %1=NN
 end
 disp('io')

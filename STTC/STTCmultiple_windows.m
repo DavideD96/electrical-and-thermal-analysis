@@ -11,4 +11,9 @@ plot(sttc(:,1),sttc(:,2))
 xlabel('\Deltat [s]');
 ylabel('STTC [adim.]');
 grid on
+
+newStr1 = erase(series1,'.mat');
+newStr2 = erase(series2,'.mat');
+savefig(append(newStr1,'_VS_',newStr2));
+
 end

@@ -8,6 +8,12 @@ function ci = STTC_001(time_serieA,time_serieB,deltat)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  T_A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+time_serieA = load(time_serieA);
+time_serieA = time_serieA.group1;
+
+time_serieB = load(time_serieB);
+time_serieB = time_serieB.group1;
+
 nsamplA = size(time_serieA);
 eventiA = time_serieA(time_serieA(:,2) ~= 0,:);
 neventiA = size(eventiA,1);

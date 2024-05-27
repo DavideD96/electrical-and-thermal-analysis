@@ -669,9 +669,10 @@ end
 
 if select_point == 1
     figure
-    imagesc(pc4)
+    imagesc(pc2)
     [x,y] = ginput(1);
-    g2 = round([x,y]);
-    save("g2.mat","g2")
+    g1 = round([x,y]);
+    save("g1.mat","g1")
+    close all
 end
 end
