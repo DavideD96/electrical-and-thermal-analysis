@@ -1,4 +1,4 @@
-function int = ISIpuntiSimili(group,method)
+function int = ISIpuntiSimili(group,method,varargin)
 
 %Date: 2019-02-18 Last Modification: --
 %Author: M. Camponovo, D. Decastri, M. Mirigliano
@@ -14,6 +14,15 @@ function int = ISIpuntiSimili(group,method)
 
 group_ = load(group);
 group_ = group_.group1;
+
+num = size(varargin,2);
+nBin = 0;
+
+for k = 1:2:num
+    if prod(varargin{k}=='nBin')
+        nBin = varargin{k+1};
+    end
+end
 
 if prod(method == 'full')
 
@@ -53,8 +62,34 @@ else
     return;
 end
 
+if nBin ~= 0
+    [num, edg] = histcounts(int,nBin);
+else
+    [num, edg] = histcounts(int);
+end
+
+for k = 1:size(edg,2)-1
+    cent(k,1) = (edg(k+1)+edg(k))/2;
+end
+
+a = figure;
+loglog(cent,num,'-o')
+grid on
 name = erase(group,'.mat');
+title(append(name,' ISI'));
 savefig(append(name,'_ISI'));
+saveas(a, append(name,'_ISI.png'),'png');
+
+b = figure('Position',[100 100 1000 150]);
+title(append(name,' events'));
+set(gca,'fontsize', 14) 
+%plot([anlR(1,1),anlR(end,1)],1, '-');
+xlim([group_(1,1),group_(end,1)]);
+hold on;
+gridxy(group_(group_(:,2)~=0,1),'Color','k');
+savefig(append(name,'_barCode'));
+saveas(b, append(name,'_barCode.png'),'png');
+
 end
  
      

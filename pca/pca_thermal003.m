@@ -669,10 +669,68 @@ end
 
 if select_point == 1
     figure
-    imagesc(pc2)
+    imagesc(pc5)
     [x,y] = ginput(1);
-    g1 = round([x,y]);
-    save("g1.mat","g1")
+    g5 = round([x,y]);
+    save("g5.mat","g5")
     close all
+elseif select_point == 2
+
+    nAS = 4;
+    coord = zeros(nAS,2);
+
+    for k=1:nAS
+
+        str1 = append('g',num2str(k));
+        fname = pwd;
+        listing = dir(fname);  
+
+        for j = 1:length(listing)
+            str_complete = listing(j).name; 
+            if size(strfind(str_complete,str1)) ~= 0
+                strutt = load(str_complete);
+                names = fieldnames(strutt); 
+                coord(k,:) = strutt.(names{1});
+                
+            end
+        end
+    end
+
+    pc13 = reshape(coeff(:,13),[rows,col]);
+    pc14 = reshape(coeff(:,14),[rows,col]);
+    pc15 = reshape(coeff(:,15),[rows,col]);
+    pc16 = reshape(coeff(:,16),[rows,col]);
+
+    allpc = zeros(size(pc1,1),size(pc1,2),14);
+    allpc(:,:,1) = pc1;
+    allpc(:,:,2) = pc2;
+    allpc(:,:,3) = pc3;
+    allpc(:,:,4) = pc4;
+    allpc(:,:,5) = pc5;
+    allpc(:,:,6) = pc6;
+    allpc(:,:,7) = pc7;
+    allpc(:,:,8) = pc8;
+    allpc(:,:,9) = pc9;
+    allpc(:,:,10) = pc10;
+    allpc(:,:,11) = pc11;
+    allpc(:,:,12) = pc12;
+    allpc(:,:,13) = pc13;
+    allpc(:,:,14) = pc14;
+
+    for ii = 1:16
+        a = figure;
+        title_name = append('Actve Sites ','pc',num2str(ii));
+        imagesc(allpc(:,:,ii));
+        hold on
+        title(title_name)
+        plot(coord(1,1),coord(1,2),'r+', 'MarkerSize', 20);
+        plot(coord(2,1),coord(2,2),'r+', 'MarkerSize', 20);
+        plot(coord(3,1),coord(3,2),'r+', 'MarkerSize', 20);
+        plot(coord(4,1),coord(4,2),'r+', 'MarkerSize', 20);
+        %plot(coord(5,1),coord(5,2),'g+', 'MarkerSize', 20);
+        savefig(title_name)
+        saveas(a, append(title_name,'.png'),'png');
+    end
 end
+
 end
