@@ -1,0 +1,42 @@
+mtotalDT = load("mtotalDT.mat"); %mtotalDT has Nframes - fr_diff elements 
+mtotalDT = cell2mat(struct2cell(mtotalDT));
+
+load('ThermoColorMap1.mat');
+frameDT = 71;
+
+level = 1;
+wname = 'db4';
+mdiff = mtotalDT(:,:,frameDT);
+
+[C, S] = wavedec2(mdiff, level, wname);
+
+%ricostruzione immagine
+imrec = wrcoef2("a",C,S,wname,level);
+
+limits = [-0.55,1.05];
+f1 = figure;
+surf(mdiff)
+colormap(cm)
+colorbar
+zlim(limits)
+clim(limits)
+xlabel('pixel in x-direction')
+ylabel('pixel in y-direction')
+zlabel('\DeltaT [°C]')
+f1.Position = [100 100 1000 800];
+
+f2 = figure;
+surf(imrec)
+colormap(cm)
+colorbar
+zlim(limits)
+clim(limits)
+xlabel('pixel in x-direction')
+ylabel('pixel in y-direction')
+zlabel('\DeltaT [°C]')
+%'Faces',[1 2 3 4],'Vertices',[18,39,0.5;1,39,0.5;1,1,0.5;18,1,0.5]
+%h1 = patch('Faces',[1 2 3 4],'Vertices',[18,41,0.5;1,41,0.5;1,1,0.5;18,1,0.5]);
+%h2 = patch('Faces',[1 2 3 4],'Vertices',[18,41,-0.5;1,41,-0.5;1,1,-0.5;18,1,-0.5]);
+%h1.FaceAlpha = 1/3;
+%h2.FaceAlpha = 1/3;
+f2.Position = [100 100 1000 800];
