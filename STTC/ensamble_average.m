@@ -1,3 +1,4 @@
+%generate two random series of events and compute STTC.
 
 n_trials = 200;
 npoints = 50; %interval segmentation

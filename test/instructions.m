@@ -11,5 +11,5 @@
 %    cerca_punti_simili2centresByUsr002(matriceEventi,[x,y]) x = col, y = row.
 %
 % stat analysis:
-% 5a) run SSTCmultiple_windows
+% 5a) run STTCmultiple_windows
 % 5b) run ISIpuntiSimili

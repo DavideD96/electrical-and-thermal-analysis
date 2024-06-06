@@ -1,13 +1,9 @@
 function compareAnalysis(step,TorG)
 
 % This function analyzed data stored in the folder "Tomography results".
-% It allows to ccompare two methods for conductivity analysis, i.e., 
-% plotting a slice taken fom groove axis (more sensible to camera noise, 
-% because you don't use MFOV to estimate T), or mean in perpendicular
-% direction to the groove axis.
 % "step" refers to the reading step, and is an integer converted in string
 % (e.g. '1', '2', ...). TorG allows to choose thermal or conductance
-% profile. 
+% profile.
 
 
 cd('Tomography results')

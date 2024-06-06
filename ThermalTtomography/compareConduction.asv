@@ -1,7 +1,6 @@
 function compareConduction(step1, step2)
 
-% This function compares conduction between different reading steps. It is
-% particularly important to see the evolution of conduction due to writings.
+% this function compare conduction between different 
 
 analysis_type = '_mean';
 

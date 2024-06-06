@@ -7,8 +7,7 @@ function setInitialRefPoint(filename,frame)
 % The program allows to set the ROI (i.e., the CAF), by clicking top left
 % and bottom right boundary pixels. Then, you must indicate the refPoint,
 % that is a reference pixel used to choose the ROI in the following files.
-% Then it ask also to set the goove areas IN A WELL DEFINED SEQUENCE (be
-% careful!!): 1) a-b/3-6, 2) b-c/3-8, 3) c-a/2-8.
+% Then it ask also to set the goove areas IN A WELL DEFINED SEQUENCE (.
 %
 % The program saves:
 %

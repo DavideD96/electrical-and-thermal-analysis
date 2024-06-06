@@ -1,7 +1,7 @@
 function checkGrooves()
 
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+% This function allows to visualize the grooves that have been set by
+% setInitiateRefpoint and simila functions.
 
 str1 = 'groove_a-b_3-6';
 str2 = 'groove_b-c_3-8';

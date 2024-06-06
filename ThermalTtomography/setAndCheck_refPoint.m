@@ -2,10 +2,11 @@ function setAndCheck_refPoint(filename,frame,reffolder,refname)
 
 % Author: Davide Decastri
 %
-% This program allows to set a refPoint in a new folder. Should be executed
-% after the execution of setInitialRefPoint.m in the reference folder.
-% Using the reference point is it possible to set automatically the
-% position of the CAF and the grooves.
+% This program allows to set a refPoint in a new folder. it also allows to
+% move it pixel by pixel to choose the best position. 
+% Should be executed after the execution of setInitialRefPoint.m in the 
+% reference folder. Using the reference point is it possible to set 
+% automatically the position of the CAF and the grooves in the current folder.
 %
 %   folder: folder containing new data to analyze (you want to set CAF area 
 %        on these data, according to a fixed reference).
@@ -15,6 +16,13 @@ function setAndCheck_refPoint(filename,frame,reffolder,refname)
 %               'setInitialRefPoint.m')
 %   refname: main name of reference .csv files (something like 
 %           'E26_4Elst_C1_2mm_3-8_IMP1V_f44_-098_')
+%
+% The program saves:             _
+% groove_a-b_3-6_coordinates.mat  |
+% groove_b-c_3-8_coordinates.mat  |  all taken from reference!
+% groove_c-a_2-8_coordinates.mat _|
+% CAF_coordinates.mat
+% ref1_coordinates.mat
 
 path = pwd;
 cd ..

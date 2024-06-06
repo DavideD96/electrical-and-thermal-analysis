@@ -5,7 +5,7 @@
 %
 % 1) setInitialRefPoint in reference folder.
 %
-% 2) setAndCheck in every folder.
+% 2) setAndCheck_refPoint in every folder.
 %    store_mtotalT in every folder.
 %    findRiseFall in every folder.
 %       (it runs also mean_ColdAndHot automatically)

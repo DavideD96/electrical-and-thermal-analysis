@@ -5,6 +5,20 @@ function findRiseFall(frame1,frame2,varargin)
 % indicate the initial increase and the final decrease in temperature (only 
 % one pulse should have been applied!).
 %
+% frame1: frame to compute temperature difference, and thus, to identify
+%         the conductive areas. For example a frame where the CAF is cold
+%         (hot)
+% frame2: frame to compute temperature difference, and thus, to identify
+%         the conductive areas. For example a frame where the CAF is hot
+%         (cold)
+% varargin: frame duration of voltage application. if not specified, the
+%           program asks to indicate both rise and fall frames. It's always
+%           better to indicate this parameter, in order to reduce
+%           uncertainty.
+%
+% This program saves:
+% PULSE_startEnd.mat: array containing pulse start and end frames.
+
 
     num = length(varargin);
     cd termoFiles_mat\
