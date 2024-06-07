@@ -127,9 +127,8 @@ end
 
 load('matriceEventi.mat','matriceEventi');
 
-f = figure;
-pcn = 1;
-pc = reshape(coeff(:,pcn),[rows,col]);
+f = figure
+pc = reshape(coeff(:,1),[rows,col]);
 imagesc(flip(pc,1));
 imagesc(pc)
 
@@ -147,21 +146,14 @@ for k = 1:size(C,1)
     if C(k,1) ~= 0
         y = ceil(C(k,1)/rows);  
         x = C(k,1) - rows*(y-1);
-        plot(y,x,'w.', 'MarkerSize', 1.6*Cn(k,1));
-        %text(y-0.4,x, num2str(Cn(k,1)), 'FontSize', 10, 'Color','w');%[0.3 0.3 0.3]
+        %plot(y,x,'w.', 'MarkerSize', 1.1*Cn(k,1));
+        text(y-0.4,x, num2str(Cn(k,1)), 'FontSize', 10, 'Color', 'k');
         %plot(y-0.5,x+0.5,'Marker',num2str(Cn(k,1)),'MarkerSize',5,'Color','k');
     end
 end
 
-title(append('PC',num2str(pcn)), "FontSize",24);
-%xlim([0,18])
-%ylim([0,39])
 f.Position = [100,100,400,900];
-% colorbar
-% fontsize('increase')
-% fontsize('increase')
-% fontsize('increase')
-% fontsize('increase')
+colorbar
 
 axis equal
 hold off
