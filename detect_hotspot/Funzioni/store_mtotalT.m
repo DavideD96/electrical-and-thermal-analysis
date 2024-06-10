@@ -14,7 +14,7 @@ function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
 %   'coordname' = name of file with coordinates of the wanted region
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Flir = 0;
+    Flir = 1;
 
     num = length(varargin);
 
