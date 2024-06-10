@@ -17,6 +17,7 @@ group_ = group_.group1;
 
 num = size(varargin,2);
 nBin = 0;
+int = [];
 
 for k = 1:2:num
     if prod(varargin{k}=='nBin')
