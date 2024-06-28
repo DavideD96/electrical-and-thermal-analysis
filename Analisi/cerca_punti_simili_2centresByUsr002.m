@@ -1,4 +1,4 @@
-function group1 = cerca_punti_simili_2centresByUsr002(Eventi, coord1)
+function group1 = cerca_punti_simili_2centresByUsr002(coord1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
@@ -14,10 +14,12 @@ function group1 = cerca_punti_simili_2centresByUsr002(Eventi, coord1)
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
 
-% cd termoFiles_mat\
+cd termoFiles_mat\
 % times_ = load('timesDT.mat');
 % times = times_.times;
-% cd ..
+Eventi = load('MatriceEventi.mat');
+Eventi = Eventi.matriceEventi;
+cd ..
 
 % if frame_start > fr_diff
 %     bias = frame_start;

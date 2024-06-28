@@ -1,0 +1,39 @@
+ANALISI TERMICHE (DD 28/06/24)
+
+					A) export .mat, set parameters for analysis
+
+1) place yourself on the directory containing all .CSV files. In the following this folder is called "esportazione".
+2) run locate_CAF('name', 10) and select CAF area (top left and bottom right angles)
+	'name' = name of the file, without the frame number at the end (e.g. 'campione1_5V_folder20_50Hz_')
+	10 = number of frame to display image.
+3) create a folder inside "esportazione", named 'parameters'. Create a struct named 'ThermalParameters' with fields:
+	'soglia_max' = threshold to identify positive thermal events.
+	'soglia_min' = threshold to identify negative thermal events.
+ 	'fr_diff' = frame difference that you are going to use to build the differential time series. (3 means
+		4th-1st, 5th-2nd, …)
+	'samplfr' = sampling frequency.
+	'Columns' = x dimension.
+	'Rows'= y dimension.
+	'detectMeth' = detection method (Always use 'ThreshNN').
+   these parameters are going to be used in iterate running of your programs.
+4) run store_mtotalT('name', Nframes, 'name_CAF_coordinates') where 'name_CAF_coordinates.mat' added the string 	'CAF_coordinates.mat' at the end of 'name'.
+5) run store_mtotalDT()
+_______________________________________________________________________________________________________________________
+
+					B) Thermal preprocessing and detection
+
+1) you COULD run DD_read_thermocamera_singleFrameDiff('name', frame,'name_CAF_coordinates.mat') to identify the frame 
+	where electric stimulation starts. frame should be varied to allow the detection.
+2) run analisi_Nframes011_multiEvento008_NOpV(starting_frame). You can produce a video by adding a pair-value argument
+	at the end: analisi_Nframes011_multiEvento008_NOpV(starting_frame,'MakeVideo',1). This program perform detection.
+_______________________________________________________________________________________________________________________
+
+					C) build data for analysis and perform statisical analysis
+
+1) run evento_max_temp_009_matriceEventi(0) to collapse all frames containing the same events. This function returns and 
+	saves the object 'matriceEventi'.
+
+Now you can choose a pixel to identify an active site. Its coordinates are x (column) and y (row).
+
+2) run cerca_punti_simili_2centresByUsr002([y,x]) 
+2) ISI: 

@@ -1,4 +1,4 @@
-function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
+function [mtotalDT, times, Rows, Columns] = store_mtotalDT()
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-01-15
 %Author: Cristina Zuccali
@@ -28,6 +28,14 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
 % mtotalDT  =     1   2  ...                            N-3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %primo frame differenza
+    cd parameters\
+        param = load("ThermalParameters.mat");
+        param = param.ThermalParameters;
+        fr_diff = param.fr_diff;
+    cd ..
+    cd termoFiles_mat 
+    mtotalT = load('mtotalT.mat');
+    mtotalT = mtotalT.mtotalT;
     mdiff = mtotalT(:,:, fr_diff + 1) - mtotalT(:,:, 1); %fr_diff = 3 => m(:,:,4)-m(:,:,1), skipping 2,3
     [Rows, Columns] = size(mdiff);
     n_delta_frames = length(mtotalT(1,1,:))-fr_diff; %[1,2,3,4,5,6,7], fr_diff = 3 => [4-1,5-2,6-3,7-4] (length = 7-3)
@@ -50,7 +58,7 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT(fr_diff, mtotalT)
     if check ~= 7
         mkdir termoFiles_mat;
     end
-    cd termoFiles_mat 
+    
     save("mtotalDT.mat", "mtotalDT");
     save("timesDT", "times")
     cd ..
