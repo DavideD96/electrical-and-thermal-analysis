@@ -1,7 +1,7 @@
 function coordinates = locate_CAF(filename,frame)
 
 %importante! inizia sempre a selezionare dall'angolo in alto a sinistra.
-AvioFlir = 0;
+AvioFlir = 1;
 load('ThermoColorMap1.mat');
 colormap(cm);
 
