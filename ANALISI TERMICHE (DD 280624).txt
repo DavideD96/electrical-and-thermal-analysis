@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 28/06/24)
+ANALISI TERMICHE (DD 1/07/24)
 
 					A) export .mat, set parameters for analysis
 
@@ -35,5 +35,20 @@ ________________________________________________________________________________
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (column) and y (row).
 
-2) run cerca_punti_simili_2centresByUsr002([y,x]) 
-2) ISI: 
+2) run cerca_punti_simili_2centresByUsr002([y,x]). This function stores data for statistical analysis in a variable named:
+   'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates.
+
+ISI analysis:
+3) run ISIpuntiSimili('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the
+   number of bin in the histogram (in this case 50). If nBin is not specified, the program uses the Freedman-Diaconis rule.
+
+Barabasi analysis:
+4) run BarabasiPuntiSimili('group_x[x]_y[y].mat',deltaT), where deltaT is the time window (in [s]).
+
+________________________________________________________________________________________________________________________
+
+					D) Principal Component Analysis
+
+1) move to the directory '\termoFiles_mat', i.e., where mtotalT and mtotalDT are stored.
+2) run pca_thermal003('mtotalT.mat','Data.mat',[frame_start,frame_end],'N_significant_PC',12,'add_electric_dat',false,...
+   ...'smoothing_before',0,'remove_0contours',false)

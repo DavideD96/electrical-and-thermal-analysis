@@ -1,8 +1,11 @@
-function [originalHist,randomHist] = BarabasiPuntiSimili(analyzed,timeWindow)
+function [originalHist,randomHist] = BarabasiPuntiSimili(group,timeWindow)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
-justSwitches = analyzed(analyzed(:,2)~=0, :);
+group_ = load(group);
+group_ = group_.group1;
+
+justSwitches = group_(group_(:,2)~=0, :);
 %size(justSwitches)
 v = countDeltaT(justSwitches, timeWindow);
 [N, edg] = histcounts(v, 'BinMethod','integers','Normalization','probability');
@@ -15,9 +18,9 @@ hold on;
 originalHist.histCount = N;
 originalHist.histCentres = edg;
 
-random01 = analyzed(randperm(size(analyzed,1)),2); 
+random01 = group_(randperm(size(group_,1)),2); 
 random01(random01~=0) = 1; 
-random_anlR = analyzed;
+random_anlR = group_;
 
 random_anlR = [random_anlR, random01];
 random_anlR = random_anlR(random_anlR(:,end)==1, :);
@@ -39,19 +42,19 @@ randomHist.histCentres =  edg_;
 figure;
 subplot(2,1,1);
 title('Not shuffled');
-anlR01 = analyzed(:,2);
+anlR01 = group_(:,2);
 anlR01(anlR01~=0) = 1;
 
-xlim([analyzed(1,1),analyzed(end,1)]);
+xlim([group_(1,1),group_(end,1)]);
 hold on;
-notShuffled = analyzed(anlR01(:,end)==1,:);
+notShuffled = group_(anlR01(:,end)==1,:);
 gridxy(notShuffled(:,1), 'Color','k');
 hold off;
 
 subplot(2,1,2);
 title('Shuffled');
 
-xlim([analyzed(1,1),analyzed(end,1)]);
+xlim([group_(1,1),group_(end,1)]);
 hold on;
 gridxy(random_anlR(:,1), 'Color','k');
 hold off;
