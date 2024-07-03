@@ -419,6 +419,7 @@ end
                     n_evento = [n_evento,last_n];
                 end
             end
+            Eventi.(fname).num_evento = n_evento;
 
         else %finisce il burst, azzero l'array
             framestates(i+1,5) = 0;
