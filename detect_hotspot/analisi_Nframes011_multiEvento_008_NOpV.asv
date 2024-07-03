@@ -363,15 +363,12 @@ end
         n_evento = linspace(1,size(eventi_tutti,1),size(eventi_tutti,1));
         last_n = size(eventi_tutti,1);
     else
-        n_evento = [];
         last_n = 0;
     end
     eventi_tutti_prec = eventi_tutti; %siamo al primo frame
 
     Eventi.(fname).num_evento = n_evento; %aggiunto da DD
-    if isempty(n_evento) == 0
-        framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
-    end
+    framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
 
     for i=1:Nframes-1 %cafone
         fname = ['frame', num2str(frame_start-fr_diff+ i + fr_diff)];
@@ -397,14 +394,16 @@ end
         % end
 
         %se c'è un evento
+
         eventi_tutti = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
+        eventi_tutti_prec = eventi_tutti;
 
         n_evento_prec = n_evento;
-        n_evento = []; %andrò ora a costruirlo
+        n_evento_prec = [];
 
         if isempty(eventi_tutti) == 0
 
-            n_evento = n_evento_prec;
+            n_evento_prec = n_evento;
             %last_n = find(n_evento_prec,1,'last');
 
             for l = 1:size(eventi_tutti_prec,1)
@@ -419,13 +418,11 @@ end
                     n_evento = [n_evento,last_n];
                 end
             end
-
+            Eventi.(fname).num_evento = n_evento;
         else %finisce il burst, azzero l'array
             framestates(i+1,5) = 0;
-            Eventi.(fname).num_evento = [];
+            Eventi.(fname).num_evento = 0;
         end
-        %n_evento
-        eventi_tutti_prec = eventi_tutti;
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

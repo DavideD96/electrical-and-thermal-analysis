@@ -73,9 +73,10 @@ function state = raggruppo_2eventi_003(frame_1, frame_2, Rows, Columns)
                         end                   
                     end
                 end
-                j = j + 1;
+                    j = j + 1;
+                end
+                i = i +1;
             end
-            i = i +1;
         end
         %assegno gli eventi non assegnati
         for k = 1:numero_eventi_2
