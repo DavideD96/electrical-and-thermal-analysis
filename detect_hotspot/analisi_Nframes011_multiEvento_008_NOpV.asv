@@ -120,6 +120,7 @@ level =1;
 
 %ARRAY PER SALVARE I DATI
 %(coord, value)
+fr
 Nframes = length(mtotalDT(1,1,:)) - frame_start+fr_diff+1; %T = [1,2,3,4,5,6,7,8,9], DT = [4-1,5-2,6-3,7-4,8-5,9-6], frame_start = 3 => DT = [7-4,...]
 framestates = zeros(Nframes,6);
 
@@ -363,12 +364,15 @@ end
         n_evento = linspace(1,size(eventi_tutti,1),size(eventi_tutti,1));
         last_n = size(eventi_tutti,1);
     else
+        n_evento = [];
         last_n = 0;
     end
     eventi_tutti_prec = eventi_tutti; %siamo al primo frame
 
     Eventi.(fname).num_evento = n_evento; %aggiunto da DD
-    framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
+    if isempty(n_evento) == 0
+        framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
+    end
 
     for i=1:Nframes-1 %cafone
         fname = ['frame', num2str(frame_start-fr_diff+ i + fr_diff)];
@@ -394,16 +398,14 @@ end
         % end
 
         %se c'è un evento
-
         eventi_tutti = raggruppo_2eventi_003(eventi_tutti_prec, eventi_tutti, Rows, Columns);
-        eventi_tutti_prec = eventi_tutti;
 
         n_evento_prec = n_evento;
-        n_evento_prec = [];
+        n_evento = []; %andrò ora a costruirlo
 
         if isempty(eventi_tutti) == 0
 
-            n_evento_prec = n_evento;
+            n_evento = n_evento_prec;
             %last_n = find(n_evento_prec,1,'last');
 
             for l = 1:size(eventi_tutti_prec,1)
@@ -419,10 +421,13 @@ end
                 end
             end
             Eventi.(fname).num_evento = n_evento;
+
         else %finisce il burst, azzero l'array
             framestates(i+1,5) = 0;
-            Eventi.(fname).num_evento = 0;
+            Eventi.(fname).num_evento = [];
         end
+        %n_evento
+        eventi_tutti_prec = eventi_tutti;
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -467,7 +472,7 @@ end
    
     results = [framestates(:,6),framestates(:,1),framestates(:,3),framestates(:,2),framestates(:,4),area_massimi(:,1),area_minimi(:,1),framestates(:,5)];
     
-    save('frames.mat', 'results');
+    %save('frames.mat', 'results');
     %save("Eventi_Termo_principali.mat", 'results');
     %save("results.mat", 'results');
 
