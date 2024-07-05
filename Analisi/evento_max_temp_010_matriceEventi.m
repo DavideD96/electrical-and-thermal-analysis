@@ -38,25 +38,29 @@ Events = Events.DD_Eventi;
 
 Nframes = size(Events,1);
 n_evt = 0;
+
 %matriceEventi = zeros(Nframes,8); %time, location max, location min, amplitude max, amplitude min, state (n° evento)
-%matriceEventi = cell(Nframes,8); %time, location max, location min, amplitude max, amplitude min, state (n° evento)
+DD_matriceEventi = Events; %time, event (coordinates amplitude), state (n° evento)
 
 if in_or_mid == 0 %uso solo inizio per ogni evento
     % fname = append("frame", num2str(frame_start-fr_diff + fr_diff +  i));
     for i = 1:Nframes    
-        if size(Events{i,3},1) ~= 0
-            n_evt = max(Events{i,3});
-            Events{}
+        if size(DD_matriceEventi{i,3},1) ~= 0            
+            DD_matriceEventi{i,3}(1,DD_matriceEventi{i,3} <= n_evt) = 0;
+            DD_matriceEventi{i,2}(DD_matriceEventi{i,3} <= n_evt,:) = 0; 
+            if max(DD_matriceEventi{i,3}) > n_evt
+                n_evt = max(DD_matriceEventi{i,3}); %numero evento
+            end
         end
     end
 end
 
 %erase 0
-for i = firstFrame:Nframes+firstFrame-1
-    matriceEventi{i-firstFrame+1,8}(matriceEventi{i-firstFrame+1,8}==0) = [];
-end
+% for i = firstFrame:Nframes+firstFrame-1
+%     DD_matriceEventi{i-firstFrame+1,8}(DD_matriceEventi{i-firstFrame+1,8}==0) = [];
+% end
 
 cd termoFiles_mat
-save('DDmatriceEventi',"matriceEventi") %
+save('DD_matriceEventi',"DD_matriceEventi") %
 cd ..
 end

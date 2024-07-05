@@ -15,8 +15,7 @@ function stato = match_evento_area_003(frame,coord,neigh)
 %   'state' = 1 if the two frames detect the same event, 0 if not
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-eventi_max = cell2mat(frame(2)); %matrice n-righe 2 colonne [coordinate, amplitudes]
-eventi_min = cell2mat(frame(3));
+eventi = frame; %matrice n-righe 2 colonne [coordinate, amplitudes]
 
 cd parameters
 ThermalParameters_ = load('ThermalParameters.mat');
@@ -41,13 +40,13 @@ end
 
 stato = 0;
 
-if any(eventi_max(1,1)) %qualche evento (nuovo)?
+if any(eventi(1,1)) %qualche evento (nuovo)?
     
     i = 1;
-    while i <= size(eventi_max(:,1),1) && stato == 0 %ciclo sugli eventi 
+    while i <= size(eventi(:,1),1) && stato == 0 %ciclo sugli eventi 
 
-        y_ev = data_y(eventi_max(i,1));
-        x_ev = data_x(eventi_max(i,1));
+        y_ev = data_y(eventi(i,1));
+        x_ev = data_x(eventi(i,1));
         j = 1;
         while j <= size(coord_forComp,1) && stato == 0 %ciclo sui vicini (primi o secondi che siano)
             if coord_forComp(j,1) == x_ev && coord_forComp(j,2) == y_ev
@@ -57,26 +56,8 @@ if any(eventi_max(1,1)) %qualche evento (nuovo)?
             j = j+1;
         end
         i = i+1;
-    end 
+    end
 end
 
-if any(eventi_min(1,1))
-    
-    stato = 0;
-    i = 1;
-    while i <= size(eventi_min(:,1),1) && stato == 0 %ciclo sugli eventi 
-
-        y_ev = data_y(eventi_min(i,1));
-        x_ev = data_x(eventi_min(i,1));
-        j = 1;
-        while j <= size(coord_forComp,1) && stato == 0 %ciclo sui vicini (primi o secondi che siano)
-            if coord_forComp(j,1) == x_ev && coord_forComp(j,2) == y_ev
-                stato = 1; %match trovato!!!
-            end
-            j = j+1;
-        end
-        i = i+1;
-    end 
-end
 end
 

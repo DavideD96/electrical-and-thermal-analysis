@@ -17,8 +17,8 @@ function group1 = cerca_punti_simili_2centresByUsr003(coord1)
 cd termoFiles_mat\
 % times_ = load('timesDT.mat');
 % times = times_.times;
-Eventi = load('MatriceEventi.mat');
-Eventi = Eventi.matriceEventi;
+Eventi = load('DD_MatriceEventi.mat');
+Eventi = Eventi.DD_matriceEventi;
 cd ..
 
 % if frame_start > fr_diff
@@ -34,9 +34,9 @@ group1(:,1) = cell2mat(Eventi(:,1));
 for i = 1 : size(Eventi,1)  %ciclo su tutti i frames
     %fname = ['frame', num2str(i)];
     waitbar(i/size(Eventi,1));
-    group1(i,2) = match_evento_area_003(Eventi(i,:),coord1,1); %1=NN
+    group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1); %1=NN
 end
-disp('io')
+%disp('io')
 name = append('group_x',num2str(coord1(1)),'_y',num2str(coord1(2)));
 
 save(name,"group1") %
