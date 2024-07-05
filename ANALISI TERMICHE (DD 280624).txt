@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 1/07/24)
+ANALISI TERMICHE (DD 05/07/24)
 
 					A) export .mat, set parameters for analysis
 
@@ -30,12 +30,12 @@ ________________________________________________________________________________
 
 					C) build data for analysis and perform statisical analysis
 
-1) run evento_max_temp_009_matriceEventi(0) to collapse all frames containing the same events. This function returns and 
+1) run evento_max_temp_010_matriceEventi(0) to collapse all frames containing the same events. This function returns and 
 	saves the object 'matriceEventi'.
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (column) and y (row).
 
-2) run cerca_punti_simili_2centresByUsr002([y,x]). This function stores data for statistical analysis in a variable named:
+2) run cerca_punti_simili_2centresByUsr003([y,x]). This function stores data for statistical analysis in a variable named:
    'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates.
 
 ISI analysis:
