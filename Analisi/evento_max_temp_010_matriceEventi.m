@@ -22,8 +22,8 @@ function matriceEventi = evento_max_temp_010_matriceEventi(in_or_mid)
 %     mtotalT = cell2mat(struct2cell(mtotalT));
 % cd ..ù
 
-frames = load("Eventi_Termo.mat"); %timesDT has Nframes - fr_diff elements
-Events = cell2mat(struct2cell(frames));
+Events = load("DD_Eventi_Termo.mat"); %timesDT has Nframes - fr_diff elements
+Events = Events.DD_Eventi;
 
 % 
 % cd 'parameters'
@@ -36,39 +36,27 @@ Events = cell2mat(struct2cell(frames));
 %     Eventi_supp.(fname)=struct('tempo', 0, 'coordmax', 0, 'coordmin', 0, 'massimi', 0, 'minimi', 0, 'area_max', 0, 'area_min', 0, 'num_evento', 0);
 % end
 
-fn=fieldnames(Events);
-Nframes = numel(fn);
-firstFrame = str2num(erase(fn{1},'frame'));
-
-ind_evt = 0;
-
+Nframes = size(Events,1);
+n_evt = 0;
 %matriceEventi = zeros(Nframes,8); %time, location max, location min, amplitude max, amplitude min, state (n° evento)
-matriceEventi = cell(Nframes,8); %time, location max, location min, amplitude max, amplitude min, state (n° evento)
+%matriceEventi = cell(Nframes,8); %time, location max, location min, amplitude max, amplitude min, state (n° evento)
 
 if in_or_mid == 0 %uso solo inizio per ogni evento
     % fname = append("frame", num2str(frame_start-fr_diff + fr_diff +  i));
-
-    for i = firstFrame:Nframes+firstFrame-1
-        nframe = append('frame',num2str(i));    
-
-        matriceEventi{i-firstFrame+1,1} = Events.(nframe).tempo;        
-        matriceEventi{i-firstFrame+1,2} = Events.(nframe).massimi;
-        matriceEventi{i-firstFrame+1,3} = Events.(nframe).minimi;
-
-        if size(Events.(nframe).massimi,2) ~= 1 || size(Events.(nframe).minimi,2) ~= 1
-            matriceEventi{i-firstFrame+1,8} = Events.(nframe).num_evento;
-            matriceEventi{i-firstFrame+1,8}(matriceEventi{i-firstFrame+1,8}<=ind_evt) = 0;
-            ind_evt = max(Events.(nframe).num_evento);
-        else
-            matriceEventi{i-firstFrame+1,8} = 0;
+    for i = 1:Nframes    
+        if size(Events{i,3},1) ~= 0
+            n_evt = max(Events{i,3});
+            Events{}
         end
     end
-else
+end
 
-
+%erase 0
+for i = firstFrame:Nframes+firstFrame-1
+    matriceEventi{i-firstFrame+1,8}(matriceEventi{i-firstFrame+1,8}==0) = [];
 end
 
 cd termoFiles_mat
-save('matriceEventi',"matriceEventi") %
+save('DDmatriceEventi',"matriceEventi") %
 cd ..
 end

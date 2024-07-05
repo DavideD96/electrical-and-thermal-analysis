@@ -244,6 +244,7 @@ for i = 0 : Nframes -1 %cafone
     
     %salvataggio dati in struct
     Eventi.(fname) = struct('tempo', times(1, frame_start-fr_diff + i),'massimi', {max_evento}, 'minimi', {min_evento}, 'area_max', area_massimi(i+1,1), 'area_min', area_minimi(i+1,1), 'num_evento', 0);
+    DD_Eventi = cell(Nframes,3); %time, events (coordinate, amplitude, area), n_events
     %Eventi.(fname)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Video con mappa a colori 2d e stampa dei punti in cui ho un evento
@@ -373,6 +374,10 @@ end
         framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
     end
 
+    DD_Eventi{1,1} = Eventi.(fname).tempo;
+    DD_Eventi{1,2} = eventi_tutti;
+    DD_Eventi{1,3} = n_evento;
+
     for i=1:Nframes-1 %cafone
         fname = ['frame', num2str(frame_start-fr_diff+ i + fr_diff)];
         if Eventi.(fname).massimi(1,1) ~= 0 & Eventi.(fname).minimi(1,1) ~= 0
@@ -426,7 +431,11 @@ end
             Eventi.(fname).num_evento = [];
         end
         %n_evento
-        eventi_tutti_prec = eventi_tutti;
+        eventi_tutti_prec = eventi_tutti;    
+        
+    DD_Eventi{i+1,1} = Eventi.(fname).tempo;
+    DD_Eventi{i+1,2} = eventi_tutti;
+    DD_Eventi{i+1,3} = n_evento;
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -476,7 +485,7 @@ end
     %save("results.mat", 'results');
 
     %salva struttura
-    save("Eventi_Termo.mat", "Eventi");
+    save("DD_Eventi_Termo.mat", "DD_Eventi");
 end
 
 

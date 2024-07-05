@@ -1,4 +1,4 @@
-function group1 = cerca_punti_simili_2centresByUsr002(coord1)
+function group1 = cerca_punti_simili_2centresByUsr003(coord1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
