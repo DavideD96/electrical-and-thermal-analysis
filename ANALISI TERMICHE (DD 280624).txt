@@ -53,7 +53,13 @@ Barabasi analysis:
 
 ________________________________________________________________________________________________________________________
 
-					D) Principal Component Analysis
+					D) Thermal characterization
+
+1) run histo_thermal001 to plot an histogram of the temperature differences associated to Thermal events detected.
+
+________________________________________________________________________________________________________________________
+
+					E) Principal Component Analysis
 
 1) move to the directory '\termoFiles_mat', i.e., where mtotalT and mtotalDT are stored.
 2) run pca_thermal003('mtotalT.mat','Data.mat',[frame_start,frame_end],'N_significant_PC',12,'add_electric_dat',false,...
