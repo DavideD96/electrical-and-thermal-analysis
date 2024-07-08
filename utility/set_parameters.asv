@@ -1,16 +1,5 @@
-function set_parameters(delay, varargin)
 
-% set parameters for thermal detection
-%
-% default:
-%
-% soglia_max = 0.5;
-% soglia_min = -0.5;
-% samplfr = 30;
-% fr_diff = 3;
-% detectMeth = 'ThreshNN';
-% delay = 0;
-%
+function set_parameters(varargin)
 
 num = length(varargin);
 
@@ -21,9 +10,9 @@ fr_diff = 3;
 detectMeth = 'ThreshNN';
 
 cd termoFiles_mat
-    m = load('mtotalT.mat');
-    m = m.mtotalT;
-cd ..
+
+m = load('mtotalT.mat');
+m = m.mtotalT;
 
 rows = size(m,1);
 col = size(m,2);
@@ -47,18 +36,6 @@ ThermalParameters.soglia_min = soglia_min;
 ThermalParameters.samplfr = samplfr;
 ThermalParameters.fr_diff = fr_diff;
 ThermalParameters.detectMeth = detectMeth;
-ThermalParameters.Rows = rows;
-ThermalParameters.Columns = col;
-ThermalParameters.delay = delay;
-
-check = exist('parameters','dir');
-
-if check ~= 7
-    mkdir parameters
-end
-
-cd parameters
-    save("ThermalParameters.mat","ThermalParameters")
-cd ..
+ThermalParameters.Rows = rows
 
 end

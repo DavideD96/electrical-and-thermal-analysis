@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 05/07/24)
+ANALISI TERMICHE (DD 08/07/24)
 
 					A) export .mat, set parameters for analysis
 
@@ -6,25 +6,31 @@ ANALISI TERMICHE (DD 05/07/24)
 2) run locate_CAF('name', 10) and select CAF area (top left and bottom right angles)
 	'name' = name of the file, without the frame number at the end (e.g. 'campione1_5V_folder20_50Hz_')
 	10 = number of frame to display image.
-3) create a folder inside "esportazione", named 'parameters'. Create a struct named 'ThermalParameters' with fields:
-	'soglia_max' = threshold to identify positive thermal events.
-	'soglia_min' = threshold to identify negative thermal events.
+3) you COULD run DD_read_thermocamera_singleFrameDiff('name', frame,'name_CAF_coordinates.mat') to identify the frame 
+	where electric stimulation starts. frame should be varied to allow the detection.
+4) run store_mtotalT('name', Nframes, 'name_CAF_coordinates') where 'name_CAF_coordinates.mat' added the string 	'CAF_coordinates.mat' at the end of 'name'. Nframes is the number of frames in the video. This operation can 
+	take several minutes (or hours for videos containing > 10.000 frames). The data collected in the ROI are now
+	stored in a 3D .mat array located in the folder 'termoFiles_mat'.
+5) run set_parameters(delay,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
+   (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts.
+   This functions creates a folder inside "esportazione", named 'parameters' and creates a struct named
+   'ThermalParameters' with fields:
+	'soglia_max' = threshold to identify positive thermal events (should be > 0) (set with 'threshold+').
+	'soglia_min' = threshold to identify negative thermal events (should be < 0) (set with 'threshold-').
  	'fr_diff' = frame difference that you are going to use to build the differential time series. (3 means
-		4th-1st, 5th-2nd, …)
-	'samplfr' = sampling frequency.
+		4th-1st, 5th-2nd, …) (set with 'frame_diff').
+	'samplfr' = sampling frequency (set with 'sampl_freq').
 	'Columns' = x dimension.
 	'Rows'= y dimension.
 	'detectMeth' = detection method (Always use 'ThreshNN').
-   these parameters are going to be used in iterate running of your programs.
-4) run store_mtotalT('name', Nframes, 'name_CAF_coordinates') where 'name_CAF_coordinates.mat' added the string 	'CAF_coordinates.mat' at the end of 'name'.
-5) run store_mtotalDT()
+   these parameters are going to be used in iterate running of your programs. You can run set_parameters() for 
+   default parameters (see function help).
+6) run store_mtotalDT(). The differential time series is stored in a 3D .mat array.
 _______________________________________________________________________________________________________________________
 
 					B) Thermal preprocessing and detection
 
-1) you COULD run DD_read_thermocamera_singleFrameDiff('name', frame,'name_CAF_coordinates.mat') to identify the frame 
-	where electric stimulation starts. frame should be varied to allow the detection.
-2) run analisi_Nframes011_multiEvento008_NOpV(starting_frame). You can produce a video by adding a pair-value argument
+1) run analisi_Nframes011_multiEvento008_NOpV(). You can produce a video by adding a pair-value argument
 	at the end: analisi_Nframes011_multiEvento008_NOpV(starting_frame,'MakeVideo',1). This program perform detection.
 _______________________________________________________________________________________________________________________
 

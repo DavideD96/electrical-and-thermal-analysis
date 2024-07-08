@@ -41,7 +41,6 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT()
     n_delta_frames = length(mtotalT(1,1,:))-fr_diff; %[1,2,3,4,5,6,7], fr_diff = 3 => [4-1,5-2,6-3,7-4] (length = 7-3)
     mtotalDT = zeros(Rows,Columns, n_delta_frames);
     times = zeros(1, n_delta_frames);
-
     mtotalDT(:,:,1) = mdiff;
     times(1,1) = (fr_diff)/30; %campionamento a 30Hz
 
