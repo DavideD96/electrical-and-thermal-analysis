@@ -11,6 +11,7 @@ function stato = match_evento_area_003(frame,coord,neigh)
 %           area_min, state)
 %   'neigh' = 1,2. 1 uses nearest neigh, 2 uses 2nd nearest neigh
 %   'coord' = [x,y] vector contatining coordinate of cluster centre.
+%             [colonna,riga]
 %
 %   'state' = 1 if the two frames detect the same event, 0 if not
 %
@@ -47,8 +48,9 @@ if any(eventi) %qualche evento (nuovo)?
 
         if eventi(i,1) ~= 0
 
-        y_ev = data_y(eventi(i,1));
-        x_ev = data_x(eventi(i,1));
+        y_ev = ceil(eventi(i,1)/Rows);%data_y(eventi(i,1));
+        x_ev = eventi(i,1) - Rows*(y_ev-1);%data_x(eventi(i,1));
+
         j = 1;
             while j <= size(coord_forComp,1) && stato == 0 %ciclo sui vicini (primi o secondi che siano)
                 if coord_forComp(j,1) == x_ev && coord_forComp(j,2) == y_ev
