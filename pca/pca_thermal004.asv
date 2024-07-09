@@ -191,16 +191,11 @@ end
 if select_point == 1
     pc2disp = inputdlg({'select a PC'});
     figure
-    pc1 = reshape(coeff(:,str2double(pc2disp{1})),[rows,col]);
+    pc1 = reshape(coeff(:,pc2disp{1}),[rows,col]);
     imagesc(flip(pc1,1));
     pause
     [x,y] = ginput(1);
-    coord = [y,x]
-    save(append('coord_x',num2str(x),'_y',num2str(y)),"coord",'-mat');
+    save(append('coord_x',num2str(x),'_y',num2str(y)),[y,x]);
 end
-
-m = load("mtotalT.mat");
-m = m.mtotalT;
-imagesc(m(:,:,331))
 
 end

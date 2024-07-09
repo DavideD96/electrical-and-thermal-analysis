@@ -371,9 +371,10 @@ end
     eventi_tutti_prec = eventi_tutti; %siamo al primo frame
 
     Eventi.(fname).num_evento = n_evento; %aggiunto da DD
-    if isempty(n_evento) == 0
-        framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
-    end
+    
+    % if isempty(n_evento) == 0
+    %     framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
+    % end
 
     DD_Eventi{1,1} = Eventi.(fname).tempo;
     DD_Eventi{1,2} = eventi_tutti;
