@@ -42,7 +42,7 @@ n_event = 0;
     for i=1:s - 1 %ho aggiunto il "-1"
         [mv,sv] = sigmaSelector(matr(i,col),matsigma);
         
-        if abs(rel(i)) > ns*sv/mv %o sei nel bel mezzo di un evento, o alla fine
+        if abs(rel(i)) > ns*sv/abs(mv) %o sei nel bel mezzo di un evento, o alla fine
             if event_happening == 0 %allora l'evento inizia
                 event_happening = i;
                 n_event = n_event + 1;

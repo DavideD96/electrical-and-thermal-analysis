@@ -91,6 +91,25 @@ gridxy(group_(group_(:,2)~=0,1),'Color','k');
 savefig(append(name,'_barCode'));
 saveas(b, append(name,'_barCode.png'),'png');
 
+cent(num == 0) = [];
+num(num == 0) = [];
+
+numlog = log10(num);
+centlog = log10(cent);
+
+figure
+P = polyfit(centlog,numlog,1);
+yfit = P(1)*centlog+P(2);
+hold on;
+plot(centlog, numlog,'-o')
+plot(centlog,yfit);
+
+grid on
+xlabel('log_{10}(ISI [s]/[s])')
+ylabel('log_{10}(counts)')
+annotation('textbox', [0.65, 0.8, 0.1, 0.1], 'String', append('ang coeff = ',num2str(P(1))));
+hold off
+
 end
  
      
