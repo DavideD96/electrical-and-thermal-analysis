@@ -27,11 +27,12 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT()
 %                4-1 5-2                              N-(N-3)
 % mtotalDT  =     1   2  ...                            N-3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %primo frame differenza
+    %primo frame differenzaopen pcope
     cd parameters\
         param = load("ThermalParameters.mat");
         param = param.ThermalParameters;
         fr_diff = param.fr_diff;
+        freq = param.samplfr;
     cd ..
     cd termoFiles_mat 
     mtotalT = load('mtotalT.mat');
@@ -41,16 +42,15 @@ function [mtotalDT, times, Rows, Columns] = store_mtotalDT()
     n_delta_frames = length(mtotalT(1,1,:))-fr_diff; %[1,2,3,4,5,6,7], fr_diff = 3 => [4-1,5-2,6-3,7-4] (length = 7-3)
     mtotalDT = zeros(Rows,Columns, n_delta_frames);
     times = zeros(1, n_delta_frames);
-
     mtotalDT(:,:,1) = mdiff;
-    times(1,1) = (fr_diff)/30; %campionamento a 30Hz
+    times(1,1) = (fr_diff) / freq; %campionamento a 30Hz
 
     %altri
     for i = 2 : n_delta_frames   
         mdiff = mtotalT(:,:, fr_diff + i) - mtotalT(:,:, i);
 
         mtotalDT(:,:,i) = mdiff;
-        times(1,i) = (fr_diff + i-1) / 30; % campionamento a 30Hz
+        times(1,i) = (fr_diff + i-1) / freq; % campionamento a 30Hz
     end
 
     %salvo matrice

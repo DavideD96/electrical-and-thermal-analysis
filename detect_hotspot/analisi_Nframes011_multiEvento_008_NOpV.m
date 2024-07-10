@@ -1,4 +1,4 @@
-function [results, Eventi] = analisi_Nframes011_multiEvento_008_NOpV(frame_start, varargin)
+function [results, Eventi] = analisi_Nframes011_multiEvento_008_NOpV(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %prova: eseguo primi vicini sull'immagine originale e non ricostruita
 %Date: 2023-10-12 Last modification: 2024-07-02
@@ -72,19 +72,11 @@ for k = 1:2:num
         wavelet = varargin{k+1};
     elseif prod(varargin{k}=='makeVideo')
         video = varargin{k+1}; % 1 = video
-
     elseif prod(varargin{k}=='dCentroid')
         dec_centroid = varargin{k+1}; % 1 = trova i centri di massa dei frame con evento
     end
 end
 
-%Cartella per salvataggio dati
-check = exist(['ThermoResults\frStart', num2str(frame_start)]);
-    if check ~= 7
-        mkdir(['ThermoResults\frStart', num2str(frame_start)]);
-    end
-
-    path = [pwd,'\ThermoResults\frStart', num2str(frame_start), '\',];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %CARICA DATI
@@ -110,6 +102,15 @@ soglia_max = ThermalParameters.soglia_max;
 soglia_min = ThermalParameters.soglia_min;
 Rows = ThermalParameters.Rows;
 Columns = ThermalParameters.Columns;
+frame_start = ThermalParameters.delay;
+
+%Cartella per salvataggio dati
+check = exist(['ThermoResults\frStart', num2str(frame_start)]);
+if check ~= 7
+    mkdir(['ThermoResults\frStart', num2str(frame_start)]);
+end
+
+path = [pwd,'\ThermoResults\frStart', num2str(frame_start), '\',];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %INIZIALIZZO I PARAMETRI
@@ -370,9 +371,10 @@ end
     eventi_tutti_prec = eventi_tutti; %siamo al primo frame
 
     Eventi.(fname).num_evento = n_evento; %aggiunto da DD
-    if isempty(n_evento) == 0
-        framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
-    end
+    
+    % if isempty(n_evento) == 0
+    %     framestates(1,5) = Eventi.(fname).num_evento; %aggiunto da DD
+    % end
 
     DD_Eventi{1,1} = Eventi.(fname).tempo;
     DD_Eventi{1,2} = eventi_tutti;

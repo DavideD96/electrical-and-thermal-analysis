@@ -62,8 +62,8 @@ if set_area == 1
     n_pixel = 0;
 
     if set_area == 1
-        for i=1:480 %righe
-            for j=1:640 %colonne
+        for i=1:size(m1,1)%480 %righe
+            for j=1:size(m1,1)%640 %colonne
                 if j >= boundaries(i,1) && j <= boundaries(i,2)
                     
                     n_pixel = n_pixel + 1;
