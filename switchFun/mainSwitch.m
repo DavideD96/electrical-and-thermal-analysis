@@ -47,6 +47,7 @@ function s = mainSwitch(nomefile,folder,method,varargin)
 %   'sel': sel is true if you ewant to select a data interval, false
 %          otherwise
 %   'ntv': select intervals to compute mean and std.
+%   'RoG': save resistance of conductance.
 %   'OPT': an array of three charachters that define the meaning of value
 %       'col' - VALUE spcifies the index of the column to be analyzed
 %       'nos' - VALUE is the number of sigma to recognize swithing events
@@ -507,4 +508,5 @@ end
     %%change '\' in '/' on mac
     %build_path = [path,'\V',num2str(anlR(1,2)),'_sig',num2str(nos),'_tm',erase(num2str(bl),'.'),'_dt',num2str(deltaT),'.mat'];
     %save(build_path, 's');
+    save("detection.mat",'s')
 end

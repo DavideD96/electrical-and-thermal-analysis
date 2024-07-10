@@ -53,9 +53,9 @@ n_event = 0;
                     analyzed(i,end-1) = 0; %detected yet
                 else %il primo evento finisce e ne inizia un altro
                     if RoG == 0
-                        analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                        analyzed(event_happening,end) = matr(i,end) - matr(event_happening,end); %modifica Davide: no col ma end (resistenza)
                     else
-                        analyzed(event_happening,end) = 1./matr(i,col) - 1./matr(event_happening,col);
+                        analyzed(event_happening,end) = 1./matr(i,end) - 1./matr(event_happening,end);
                     end
                     event_happening = i;
                     n_event = n_event + 1;
@@ -89,9 +89,9 @@ n_event = 0;
             if i > 1
                 if event_happening ~= 0
                     if RoG == 0
-                        analyzed(event_happening,end) = matr(i,col) - matr(event_happening,col);
+                        analyzed(event_happening,end) = matr(i,end) - matr(event_happening,end);
                     else
-                        analyzed(event_happening,end) = 1./matr(i,col) - 1./matr(event_happening,col);
+                        analyzed(event_happening,end) = 1./matr(i,end) - 1./matr(event_happening,end);
                     end
                     plot(matr(i,1), matr(i,col), 'or');
                     event_happening = 0;

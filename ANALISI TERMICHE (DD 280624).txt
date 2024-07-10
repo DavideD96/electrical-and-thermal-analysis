@@ -25,7 +25,7 @@ ________________________________________________________________________________
 1) you COULD run DD_read_thermocamera_singleFrameDiff('name', frame,'name_CAF_coordinates.mat') to identify the frame 
 	where electric stimulation starts. frame should be varied to allow the detection.
 2) run analisi_Nframes011_multiEvento008_NOpV(starting_frame). You can produce a video by adding a pair-value argument
-	at the end: analisi_Nframes011_multiEvento008_NOpV(starting_frame,'MakeVideo',1). This program perform detection.
+	at the end: analisi_Nframes011_multiEvento_008_NOpV(starting_frame,'MakeVideo',1). This program perform detection.
 _______________________________________________________________________________________________________________________
 
 					C) build data for analysis and perform statisical analysis
@@ -35,7 +35,7 @@ ________________________________________________________________________________
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (column) and y (row).
 
-2) run cerca_punti_simili_2centresByUsr003([y,x]). This function stores data for statistical analysis in a variable named:
+2) run cerca_punti_simili_2centresByUsr003([x,y]). This function stores data for statistical analysis in a variable named:
    'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates.
 
 ISI analysis:

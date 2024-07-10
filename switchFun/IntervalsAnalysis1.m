@@ -69,9 +69,15 @@ if selectInt == true
         subplot(2,1,1);
         subplot(graph);
         hold on;
-        plot(T(lower:upper), R(lower:upper));
+        plot(T(lower:upper), R(lower:upper))
         hold off;
     end    
+
+    check = exist(folder,"dir");
+
+    if check ~= 7
+        mkdir(folder)
+    end
 
     cd(folder)
     save 'R_noise_interval.mat' c
