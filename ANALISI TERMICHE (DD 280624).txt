@@ -11,6 +11,8 @@ ANALISI TERMICHE (DD 08/07/24)
 4) run store_mtotalT('name', Nframes, 'name_CAF_coordinates') where 'name_CAF_coordinates.mat' added the string 	'CAF_coordinates.mat' at the end of 'name'. Nframes is the number of frames in the video. This operation can 
 	take several minutes (or hours for videos containing > 10.000 frames). The data collected in the ROI are now
 	stored in a 3D .mat array located in the folder 'termoFiles_mat'.
+   Alternatively, you can run store_mtotalT8core('name', Nframes, 'name_CAF_coordinates') to parallelize the operation
+   and significantly reduce the time required for the convertion.
 5) run set_parameters(delay,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
    (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts.
    This functions creates a folder inside "esportazione", named 'parameters' and creates a struct named

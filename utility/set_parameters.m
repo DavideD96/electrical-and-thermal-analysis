@@ -51,9 +51,9 @@ ThermalParameters.Rows = rows;
 ThermalParameters.Columns = col;
 ThermalParameters.delay = delay;
 
-check = exist('parameters','dir');
+check = isfolder('parameters');
 
-if check ~= 7
+if check == 0
     mkdir parameters
 end
 

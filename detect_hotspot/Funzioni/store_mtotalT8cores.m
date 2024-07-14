@@ -1,4 +1,4 @@
-function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
+function store_mtotalT8cores(filename, fr_end, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-04-12
@@ -15,6 +15,17 @@ function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Flir = 1;
+
+    % Verifica se il Parallel Computing Toolbox è disponibile
+    if ~license('test', 'Distrib_Computing_Toolbox')
+        error('Il Parallel Computing Toolbox non è disponibile.');
+    end
+
+    % Avvia un pool di worker per il parallel computing
+    pool = gcp('nocreate'); % Verifica se esiste già un pool
+    if isempty(pool)
+        pool = parpool('local', 6); % Avvia un nuovo pool con 8 core
+    end
 
     num = length(varargin);
 
@@ -35,14 +46,16 @@ function [mtotalT] = store_mtotalT(filename, fr_end, varargin)
 
     mtotalT(:,:,1) = m;
     
-    for i = 2 : fr_end
-        waitbar(i/fr_end)
-        m = get_data002(filename, i, coordname, Flir);
-        mtotalT(:,:,i) = m;
+    parfor i = 2:fr_end
+        %waitbar(i/fr_end)
+        mtotalT(:, :, i) = get_data002(filename, i, coordname, Flir);        
     end
 
+    % Opzionale: chiudi il pool di worker al termine del lavoro
+    delete(gcp('nocreate'));
+
     %salvo matrice
-    check = isfolder('termoFiles_mat','dir');
+    check = isfolder('termoFiles_mat');
     if check == 0
         mkdir termoFiles_mat;
     end
