@@ -36,7 +36,7 @@ for k = 1:2:num
     elseif prod(varargin{k}=='smoothing_before')
         smooth = varargin{k+1};
     elseif prod(varargin{k}=='select_STTCpoint')
-        select_point = varargin{k+1}
+        select_point = varargin{k+1};
     elseif prod(varargin{k}=='select_on_PC_num')
         pc_number = varargin{k+1};
     elseif prod(varargin{k}=='check_act_sites_')

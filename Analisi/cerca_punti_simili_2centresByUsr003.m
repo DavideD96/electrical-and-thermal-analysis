@@ -14,12 +14,29 @@ function group1 = cerca_punti_simili_2centresByUsr003(coord1)
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
 
-cd termoFiles_mat\
-% times_ = load('timesDT.mat');
-% times = times_.times;
-Eventi = load('DD_MatriceEventi.mat');
-Eventi = Eventi.DD_matriceEventi;
-cd ..
+folder = pwd;
+
+if prod(folder(end-13:end) ~= 'termoFiles_mat')
+    cd termoFiles_mat
+    % times_ = load('timesDT.mat');
+    % times = times_.times;
+    Eventi = load('DD_MatriceEventi.mat');
+    Eventi = Eventi.DD_matriceEventi;
+    cd ..
+    cd parameters
+    ThermalParameters_ = load('ThermalParameters.mat');
+    ThermalParameters = ThermalParameters_.ThermalParameters;
+    cd ..
+else
+    Eventi = load('DD_MatriceEventi.mat');
+    Eventi = Eventi.DD_matriceEventi;
+    cd ..
+    cd parameters
+    ThermalParameters_ = load('ThermalParameters.mat');
+    ThermalParameters = ThermalParameters_.ThermalParameters;
+    cd ..
+    cd termoFiles_mat
+end
 
 cd parameters
 ThermalParameters_ = load('ThermalParameters.mat');
