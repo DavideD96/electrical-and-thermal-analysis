@@ -102,6 +102,11 @@ else
     nIntervals = 1;
     cd(folder)
     name = 'R_noise_interval.mat';
+    check = exist(name,"file");
+
+    if check == 0
+        error('This is the first run: You need to choose an interval.')
+    end
     c_ = load(name);
     c = c_.c;
     cd ..
