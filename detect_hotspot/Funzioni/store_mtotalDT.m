@@ -1,4 +1,4 @@
-function [mtotalDT, times, Rows, Columns] = store_mtotalDT()
+function store_mtotalDT()
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-01-15
 %Author: Cristina Zuccali
