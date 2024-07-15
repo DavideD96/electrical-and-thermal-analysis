@@ -12,9 +12,10 @@ ANALISI TERMICHE (DD 08/07/24)
 	take several minutes (or hours for videos containing > 10.000 frames). The data collected in the ROI are now
 	stored in a 3D .mat array located in the folder 'termoFiles_mat'.
    Alternatively, you can run store_mtotalT8core('name', Nframes, 'name_CAF_coordinates') to parallelize the operation
-   and significantly reduce the time required for the convertion.
-5) run set_parameters(delay,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
-   (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts.
+   and significantly reduce the time required for the conversion.
+5) run set_parameters(delay,fin,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
+   (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts. fin is the frame 
+   where electric stimulation finishes. these parameter allow to avoid false events detection.
    This functions creates a folder inside "esportazione", named 'parameters' and creates a struct named
    'ThermalParameters' with fields:
 	'soglia_max' = threshold to identify positive thermal events (should be > 0) (set with 'threshold+').
@@ -43,8 +44,18 @@ ________________________________________________________________________________
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (row) and y (column).
 
-2) run cerca_punti_simili_2centresByUsr003([y,x]). This function stores data for statistical analysis in a variable named:
-   'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates.
+2) run cerca_punti_simili_2centresByUsr003([x,y]). This function stores data for statistical analysis in a variable named:
+   'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates. 
+
+   [BE CAREFUL: x = row, y = column. The conversion [x_ev,y_ev] -> pixel number is done in this way:
+		
+	y_ev = ceil(eventi(i,1)/Rows);
+        x_ev = eventi(i,1) - Rows*(y_ev-1);
+
+    where x_ev and y_ev are the coordinates of the detected event]
+
+   Alternatively, you can run cerca_punti_simili_2centresByUsr003_8cores([x,y]) to parallelize the operation
+   and significantly reduce the time.
 
 ISI analysis:
 3) run ISIpuntiSimili('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the

@@ -1,4 +1,4 @@
-function set_parameters(delay, varargin)
+function set_parameters(delay,frame_end, varargin)
 
 % set parameters for thermal detection
 %
@@ -50,6 +50,7 @@ ThermalParameters.detectMeth = detectMeth;
 ThermalParameters.Rows = rows;
 ThermalParameters.Columns = col;
 ThermalParameters.delay = delay;
+ThermalParameters.end_stimulation = frame_end;
 
 check = isfolder('parameters');
 

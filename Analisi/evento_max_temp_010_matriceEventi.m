@@ -1,4 +1,4 @@
-function matriceEventi = evento_max_temp_010_matriceEventi(in_or_mid)
+function evento_max_temp_010_matriceEventi(in_or_mid)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-28 Last modification: 2023-12-6
@@ -22,6 +22,7 @@ function matriceEventi = evento_max_temp_010_matriceEventi(in_or_mid)
 %     mtotalT = cell2mat(struct2cell(mtotalT));
 % cd ..ù
 
+cd termoFiles_mat
 Events = load("DD_Eventi_Termo.mat"); %timesDT has Nframes - fr_diff elements
 Events = Events.DD_Eventi;
 
@@ -60,7 +61,6 @@ end
 %     DD_matriceEventi{i-firstFrame+1,8}(DD_matriceEventi{i-firstFrame+1,8}==0) = [];
 % end
 
-cd termoFiles_mat
 save('DD_matriceEventi',"DD_matriceEventi") %
 cd ..
 end

@@ -36,7 +36,8 @@ for k = 1:2:num
         smooth = varargin{k+1};
     elseif prod(varargin{k}=='select_STTCpoint')
         select_point = varargin{k+1};
-
+    elseif prod(varargin{k}=='select_on_PC_num')
+        pc_number = varargin{k+1};
     end
 end
 
@@ -669,10 +670,11 @@ end
 
 if select_point == 1
     figure
-    imagesc(pc5)
+    pc = reshape(coeff(:,pc_number),[rows,col]);
+    imagesc(pc)
     [x,y] = ginput(1);
-    g5 = round([x,y]);
-    save("g5.mat","g5")
+    g_coord = round([x,y]);
+    save(append("g_x",num2str(round(y)),"_y",num2str(round(x)),".mat"),"g_coord")
     close all
 elseif select_point == 2
 

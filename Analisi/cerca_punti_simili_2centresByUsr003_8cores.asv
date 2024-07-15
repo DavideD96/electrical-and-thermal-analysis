@@ -1,11 +1,12 @@
-function group1 = cerca_punti_simili_2centresByUsr003(coord1)
+function group1 = cerca_punti_simili_2centresByUsr003_8cores(coord1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cerca_punti_simili001(massimi, minimi) e associa evento resistivo
 %
 % raggruppa gli eventi che avvengono nello stesso punto (primi vicini)
 %
-%   'coord1' = coordinates of the first cluster
+%   'coord1' = coordinates of the first cluster [x,y] where x is row, y
+%              column.
 %   'Eventi' = struct containing 1 struct per frame: each of this contains 
 %           info about events: time, maximum coord, minimum coord, areas, 
 %           event count.
@@ -13,6 +14,17 @@ function group1 = cerca_punti_simili_2centresByUsr003(coord1)
 
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
+
+% Verifica se il Parallel Computing Toolbox è disponibile
+if ~license('test', 'Distrib_Computing_Toolbox')
+    error('Il Parallel Computing Toolbox non è disponibile.');
+end
+
+% Avvia un pool di worker per il parallel computing
+pool = gcp('nocreate'); % Verifica se esiste già un pool
+if isempty(pool)
+    pool = parpool('local', 6); % Avvia un nuovo pool con 8 core
+end
 
 cd termoFiles_mat\
 % times_ = load('timesDT.mat');
@@ -31,18 +43,19 @@ cd ..
 group1 = zeros(size(Eventi,1),2);
 group1(:,1) = cell2mat(Eventi(:,1));
 
-for i = 1 : size(Eventi,1)  %ciclo su tutti i frames
+parfor i = 1 : size(Eventi,1)  %ciclo su tutti i frames
     %fname = ['frame', num2str(i)];
     waitbar(i/size(Eventi,1));
     group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1); %1=NN
 end
+
+% Opzionale: chiudi il pool di worker al termine del lavoro
+delete(gcp('nocreate'));
+
 %disp('io')
 name = append('group_x',num2str(coord1(1)),'_y',num2str(coord1(2)));
 
-cd termoFiles_mat
-save(name,"group1") 
-cd ..
-%
+save(name,"group1") %
 %secondo gruppo
 % group2 = zeros(length(fieldnames(Eventi_supp)),2);
 % group2(:,1) = times(1:end-(bias))';

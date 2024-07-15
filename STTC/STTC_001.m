@@ -15,7 +15,7 @@ debug = 0;
 
 for i = 1:2:num
     if prod(varargin{i} == 'mat_or_work')
-        mat_or_work = varargin{i+1};
+        mat_or_work = varargin{i+1}; %use variables stored in workspace?
     elseif prod(varargin{i} == 'displ_debug')
         debug = 1;
     end

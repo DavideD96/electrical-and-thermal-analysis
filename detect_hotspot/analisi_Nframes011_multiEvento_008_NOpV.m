@@ -103,6 +103,7 @@ soglia_min = ThermalParameters.soglia_min;
 Rows = ThermalParameters.Rows;
 Columns = ThermalParameters.Columns;
 frame_start = ThermalParameters.delay;
+frame_end = ThermalParameters.end_stimulation;
 
 %Cartella per salvataggio dati
 check = exist(['ThermoResults\frStart', num2str(frame_start)]);
@@ -121,7 +122,7 @@ level =1;
 
 %ARRAY PER SALVARE I DATI
 %(coord, value)
-Nframes = length(mtotalDT(1,1,:)) - frame_start+fr_diff+1; %T = [1,2,3,4,5,6,7,8,9], DT = [4-1,5-2,6-3,7-4,8-5,9-6], frame_start = 3 => DT = [7-4,...]
+Nframes = frame_end - frame_start +1; %length(mtotalDT(1,1,:)) - frame_start+fr_diff+1; %T = [1,2,3,4,5,6,7,8,9], DT = [4-1,5-2,6-3,7-4,8-5,9-6], frame_start = 3 => DT = [7-4,...]
 framestates = zeros(Nframes,6);
 
 %VARIABILI VIDEO
@@ -487,7 +488,9 @@ end
     %save("results.mat", 'results');
 
     %salva struttura
+    cd termoFiles_mat
     save("DD_Eventi_Termo.mat", "DD_Eventi");
+    cd ..
 end
 
 
