@@ -1,4 +1,4 @@
-function stato = match_evento_area_003(frame,coord,neigh)
+function stato = match_evento_area_003(frame,coord,neigh,ThermalParameters)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-02-21 Last modification: 2024-02-21
 %Author: Cristina Zuccali, Davide Decastri
@@ -18,15 +18,17 @@ function stato = match_evento_area_003(frame,coord,neigh)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 eventi = frame; %matrice n-righe 2 colonne [coordinate, amplitudes]
 
-cd parameters
-ThermalParameters_ = load('ThermalParameters.mat');
-ThermalParameters = ThermalParameters_.ThermalParameters;
-cd ..
+%%%%%%% tolto per ridurre tempi di esecuzione in chiamate ripetute %%%%%%%%
+% cd parameters
+% ThermalParameters_ = load('ThermalParameters.mat');
+% ThermalParameters = ThermalParameters_.ThermalParameters;
+% cd ..
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Columns = ThermalParameters.Columns;
 Rows = ThermalParameters.Rows;
 
-[data_x, data_y] = meshgrid(1:Columns, 1:Rows);
+%[data_x, data_y] = meshgrid(1:Columns, 1:Rows);
 
 x_1 = coord(1,1); %coord del punto selezionato
 y_1 = coord(1,2); %coord del punto selezionato

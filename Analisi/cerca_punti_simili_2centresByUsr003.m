@@ -21,6 +21,11 @@ Eventi = load('DD_MatriceEventi.mat');
 Eventi = Eventi.DD_matriceEventi;
 cd ..
 
+cd parameters
+ThermalParameters_ = load('ThermalParameters.mat');
+ThermalParameters = ThermalParameters_.ThermalParameters;
+cd ..
+
 % if frame_start > fr_diff
 %     bias = frame_start;
 % else
@@ -34,7 +39,7 @@ group1(:,1) = cell2mat(Eventi(:,1));
 for i = 1 : size(Eventi,1)  %ciclo su tutti i frames
     %fname = ['frame', num2str(i)];
     waitbar(i/size(Eventi,1));
-    group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1); %1=NN
+    group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1,ThermalParameters); %1=NN
 end
 %disp('io')
 name = append('group_x',num2str(coord1(1)),'_y',num2str(coord1(2)));

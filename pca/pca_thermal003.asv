@@ -719,6 +719,10 @@ if select_point ~= 0
     axis equal
     swapPc = {'1'};
     while swapPc{1} ~= '2'
+        hold on
+        for kk = 1:size(coordinates,1)
+            plot(coordinates(kk,1),coordinates(kk,2),'w.', 'MarkerSize', 12);
+        end
         swapPc = inputdlg('swap pc? [0,1]. 2 to end');
         if swapPc{1} == '1'
             pc_number = pc_number + 1;
@@ -726,13 +730,8 @@ if select_point ~= 0
             imagesc(pc)
             axis equal
         end
-
-        hold on
-        for kk = 1:size(coordinates,1)
-            plot(coordinates(kk,1),coordinates(kk,2),'w.', 'MarkerSize', 12);
-        end        
         [x,y] = ginput(1);
-        coordinates = [coordinates;round([x,y])];
+        coordinates = [coordinates;round([x,y])];      
     end
 
     % g_coord = round([x,y]);

@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 08/07/24)
+ANALISI TERMICHE (DD 15/07/24)
 
 					A) export .mat, set parameters for analysis
 
@@ -44,7 +44,12 @@ ________________________________________________________________________________
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (row) and y (column).
 
-2) run cerca_punti_simili_2centresByUsr003([x,y]). This function stores data for statistical analysis in a variable named:
+2) run pca_thermal003('mtotalT.mat','Data.mat',[frame_start,frame_end],'N_significant_PC',12,'add_electric_dat',false,
+   'smoothing_before',0,'remove_0contours',false,'select_STTCpoint',1,'select_on_PC_num',1) to choose a point store data
+   regarding one single Active Site.
+
+   Alternatively:
+   run cerca_punti_simili_2centresByUsr003([x,y]). This function stores data for statistical analysis in a variable named:
    'group_x[x]_y[y].mat', where [x] and [y] are integers corresponding to x and y coordinates. 
 
    [BE CAREFUL: x = row, y = column. The conversion [x_ev,y_ev] -> pixel number is done in this way:

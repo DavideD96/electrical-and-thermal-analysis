@@ -16,6 +16,8 @@ function store_mtotalT8cores(filename, fr_end, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     Flir = 1;
 
+    ncores = feature('numcores');
+
     % Verifica se il Parallel Computing Toolbox è disponibile
     if ~license('test', 'Distrib_Computing_Toolbox')
         error('Il Parallel Computing Toolbox non è disponibile.');
@@ -24,7 +26,7 @@ function store_mtotalT8cores(filename, fr_end, varargin)
     % Avvia un pool di worker per il parallel computing
     pool = gcp('nocreate'); % Verifica se esiste già un pool
     if isempty(pool)
-        pool = parpool('local', 6); % Avvia un nuovo pool con 8 core
+        pool = parpool('local', ncores); % Avvia un nuovo pool con 8 core
     end
 
     num = length(varargin);

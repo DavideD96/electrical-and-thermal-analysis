@@ -36,6 +36,11 @@ Eventi = load('DD_MatriceEventi.mat');
 Eventi = Eventi.DD_matriceEventi;
 cd ..
 
+cd parameters
+ThermalParameters_ = load('ThermalParameters.mat');
+ThermalParameters = ThermalParameters_.ThermalParameters;
+cd ..
+
 % if frame_start > fr_diff
 %     bias = frame_start;
 % else
@@ -49,7 +54,7 @@ group1(:,1) = cell2mat(Eventi(:,1));
 parfor i = 1 : size(Eventi,1)  %ciclo su tutti i frames
     %fname = ['frame', num2str(i)];
     waitbar(i/size(Eventi,1));
-    group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1); %1=NN
+    group1(i,2) = match_evento_area_003(Eventi{i,2},coord1,1,ThermalParameters); %1=NN
 end
 
 % Opzionale: chiudi il pool di worker al termine del lavoro
