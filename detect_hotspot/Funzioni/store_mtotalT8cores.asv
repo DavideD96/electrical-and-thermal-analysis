@@ -14,33 +14,25 @@ function store_mtotalT8cores(filename, fr_end, varargin)
 %   'coordname' = name of file with coordinates of the wanted region
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+h = 0;
 allfr = zeros(50000,1);
 listing = dir(pwd);
 nfiles = length(listing);
-f = waitbar(0,'1','Name','searching last frame.',...
-    'CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-
-setappdata(f,'canceling',0);
-
 for ii = 1:nfiles
-    waitbar(ii/nfiles,f)%,append(num2str(100*ii/nfiles),' %'))
+    waitbar(ii/nfiles)
     number = [];
     nome = listing(ii).name;
-    h = 0;
     if length(nome) > 4
         if prod(nome(1:5) == filename(1:5)) && prod(nome(end-3:end) == '.csv')
-            while nome(end-4-h) ~= '_'
-                number = [nome(end-4-h),number];
-                h = h+1;
+            while nome(end-h) ~= '_'
+                number = [nome(end-h),number];
             end
             allfr(ii) = str2double(number);
         end
     end
 end
-delete(f)
 
-fr_end = max(allfr)-1;
-clear allfr
+fr_end = max(allfr);
 disp(append('last frame: ', num2str(fr_end)));
 
     Flir = 1;
@@ -82,10 +74,8 @@ disp(append('last frame: ', num2str(fr_end)));
         mtotalT(:, :, i) = get_data002(filename, i, coordname, Flir);        
     end
 
-    if fr_end == 0
     % Opzionale: chiudi il pool di worker al termine del lavoro
     delete(gcp('nocreate'));
-    end
 
     %salvo matrice
     check = isfolder('termoFiles_mat');
