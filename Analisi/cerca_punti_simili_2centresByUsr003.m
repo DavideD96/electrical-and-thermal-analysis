@@ -13,35 +13,32 @@ function group1 = cerca_punti_simili_2centresByUsr003(coord1)
 
 %prendo solo i rappresentanti
 %parto dai massimi e poi faccio i minimi che restano
-
 folder = pwd;
 
-if prod(folder(end-13:end) ~= 'termoFiles_mat')
+if prod(folder(end-5:end) == 'es_mat')
+    Eventi = load('DD_matriceEventi.mat');
+    Eventi = Eventi.DD_matriceEventi;
+    cd ..
+    cd parameters
+    ThermalParameters_ = load('ThermalParameters.mat');
+    ThermalParameters = ThermalParameters_.ThermalParameters;
+    cd ..
+    %cd termoFiles_mat
+else
     cd termoFiles_mat
     % times_ = load('timesDT.mat');
     % times = times_.times;
-    Eventi = load('DD_MatriceEventi.mat');
+    Eventi = load('DD_matriceEventi.mat');
     Eventi = Eventi.DD_matriceEventi;
     cd ..
     cd parameters
     ThermalParameters_ = load('ThermalParameters.mat');
     ThermalParameters = ThermalParameters_.ThermalParameters;
     cd ..
-else
-    Eventi = load('DD_MatriceEventi.mat');
-    Eventi = Eventi.DD_matriceEventi;
-    cd ..
-    cd parameters
-    ThermalParameters_ = load('ThermalParameters.mat');
-    ThermalParameters = ThermalParameters_.ThermalParameters;
-    cd ..
-    cd termoFiles_mat
+    %cd termoFiles_mat
 end
 
-cd parameters
-ThermalParameters_ = load('ThermalParameters.mat');
-ThermalParameters = ThermalParameters_.ThermalParameters;
-cd ..
+
 
 % if frame_start > fr_diff
 %     bias = frame_start;
@@ -64,6 +61,8 @@ name = append('group_x',num2str(coord1(1)),'_y',num2str(coord1(2)));
 cd termoFiles_mat
 save(name,"group1") 
 cd ..
+
+%disp(sum(group1(:,2)))
 %
 %secondo gruppo
 % group2 = zeros(length(fieldnames(Eventi_supp)),2);

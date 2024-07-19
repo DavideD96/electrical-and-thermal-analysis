@@ -23,8 +23,10 @@ for k = 1:2:num
 end
 
 if groupedOrNot == 0
+    cd termoFiles_mat\
     dat = load("DD_Eventi_Termo.mat");
     dat = dat.DD_Eventi;
+    cd ..
 else
 end
 
@@ -51,7 +53,7 @@ if smooth == 1
 end
 
 Rows = size(mDT,1);
-Columns = size(mDT,1);
+Columns = size(mDT,2);
 [data_x, data_y] = meshgrid(1:Columns, 1:Rows);
 t = zeros(size(dat,1),1);
 temp_vs_t = zeros(size(dat,1),1);
@@ -62,6 +64,7 @@ for ii = 1:size(dat,1)
     temp = [];
     for kk = 1:size(evts,1)    
         if evts(kk,1) ~= 0
+            %evts
             coordx = data_x(evts(kk,1));
             coordy = data_y(evts(kk,1));
             temp = [temp,mDT(coordy,coordx,ii)];

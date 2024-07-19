@@ -1,33 +1,51 @@
-function BD_coefficient(groups,nframes,weighted_STTC)
+function BD_coefficient(weighted_STTC)
 
 %Computes BD coefficient, defined as number of significant PC * mean STTC 
 %groups = array of strings ["group_x7_y4","group_x2_y6","group_x5_y5","group_x1_y2"]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% sttc %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+cd termoFiles_mat
+listing = dir(pwd);
+nfiles = length(listing);
+groups = {};
+
+for ii = 1:nfiles
+    nome = listing(ii).name;
+    if length(nome) > 4
+        if prod(nome(1:5) == 'group')
+            groups = [groups;nome];
+        end
+    end
+end
+cd ..
+%groups
+
 cd parameters
 start = load("ThermalParameters.mat");
+end_ = start.ThermalParameters.end_stimulation;
 start = start.ThermalParameters.delay;
 cd ..
 
-start_end = [start,start+nframes-1];
+start_end = [start,end_];
 
 ngroups = length(groups);
 sttcs = []; 
 
 n_used_evts = 0;
-
+cd termoFiles_mat
 for ii = 1:ngroups
-    group1 = load(groups(ii));
-    group1 = group1.group1;    
+    group1 = load(groups{ii});
+    group1 = group1.group1;  
     check = sum(group1(:,2));
-    group1 = groups(ii);
+    group1 = groups{ii};
 
     if check ~= 0
         for kk = ii+1:ngroups
-            group2 = load(groups(kk));
+            group2 = load(groups{kk});
             group2 = group2.group1;
             check = sum(group2(:,2));
-            group2 = groups(kk);
+            group2 = groups{kk};
             if check ~= 0
                 new_sttc = STTCmultiple_windows(group1,group2,[0.02,20],50,'plot_figure',1,'save_figure',0);
                 if weighted_STTC == 1
@@ -41,14 +59,14 @@ for ii = 1:ngroups
                 end
                 sttcs = [sttcs,new_sttc(:,2)];
             else
-                warning(append('Warning: no events in '),group(kk))
+                warning(append('Warning: no events in ',groups{kk}))
             end
         end
     else
-        warning(append('Warning: no events in '),group(ii))
+        warning(append('Warning: no events in ',groups{ii}))
     end
 end
-
+cd ..
 times = new_sttc(:,1);
 
 %mean sttc
@@ -82,7 +100,12 @@ clear data
 [~,~,~,~,explained,~] = pca(data_);
 pcaSignificance = explained;
 pcaCSignificance = cumsum(pcaSignificance(1:50));
-pca_significative = pcaCSignificance<97.5;
+title('select elbow')
+plot(pcaCSignificance)
+grid on
+pause
+[~,y] = ginput(1);
+pca_significative = pcaCSignificance<y;
 pca_significative(pca_significative == 0) = []; 
 npca_sign = length(pca_significative);
 

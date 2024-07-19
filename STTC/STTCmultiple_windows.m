@@ -39,7 +39,7 @@ end
 if plot_fig == 1
     a = figure;
     plot(sttc(:,1),sttc(:,2))
-    title(append(newStr1,'_VS_',newStr2));
+    title(append(newStr1,' VS ',newStr2));
     xlabel('\Deltat [s]');
     ylabel('STTC [adim.]');
     grid on

@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 15/07/24)
+ANALISI TERMICHE (DD 18/07/24)
 
 					A) export .mat, set parameters for analysis
 
@@ -11,8 +11,9 @@ ANALISI TERMICHE (DD 15/07/24)
 4) run store_mtotalT('name', Nframes, 'name_CAF_coordinates') where 'name_CAF_coordinates.mat' added the string 	'CAF_coordinates.mat' at the end of 'name'. Nframes is the number of frames in the video. This operation can 
 	take several minutes (or hours for videos containing > 10.000 frames). The data collected in the ROI are now
 	stored in a 3D .mat array located in the folder 'termoFiles_mat'.
-   Alternatively, you can run store_mtotalT8core('name', Nframes, 'name_CAF_coordinates') to parallelize the operation
-   and significantly reduce the time required for the conversion.
+   Alternatively, you can run store_mtotalT8core('name', fr_end, 'name_CAF_coordinates') to parallelize the operation
+   and significantly reduce the time required for the conversion. fr_end = 0 means shut down the parallel pool (in case the 
+   current convertion is the last of the day ;) )
 5) run set_parameters(delay,fin,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
    (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts. fin is the frame 
    where electric stimulation finishes. these parameter allow to avoid false events detection.
@@ -77,7 +78,17 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________
 
-					E) Principal Component Analysis
+					E) Thermal and electrical characterization
+
+1) run actual_temp_no_smooth001(0,'Rextrema',6e-4,'Textrema',4,'useParam',0) 
+
+	0: plot all the Thermal evolution of single events (not just maximum DeltaT)
+	'Rextrema': plot boundary
+	'Textrema': plot boundary
+	'useParam': if 0, you need to choose noise interval in electric analysis.
+________________________________________________________________________________________________________________________
+
+					F) Principal Component Analysis
 
 1) move to the directory '\termoFiles_mat', i.e., where mtotalT and mtotalDT are stored.
 2) run pca_thermal003('mtotalT.mat','Data.mat',[frame_start,frame_end],'N_significant_PC',12,'add_electric_dat',false,...

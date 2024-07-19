@@ -270,7 +270,7 @@ for i = 0 : Nframes -1 %cafone
     
             tempo = append(num2str(framestates(i+1, 6)), ' s');
             annotation('textbox', 'Position', [0.9 0.85 0.1 0.1], 'String', tempo, 'FitBoxToText', true, 'EdgeColor', 'k', 'BackgroundColor', 'w');
-    
+            annotation('textbox', 'Position', [0.7 0.85 0.1 0.1], 'String', num2str(frame_start + i), 'FitBoxToText', true, 'EdgeColor', 'k', 'BackgroundColor', 'w');
             %se state del frame è 1 disegno punto di massimo e/o minimo            
             if point_state_max == 1 | point_state_min == 1
                 evento = append('EVENTO');

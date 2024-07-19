@@ -21,11 +21,11 @@
 %        |__|
 %          1
 
-
+cd termoFiles_mat
 events = load("DD_Eventi_Termo.mat");
 events = events.DD_Eventi;
 
-cd termoFiles_mat
+
 matT = load('mtotalT.mat');
 matT = matT.mtotalT;
 cd ..
@@ -76,7 +76,9 @@ for ii = 1:n_ev
     %     term_ev(ii,1) = matT(x,y,fine+delay)-matT(x,y,inizio+delay-2)
     % end
     term_ev(ii,1) = matT(x,y,fine+delay)-matT(x,y,inizio+delay-2); %-2: vado al frame prima della detection
-
+    matT(x,y,fine+delay)-matT(x,y,inizio+delay-1)
+    fine+delay
+    inizio+delay-1
     dove = [];
 
 end

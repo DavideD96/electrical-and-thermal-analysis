@@ -115,13 +115,13 @@ set(gca, 'XTick', 1:50)
 
 PC = figure;
 %colormap(cm)
-figure
+%figure
 for k = 1:ncolonne*nrighe
     subplot(nrighe,ncolonne,k);
     hold on;
     pc = reshape(coeff(:,k),[rows,col]);
     title(append('PC',num2str(k)));
-    imagesc(flip(pc,1));
+    imagesc(pc); %flip
     xlim([1,col]);
     ylim([1,rows]);
     axis off
@@ -729,17 +729,19 @@ if select_point ~= 0
 
         hold on
         for kk = 1:size(coordinates,1)
-            plot(coordinates(kk,1),coordinates(kk,2),'w.', 'MarkerSize', 12);
+            plot(coordinates(kk,2),coordinates(kk,1),'w.', 'MarkerSize', 12);
         end        
         [x,y] = ginput(1);
-        coordinates = [coordinates;round([x,y])];
+        coordinates = [coordinates;round([y,x])];
     end
 
     % g_coord = round([x,y]);
     %save(append("g_x",num2str(round(y)),"_y",num2str(round(x)),".mat"),"g_coord")
     close all
     for k = 1:size(coordinates,1)
+        %cd ..
         cerca_punti_simili_2centresByUsr003(coordinates(k,:));
+        %cd termoFiles_mat
     end
 
 elseif prod(select_point == 'visual')
