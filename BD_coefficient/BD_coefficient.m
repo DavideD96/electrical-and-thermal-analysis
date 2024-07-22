@@ -1,4 +1,4 @@
-function BD_coefficient(weighted_STTC)
+function BD_coefficient(weighted_STTC,saveall,cumulativeOrNot)
 
 %Computes BD coefficient, defined as number of significant PC * mean STTC 
 %groups = array of strings ["group_x7_y4","group_x2_y6","group_x5_y5","group_x1_y2"]
@@ -13,7 +13,7 @@ groups = {};
 for ii = 1:nfiles
     nome = listing(ii).name;
     if length(nome) > 4
-        if prod(nome(1:5) == 'group')
+        if prod(nome(1:5) == 'group') && ~contains(nome,'VS')
             groups = [groups;nome];
         end
     end
@@ -47,17 +47,18 @@ for ii = 1:ngroups
             check = sum(group2(:,2));
             group2 = groups{kk};
             if check ~= 0
-                new_sttc = STTCmultiple_windows(group1,group2,[0.02,20],50,'plot_figure',1,'save_figure',1);
+                new_sttc = STTCmultiple_windows(group1,group2,[0.02,20],50,'plot_figure',saveall,'save_figure',saveall);
+                new_sttc_ = new_sttc;
                 if weighted_STTC == 1
                     g1 = load(group1);
                     g1 = g1.group1;
                     g2 = load(group2);
                     g2 = g2.group1;
-                    new_events = sum(g1(:,2))+sum(g2(:,2));
-                    n_used_evts = n_used_evts + new_events;
-                    new_sttc = new_sttc.*new_events;
+                    new_events = sum(g1(:,2))*sum(g2(:,2));
+                    n_used_evts = n_used_evts + new_events; %partition function
+                    new_sttc_ = new_sttc.*new_events;
                 end
-                sttcs = [sttcs,new_sttc(:,2)];
+                sttcs = [sttcs,new_sttc_(:,2)];
             else
                 warning(append('Warning: no events in ',groups{kk}))
             end
@@ -71,7 +72,7 @@ times = new_sttc(:,1);
 
 %mean sttc
 if weighted_STTC == 1
-    sttc_mean = sum(sttcs,2)/(size(sttcs,2)*n_used_evts);
+    sttc_mean = sum(sttcs,2)/(n_used_evts); %size(sttcs,2)
 else
     sttc_mean = mean(sttcs,2);
 end
@@ -100,14 +101,36 @@ clear data
 [~,~,~,~,explained,~] = pca(data_);
 pcaSignificance = explained;
 pcaCSignificance = cumsum(pcaSignificance(1:50));
-title('select elbow')
+
+%second derivative
+
+if cumulativeOrNot ~= 0
+    firstDer = pcaCSignificance(2:end) - pcaCSignificance(1:end-1);
+    secondDer = firstDer(2:end) - firstDer(1:end-1);
+else
+    firstDer = explained(2:end) - explained(1:end-1);
+    secondDer = firstDer(2:end) - firstDer(1:end-1);
+end
+
+[~,elbow] = min(secondDer);
+elbow = elbow+1;
+
+figure
+title('elbow')
 plot(pcaCSignificance)
-grid on
-pause
-[~,y] = ginput(1);
-pca_significative = pcaCSignificance<y;
-pca_significative(pca_significative == 0) = []; 
-npca_sign = length(pca_significative);
+hold on
+xline(elbow)
+npca_sign = elbow;
+hold off
+
+%title('select elbow')
+%plot(pcaCSignificance)
+%grid on
+%pause
+%[~,y] = ginput(1);
+%pca_significative = pcaCSignificance<y;
+%pca_significative(pca_significative == 0) = []; 
+%npca_sign = length(pca_significative);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BD_coeff %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

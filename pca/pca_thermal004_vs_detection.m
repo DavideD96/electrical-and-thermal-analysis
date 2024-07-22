@@ -125,18 +125,21 @@ for k = 1:ncolonne*nrighe
     hold off;
 end
 
-load('matriceEventi.mat','matriceEventi');
+matriceEventi = load('DD_matriceEventi.mat');
+matriceEventi = matriceEventi.DD_matriceEventi;
+
+matriceEventi = order_events(matriceEventi); % da cell array a double array
 
 f = figure;
-pcn = 1;
+pcn = 2;
 pc = reshape(coeff(:,pcn),[rows,col]);
 imagesc(flip(pc,1));
 imagesc(pc)
 
 hold on
-colormap('winter')
+colormap%('winter')
 
-eventiBoth_cold_hot = [matriceEventi(:,2);matriceEventi(:,3)];
+eventiBoth_cold_hot = matriceEventi(:,1); %[matriceEventi(:,2);matriceEventi(:,3)];
 [C,~,ix] = unique(eventiBoth_cold_hot); %C coordinate senza ripetizioni
 Cn = accumarray(ix,1); %numero di volte che appare ogni coordinata (stesso ordine di C)
 
@@ -147,8 +150,8 @@ for k = 1:size(C,1)
     if C(k,1) ~= 0
         y = ceil(C(k,1)/rows);  
         x = C(k,1) - rows*(y-1);
-        plot(y,x,'w.', 'MarkerSize', 1.6*Cn(k,1));
-        %text(y-0.4,x, num2str(Cn(k,1)), 'FontSize', 10, 'Color','w');%[0.3 0.3 0.3]
+        %plot(y,x,'w.', 'MarkerSize', 1.6*Cn(k,1));
+        text(y-0.4,x, num2str(Cn(k,1)), 'FontSize', 10, 'Color','w');%[0.3 0.3 0.3]
         %plot(y-0.5,x+0.5,'Marker',num2str(Cn(k,1)),'MarkerSize',5,'Color','k');
     end
 end
