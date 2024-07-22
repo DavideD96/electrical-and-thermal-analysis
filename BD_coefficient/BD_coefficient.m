@@ -47,7 +47,7 @@ for ii = 1:ngroups
             check = sum(group2(:,2));
             group2 = groups{kk};
             if check ~= 0
-                new_sttc = STTCmultiple_windows(group1,group2,[0.02,20],50,'plot_figure',1,'save_figure',0);
+                new_sttc = STTCmultiple_windows(group1,group2,[0.02,20],50,'plot_figure',1,'save_figure',1);
                 if weighted_STTC == 1
                     g1 = load(group1);
                     g1 = g1.group1;
@@ -113,9 +113,12 @@ npca_sign = length(pca_significative);
 
 BD_coefficient = sttc_mean.*npca_sign;
 
-figure
+BD = figure;
 plot(times,BD_coefficient)
 grid on
 xlabel('\DeltaT [s]')
 ylabel('coefficient [adim.]')
+cd termoFiles_mat\
+savefig(BD,'BD_coeff')
+cd ..
 end

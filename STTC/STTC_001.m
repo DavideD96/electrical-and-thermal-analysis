@@ -1,4 +1,4 @@
-function ci = STTC_001(time_serieA,time_serieB,deltat, varargin)
+function [ci, neventiA, neventiB] = STTC_001(time_serieA,time_serieB,deltat, varargin)
 
 %Compute pairwise correlation index, according to Cutts and Eglen, in
 %"Detecting Pairwise Correlations in Spike Trains: An Objective Comparison 

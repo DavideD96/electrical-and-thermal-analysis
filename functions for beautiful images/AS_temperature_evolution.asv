@@ -1,0 +1,15 @@
+%AS_temperature_evolution
+%
+% x = row
+% y = column
+
+x = 5;
+y = 20;
+
+m = load("mtotalT.mat");
+m = m.mtotalT;
+AS = m(x,y,:);
+
+lin
+
+plot(AS(:))

@@ -17,7 +17,7 @@ function pc2 = pca_thermal003(filename,fileres,start_end, varargin)
 
 checkAS = 0;
 select_point = 0;
-nrighe = 3;
+nrighe = 4;
 ncolonne = 4;
 clustering = false;
 N_significant_PC = 5;
