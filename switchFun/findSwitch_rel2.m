@@ -1,4 +1,4 @@
-function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize,RoG)
+function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize,RoG,threshHighRes)
 
 %Date: 2019-02-18 Last Modification: 2019-03-19
 %Author: M. Camponovo, D. Decastri
@@ -17,7 +17,9 @@ function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize,RoG)
 %       two adiaccent quantities a switch
 %   normalize: if is true the program normalize the times (in the first 
 %              column of matr with respect to the time of the first data.
-%
+%   RoG: store DeltaR or DeltaG in analyzed.
+%   threshHighRes: threshold low conductance state (prevents detection when
+%       sample is not conducting).
 
 
 s = size(matr,1);
@@ -39,11 +41,17 @@ hold on;
 event_happening = 0;
 n_event = 0;
 
+nocond_thrsd = 0; %A
+if threshHighRes ~= 0
+    nocond_thrsd = 1.5e-5; %A
+end
+
     for i=1:s - 1 %ho aggiunto il "-1"
         [mv,sv] = sigmaSelector(matr(i,col),matsigma);
+        checkCond = abs(matr(i,col)) > nocond_thrsd || abs(matr(i+1,col)) > nocond_thrsd;
         
-        if abs(rel(i)) > ns*sv/abs(mv) %o sei nel bel mezzo di un evento, o alla fine
-            if event_happening == 0 %allora l'evento inizia
+        if abs(rel(i)) > ns*sv/abs(mv) && checkCond %o sei nel bel mezzo di un evento, o alla fine
+            if event_happening == 0  %allora l'evento inizia
                 event_happening = i;
                 n_event = n_event + 1;
                 analyzed(i,end-1) = n_event; %detected now

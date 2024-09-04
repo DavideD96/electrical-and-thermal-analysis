@@ -80,7 +80,7 @@ for ii = 1:size(dat,1)
     end
 end
 
-rs = mainSwitch('Data.mat','parameters','sig','nos',6,'RoG',1,'col',3,'nvt',useParam);
+rs = mainSwitch('Data.mat','parameters','sig','nos',4,'RoG',1,'col',3,'nvt',useParam);
 rs = rs.detection;
 %a = figure;
 
@@ -95,12 +95,12 @@ set(gca,'FontSize',14)
 if Rext == 0
     extr = 10000*max(abs(rs(:,end)));
     ylim([-ceil(extr)/10000,ceil(extr)/10000]);
-    ticks = round(linspace(0,ceil(extr),4))./10000;
+    ticks = round(linspace(0,ceil(extr),3))./10000;
     ticks = [flip(-1.*ticks(2:end)),0,ticks(2:end)]; %round(linspace(0,extr,4))]
     yticks(ticks)
 else
     ylim([-Rext,Rext])
-    ticks = (linspace(0,ceil((Rext)*10000),4))./10000;
+    ticks = (linspace(0,ceil((Rext)*10000),3))./10000;
     ticks = [flip(-1.*ticks(2:end)),0,ticks(2:end)]; %round(linspace(0,extr,4))]
     yticks(ticks)
 end
@@ -117,12 +117,12 @@ set(gca,'FontSize',14)
 if Text == 0
     extr = max(abs(temp_vs_t));
     ylim([-ceil(extr),ceil(extr)]);
-    ticks = round(linspace(0,ceil(extr),4));
+    ticks = round(linspace(0,ceil(extr),3));
     ticks = [flip(-1.*ticks(2:end)),0,ticks(2:end)]; %round(linspace(0,extr,4))]
     yticks(ticks)
 else
     ylim([-Text,Text])
-    ticks = (linspace(0,ceil(Text+1),4));
+    ticks = (linspace(0,ceil(Text+1),3));
     ticks = [flip(-1.*ticks(2:end)),0,ticks(2:end)]; %round(linspace(0,extr,4))]
     yticks(ticks)
 end

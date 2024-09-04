@@ -491,6 +491,9 @@ end
     cd termoFiles_mat
     save("DD_Eventi_Termo.mat", "DD_Eventi");
     cd ..
+
+    % disp('Eventi trovati:')
+    % max(DD_Eventi(:,8))
 end
 
 

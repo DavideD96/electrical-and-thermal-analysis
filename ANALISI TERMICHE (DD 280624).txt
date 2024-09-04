@@ -15,8 +15,10 @@ ANALISI TERMICHE (DD 18/07/24)
    and significantly reduce the time required for the conversion. fr_end = 0 means shut down the parallel pool (in case the 
    current convertion is the last of the day ;) )
 5) run set_parameters(delay,fin,'threshold+',0.5,'threshold-',-0.5,'sampl_freq',30,'frame_diff',3,'detect_met','ThreshNN') 
-   (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts. fin is the frame 
-   where electric stimulation finishes. these parameter allow to avoid false events detection.
+   (here I used standard parameters, as an example). Delay is the frame where electric stimulation starts. Be careful: the first
+   frame difference in analisi_Nframes011_multiEvento008_NOpV() is between frame 'delay' and frame 'delay - fr_diff'. So, choose
+   delay in order to avoid the detection of the first thermal transient (it is not a RS event!).
+   fin is the frame where electric stimulation finishes. these parameter allow to avoid false events detection.
    This functions creates a folder inside "esportazione", named 'parameters' and creates a struct named
    'ThermalParameters' with fields:
 	'soglia_max' = threshold to identify positive thermal events (should be > 0) (set with 'threshold+').
@@ -35,7 +37,7 @@ ________________________________________________________________________________
 					B) Thermal preprocessing and detection
 
 1) run analisi_Nframes011_multiEvento008_NOpV(). You can produce a video by adding a pair-value argument
-	at the end: analisi_Nframes011_multiEvento008_NOpV(starting_frame,'MakeVideo',1). This program perform detection.
+	at the end: analisi_Nframes011_multiEvento008_NOpV('MakeVideo',1). This program perform detection.
 _______________________________________________________________________________________________________________________
 
 					C) build data for analysis and perform statisical analysis
@@ -64,7 +66,7 @@ Now you can choose a pixel to identify an active site. Its coordinates are x (ro
    and significantly reduce the time.
 
 ISI analysis:
-3) run ISIpuntiSimili('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the
+3) run ISIpuntiSimili001('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the
    number of bin in the histogram (in this case 50). If nBin is not specified, the program uses the Freedman-Diaconis rule.
 
 Barabasi analysis:
@@ -91,5 +93,5 @@ ________________________________________________________________________________
 					F) Principal Component Analysis
 
 1) move to the directory '\termoFiles_mat', i.e., where mtotalT and mtotalDT are stored.
-2) run pca_thermal003('mtotalT.mat','Data.mat',[frame_start,frame_end],'N_significant_PC',12,'add_electric_dat',false,...
+2) run pca_thermal006('mtotalT.mat','Data.mat','N_significant_PC',12,'add_electric_dat',false,...
    ...'smoothing_before',0,'remove_0contours',false)

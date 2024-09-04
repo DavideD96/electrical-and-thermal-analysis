@@ -1,4 +1,4 @@
-function [ci, neventiA, neventiB] = STTC_001(time_serieA,time_serieB,deltat, varargin)
+function [ci, neventiA, neventiB] = STTC_RemainingDelenda_001(time_serieA,time_serieB,deltat, varargin)
 
 %Compute pairwise correlation index, according to Cutts and Eglen, in
 %"Detecting Pairwise Correlations in Spike Trains: An Objective Comparison 
@@ -39,8 +39,15 @@ elseif mat_or_work == 1
 end
 
 if window ~= 0
-    time_serieA = time_serieA(time_serieA(:,1) <= window,:);
-    time_serieB = time_serieB(time_serieB(:,1) <= window,:);
+    time_serieA = time_serieA(time_serieA(:,1) > window,:);
+    time_serieB = time_serieB(time_serieB(:,1) > window,:);
+end
+
+if sum(time_serieA(:,2)) == 0 || sum(time_serieB(:,2)) == 0
+    ci = 0;
+    neventiA = 0;
+    neventiB = 0;
+    return
 end
 
 nsamplA = size(time_serieA);

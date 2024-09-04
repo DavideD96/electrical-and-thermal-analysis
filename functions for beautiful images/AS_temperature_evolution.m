@@ -3,8 +3,8 @@
 % x = row
 % y = column
 
-x = 8;
-y = 20;
+x = 85;
+y = 17;
 
 m = load("mtotalT.mat");
 m = m.mtotalT;

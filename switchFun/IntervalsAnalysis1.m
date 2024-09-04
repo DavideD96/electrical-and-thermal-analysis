@@ -73,7 +73,7 @@ if selectInt == true
         hold off;
     end    
 
-    check = exist(folder,"dir");
+    check = isfolder(folder);
 
     if check ~= 7
         mkdir(folder)

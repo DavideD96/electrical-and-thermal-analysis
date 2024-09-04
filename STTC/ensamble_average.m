@@ -1,12 +1,12 @@
 %generate two random series of events and compute STTC.
 
-n_trials = 200;
+n_trials = 100;
 npoints = 50; %interval segmentation
-neventA = 100;
-neventB = 100;
+neventA = 25;
+neventB = 33;
 interval = 300; %[s]
-freq = 30; %[Hz]
-delta_t = [0.033,20]; %[s]
+freq = 50; %[Hz]
+delta_t = [0.02,20]; %[s]
 type = 'standard';%'bursting'; %
 
 STTCs = zeros(npoints, n_trials+1);
@@ -44,4 +44,4 @@ plot(STTC_mean_std(:,1),STTC_mean_std(:,2)+STTC_mean_std(:,3),'k--')
 title(append(type,'.  Mean STTC nevents: ',num2str(neventA),', ',num2str(neventB)))
 xlabel('\Deltat [s]')
 hold off
-saveas(a,append(type,' ',num2str(neventA),' vs ',num2str(neventB),'events.png'),'png');
+saveas(a,append(type,' ',num2str(neventA),' ',num2str(neventB),'.png'),'png'); %num2str(neventA),' vs ',num2str(neventB),'events.png'),'png');

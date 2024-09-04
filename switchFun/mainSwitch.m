@@ -505,6 +505,10 @@ for j = 1:i
         %----------------------
     end
 end
+
+if ResOrCond ~= 0
+    deltaG_higherThan(s,1e-5)
+end
     %%change '\' in '/' on mac
     %build_path = [path,'\V',num2str(anlR(1,2)),'_sig',num2str(nos),'_tm',erase(num2str(bl),'.'),'_dt',num2str(deltaT),'.mat'];
     %save(build_path, 's');

@@ -94,7 +94,7 @@ elseif prod(method == 'adp')
 elseif prod(method == 'sig')
 
     matMeanSig = IntervalsAnalysis1(matr(:,1),matr(:,col), selectOrNot, folder); 
-    switchFound = findSwitch_rel2(matr,col,matMeanSig,ns,true,RoG);
+    switchFound = findSwitch_rel2(matr,col,matMeanSig,ns,true,RoG,1);
     dlmwrite('sigmaLevel.txt',matMeanSig,'delimiter','\t')
       
 elseif prod(method == 'usr')

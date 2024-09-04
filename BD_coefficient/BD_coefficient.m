@@ -104,16 +104,19 @@ pcaCSignificance = cumsum(pcaSignificance(1:50));
 
 %second derivative
 
-if cumulativeOrNot ~= 0
+if cumulativeOrNot == 1
     firstDer = pcaCSignificance(2:end) - pcaCSignificance(1:end-1);
     secondDer = firstDer(2:end) - firstDer(1:end-1);
-else
+    [~,elbow] = min(secondDer);
+    elbow = elbow+1;
+elseif cumulativeOrNot == 2
     firstDer = explained(2:end) - explained(1:end-1);
     secondDer = firstDer(2:end) - firstDer(1:end-1);
+    [~,elbow] = min(secondDer);
+    elbow = elbow+1;
+else
+    [~,elbow] = knee_pt(pcaCSignificance);
 end
-
-[~,elbow] = min(secondDer);
-elbow = elbow+1;
 
 figure
 title('elbow')
@@ -134,7 +137,7 @@ hold off
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BD_coeff %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-BD_coefficient = sttc_mean.*npca_sign;
+BD_coefficient = sttc_mean%.*npca_sign;
 
 BD = figure;
 plot(times,BD_coefficient)
