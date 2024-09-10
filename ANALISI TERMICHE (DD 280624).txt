@@ -66,7 +66,7 @@ Now you can choose a pixel to identify an active site. Its coordinates are x (ro
    and significantly reduce the time.
 
 ISI analysis:
-3) run ISIpuntiSimili001('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the
+3) run ISIpuntiSimili('group_x[x]_y[y].mat', 'full', 'nBin', 50) where the nameValue pair 'nBin', 50 allows to choose the
    number of bin in the histogram (in this case 50). If nBin is not specified, the program uses the Freedman-Diaconis rule.
 
 Barabasi analysis:

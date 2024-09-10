@@ -15,14 +15,14 @@ hold on
     matrice(:,1) = tempi_simili(:,1);
     matrice(:,2) = tempi_simili(:,2);
 
-    int = ISIpuntiSimili(matrice, 'full');
+    int = ISIpuntiSimili_old(matrice, 'full');
     % histogram(subplot(n_gruppi,1,i-1), int, 'BinMethod','fd');
     h1 = histogram(subplot(2,1,1), int, 'BinWidth', 0.3);
     xlabel('intervalli di tempo [s]');
     ylabel('frequenza');
 
     matrice(:,2) = tempi_simili(:,3);
-    int = ISIpuntiSimili(matrice, 'full');
+    int = ISIpuntiSimili_old(matrice, 'full');
 
     h2 = histogram(subplot(2,1,2), int, 'BinWidth', 0.3);
 

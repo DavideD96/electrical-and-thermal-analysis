@@ -39,8 +39,8 @@ elseif mat_or_work == 1
 end
 
 if window ~= 0
-    time_serieA = time_serieA(time_serieA(:,1) > window,:);
-    time_serieB = time_serieB(time_serieB(:,1) > window,:);
+    time_serieA = time_serieA(time_serieA(:,1) > time_serieA(1,1)+window,:);
+    time_serieB = time_serieB(time_serieB(:,1) > time_serieB(1,1)+window,:);
 end
 
 if sum(time_serieA(:,2)) == 0 || sum(time_serieB(:,2)) == 0
@@ -75,8 +75,8 @@ for i = 2:neventiA
 end
 
 %cut the edges in order to avoid t < 0 or t > T
-if intervalli_realiA(1,1) < 0
-    intervalli_realiA(1,1) = 0;
+if intervalli_realiA(1,1) < time_serieA(1,1) %updated
+    intervalli_realiA(1,1) = time_serieA(1,1);
 end
 if intervalli_realiA(end,2) > time_serieA(end,1)
     intervalli_realiA(end,2) = time_serieA(end,1);
@@ -114,8 +114,8 @@ for i = 2:neventiB
 end
 
 %cut the edges in order to avoid t < 0 or t > T
-if intervalli_realiB(1,1) < 0
-    intervalli_realiB(1,1) = 0;
+if intervalli_realiB(1,1) < time_serieB(1,1)
+    intervalli_realiB(1,1) = time_serieB(1,1);
 end
 if intervalli_realiB(end,2) > time_serieB(end,1)
     intervalli_realiB(end,2) = time_serieB(end,1);

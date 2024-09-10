@@ -43,7 +43,7 @@ n_event = 0;
 
 nocond_thrsd = 0; %A
 if threshHighRes ~= 0
-    nocond_thrsd = 1.5e-5; %A
+    nocond_thrsd = 1e-5; %A
 end
 
     for i=1:s - 1 %ho aggiunto il "-1"

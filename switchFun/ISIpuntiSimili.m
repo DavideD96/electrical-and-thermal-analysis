@@ -110,6 +110,11 @@ ylabel('log_{10}(counts)')
 annotation('textbox', [0.65, 0.8, 0.1, 0.1], 'String', append('ang coeff = ',num2str(P(1))));
 hold off
 
+[a,busrtOfIsi,meanInBurst] = find_bursts(group_);
+%meanInBurst
+%a(1:300,2)
+mean(meanInBurst(~isnan(meanInBurst))) %escludo switch isolati
+% busrtOfIsi
 end
  
      

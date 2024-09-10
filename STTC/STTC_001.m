@@ -39,10 +39,11 @@ elseif mat_or_work == 1
 end
 
 if window ~= 0
-    time_serieA = time_serieA(time_serieA(:,1) <= window,:);
-    time_serieB = time_serieB(time_serieB(:,1) <= window,:);
+    time_serieA = time_serieA(time_serieA(:,1) <= window+time_serieA(1,1),:);
+    time_serieB = time_serieB(time_serieB(:,1) <= window+time_serieB(1,1),:);
 end
-
+%time_serieA
+%time_serieB
 nsamplA = size(time_serieA);
 eventiA = time_serieA(time_serieA(:,2) ~= 0,:);
 neventiA = size(eventiA,1);
@@ -58,6 +59,7 @@ end
 intervalli_realiA = [Tempi_occupatiA(1,1),Tempi_occupatiA(1,2)];
 intervallone_indexA = 1;
 
+%costruisco intervalloni facendo unione degli intervalli occupati
 for i = 2:neventiA
     if Tempi_occupatiA(i,1) <= Tempi_occupatiA(i-1,2) %se l'inizio della seconda finestra è prima della fine della prima... %AGGIUNTO =
         intervalli_realiA(intervallone_indexA,2) = Tempi_occupatiA(i,2); %la nuova fine dell'intervallone è...
@@ -68,8 +70,8 @@ for i = 2:neventiA
 end
 
 %cut the edges in order to avoid t < 0 or t > T
-if intervalli_realiA(1,1) < 0
-    intervalli_realiA(1,1) = 0;
+if intervalli_realiA(1,1) < time_serieA(1,1) %updated
+    intervalli_realiA(1,1) = time_serieA(1,1);
 end
 if intervalli_realiA(end,2) > time_serieA(end,1)
     intervalli_realiA(end,2) = time_serieA(end,1);
@@ -107,8 +109,8 @@ for i = 2:neventiB
 end
 
 %cut the edges in order to avoid t < 0 or t > T
-if intervalli_realiB(1,1) < 0
-    intervalli_realiB(1,1) = 0;
+if intervalli_realiB(1,1) < time_serieB(1,1) %updated
+    intervalli_realiB(1,1) = time_serieB(1,1);
 end
 if intervalli_realiB(end,2) > time_serieB(end,1)
     intervalli_realiB(end,2) = time_serieB(end,1);
@@ -126,11 +128,11 @@ hitBoverA = 0;
 if eventiB(1,1) == intervalli_realiA(1,1)
     hitBoverA = hitBoverA + 1;
 end
-
+% eventiB
+% eventiA
 for i = 1:neventiB
     for j = 1:intervallone_indexA
         if eventiB(i,1) > intervalli_realiA(j,1) && eventiB(i,1) <= intervalli_realiA(j,2) %AGGIUNTO =
-            % i
             % eventiB(i,1)
             % disp('trovato')
             hitBoverA = hitBoverA + 1;
@@ -152,7 +154,6 @@ end
 for i = 1:neventiA
     for j = 1:intervallone_indexB
         if eventiA(i,1) > intervalli_realiB(j,1) && eventiA(i,1) <= intervalli_realiB(j,2)  %AGGIUNTO =
-            % i
             % eventiB(i,1)
             % disp('trovato')
             hitAoverB = hitAoverB + 1;
@@ -176,6 +177,8 @@ end
 ci = 0.5*((P_A-T_B)/(1-P_A*T_B)+(P_B-T_A)/(1-P_B*T_A));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if debug == 1
+    neventiA
+    neventiB
     T_A
     P_A
     T_B

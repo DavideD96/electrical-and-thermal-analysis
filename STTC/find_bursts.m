@@ -1,6 +1,10 @@
 function [burst_serie,burst_isi,mean_isi_in_burst] = find_bursts(serie)
 
-isi = ISIpuntiSimili(serie, 'full');
+% Unsupervised learing algorithm to find bursts.
+% See: L. Chen, Y. Deng, W. Luo, Z. Wang, e S. Zeng, «Detection of bursts in 
+% neuronal spike trains by the mean inter-spike interval method», Prog. Nat. Sci., 2009.
+
+isi = ISIpuntiSimili_old(serie, 'full');
 m_isi = mean(isi);
 L = isi(isi<m_isi);
 
@@ -19,7 +23,7 @@ burst_serie(ind_ev(1),2) = ind;
 k = 1;
 while k <= size(isi,1)
     
-    if mean(isi(ultimo_cambio:k)) > m_l
+    if mean(isi(ultimo_cambio:k)) > m_l % allora significa che esco dal burst
         ultimo_cambio = k+1;
         ind = ind+1;  
         burst_serie(ind_ev(k+1),2) = ind;

@@ -1,5 +1,7 @@
-function sttc = STTCmultiple_windows(series1,series2,deltat_int,npoints,varargin)
+function [sttc,sttc_reduc,sttc_remai] = STTCmultiple_windows(series1,series2,deltat_int,npoints,varargin)
 
+sttc_reduc = [];
+sttc_remai = [];
 mat_or_work = 0;
 plot_fig = 1;
 save = 1;
@@ -74,6 +76,7 @@ if plot_fig == 1
     xlabel('\Deltat [s]');
     ylabel('STTC [adim.]');
     legend('0-300 s',append('0-',num2str(window),' s'),append(num2str(window),'-300 s'))
+    xticks([0,1,5,10,15,20])
     grid on
     hold off
 end
