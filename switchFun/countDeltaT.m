@@ -8,6 +8,8 @@ function cnt = countDeltaT(dati, deltaT)
 %   dati: matrix with only switch events
 %   deltaT: time interval width for the analysis
 
+check = 1;
+
 k=1;
 j=1;
 cnt(j,1)=1;
