@@ -91,9 +91,9 @@ for ii = 1:ngroups
                 dist_ = 25*sqrt((x1-x2)^2+(y1-y2)^2);
 
                 if check1_red ~= 0 && check2_red ~= 0
-                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],10,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',window);
+                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],100,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',window);
                 else
-                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],10,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',0);                   
+                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],100,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',0);                   
                 end
 
                 new_sttc_ = new_sttc;
@@ -139,6 +139,7 @@ axes(ax_st)
 grid on
 
 deltat = [2,4,20];
+sttcs
 
 for ii = 1:size(deltat,2)
     figure

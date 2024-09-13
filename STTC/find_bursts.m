@@ -8,7 +8,7 @@ isi = ISIpuntiSimili_old(serie, 'full');
 m_isi = mean(isi);
 L = isi(isi<m_isi);
 
-m_l = mean(L);
+m_l = mean(L)
 
 ind_ev = find(serie(:,2));
 burst_serie = zeros(size(serie,1),2);
