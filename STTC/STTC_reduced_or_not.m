@@ -37,6 +37,8 @@ sttcs_red = [];
 sttcs_rem = [];
 dist = [];
 x = [];
+x_red = [];
+x_rem = [];
 
 st_ = figure;
 ax_st=axes('Parent',st_);
@@ -91,9 +93,9 @@ for ii = 1:ngroups
                 dist_ = 25*sqrt((x1-x2)^2+(y1-y2)^2);
 
                 if check1_red ~= 0 && check2_red ~= 0
-                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],100,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',window);
+                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.025,rangeMax],400,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',window);
                 else
-                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.02,rangeMax],100,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',0);                   
+                    [new_sttc,new_sttc_red,new_sttc_rem] = STTCmultiple_windows(group1,group2,[0.025,rangeMax],400,'plot_figure',saveall,'save_figure',saveall,'reduce_wind',0);                   
                 end
 
                 new_sttc_ = new_sttc;
@@ -111,18 +113,27 @@ for ii = 1:ngroups
                 if ~isempty(new_sttc_red)
                     %hold(ax_st_red,'on')
                     sttcs_red = [sttcs_red,new_sttc_red(:,2)];
-                    plot3(ax_st_red,dist_(1,1)*ones(size(new_sttc,1),1),new_sttc_red(:,1),new_sttc_red(:,2))
+                    %plot3(ax_st_red,dist_(1,1)*ones(size(new_sttc,1),1),new_sttc_red(:,1),new_sttc_red(:,2))
+                    dataPlot_red = [dist_(1,1)*ones(size(new_sttc_red,1),1),new_sttc_red(:,1),new_sttc_red(:,2),new_sttc_red(:,2)];
+                    T_red = array2table(dataPlot_red,'VariableNames',{'dist','time','sttc','sttc_col'});
+                    scatter3(ax_st_red,T_red,'dist','time','sttc','filled','ColorVariable','sttc_col')
+                    x_red = [x_red; x1,x2]; %per plot successivo della matrice
                 end
                 if ~isempty(new_sttc_rem) && sum(new_sttc_rem(:,2)) ~= 0
                     %hold(ax_st_rem,'on')
                     sttcs_rem = [sttcs_rem,new_sttc_rem(:,2)];
-                    plot3(ax_st_rem, dist_(1,1)*ones(size(new_sttc,1),1),new_sttc_rem(:,1),new_sttc_rem(:,2))
+                    %plot3(ax_st_rem, dist_(1,1)*ones(size(new_sttc,1),1),new_sttc_rem(:,1),new_sttc_rem(:,2))
+                    dataPlot_rem = [dist_(1,1)*ones(size(new_sttc_rem,1),1),new_sttc_rem(:,1),new_sttc_rem(:,2),new_sttc_rem(:,2)];
+                    T_rem = array2table(dataPlot_rem,'VariableNames',{'dist','time','sttc','sttc_col'});
+                    scatter3(ax_st_rem,T_rem,'dist','time','sttc','filled','ColorVariable','sttc_col')
+                    x_rem = [x_rem; x1,x2];
                 end
                 dist = [dist,dist_];
                 x = [x; x1,x2];
                 %hold(ax_st,'on')
+                %new_sttc_rem
                 %plot3(ax_st,dist_(1,1)*ones(size(new_sttc,1),1),new_sttc(:,1),new_sttc(:,2))
-                dataPlot = [dist_(1,1)*ones(size(new_sttc,1),1),new_sttc(:,1),new_sttc(:,2),new_sttc(:,2)];
+                dataPlot = [dist_(1,1)*ones(size(new_sttc,1),1),new_sttc(:,1),new_sttc(:,2),new_sttc(:,2)];                
                 T = array2table(dataPlot,'VariableNames',{'dist','time','sttc','sttc_col'});
                 scatter3(ax_st,T,'dist','time','sttc','filled','ColorVariable','sttc_col')
             else
@@ -134,15 +145,58 @@ for ii = 1:ngroups
     end
 end
 
+colorbar(ax_st_rem)
+axes(ax_st_rem)
+title(['remaining (',num2str(window),' s - end)'])
+grid on
+savefig(['ALL_STTC_from_', num2str(window),'_s_to_end___dist.fig'])
+saveas(ax_st_rem,['ALL_STTC_from_', num2str(window),'_s_to_end___dist.png'],'png');
+
+colorbar(ax_st_red)
+axes(ax_st_red)
+title(['reduced (0 s - ',num2str(window),' s)'])
+grid on
+savefig(['ALL_STTC_from_start_to_', num2str(window),'_s___dist.fig'])
+saveas(ax_st_red,['ALL_STTC_from_start_to_', num2str(window),'_s___dist.png'],'png');
+
 colorbar(ax_st)
 axes(ax_st)
+title('all (0 s - end)')
 grid on
+savefig('ALL_STTC_dist.fig')
+saveas(ax_st_red,'ALL_STTC_dist.png','png');
 
-deltat = [2,4,20];
-sttcs
+deltat = [4,8,20,40,200,400];
+
+thresh = 0.5;
+
+%sttc: 
+% rows = different deltat
+% col = different couples
+
+
+n_above_th = sum(sttcs>thresh,2); 
+figure
+plot(new_sttc(:,1),n_above_th)
+grid on
+title(['number over threshold (',num2str(thresh),')'])
+
+n_above_th = sum(sttcs_red>thresh,2); 
+figure
+plot(new_sttc(:,1),n_above_th)
+grid on
+title(['number over threshold (',num2str(thresh),') reduced'])
+
+n_above_th = sum(sttcs_rem>thresh,2); 
+figure
+plot(new_sttc(:,1),n_above_th)
+grid on
+title(['number over threshold (',num2str(thresh),') remaining'])
+
+
 
 for ii = 1:size(deltat,2)
-    figure
+    a1 = figure;
     dataPlot_correl1 = [x.*25, sttcs(deltat(ii),:)'];
     dataPlot_correl2 = [x(:,[2 1]).*25, sttcs(deltat(ii),:)'];
     
@@ -154,6 +208,44 @@ for ii = 1:size(deltat,2)
     plt = scatter3(a,'x1','x2','sttc','filled','ColorVariable','sttc');
     plt.SizeData = 100;
     title(['STTC at ',title_,' s'])
+    colorbar
+    view(2)
+    savefig(['ALL_STTC_at_',title_,'_s.fig'])
+    saveas(a1,['ALL_STTC_at_',title_,'_s.png'],'png');
+
+    a2 = figure;
+    dataPlot_correl1 = [x_rem.*25, sttcs_rem(deltat(ii),:)'];
+    dataPlot_correl2 = [x_rem(:,[2 1]).*25, sttcs_rem(deltat(ii),:)'];
+    
+    dataPlot_correl = [dataPlot_correl1; dataPlot_correl2];
+    
+    a = array2table(dataPlot_correl,'VariableNames',{'x1','x2','sttc'});
+    
+    title_ = num2str(new_sttc_rem(deltat(ii),1));
+    plt = scatter3(a,'x1','x2','sttc','filled','ColorVariable','sttc');
+    plt.SizeData = 100;
+    title(['STTC remaining at ',title_,' s'])
+    colorbar
+    view(2)
+    savefig(['ALL_STTC_remaining_',num2str(window),'_s_at_',title_,'_s.fig'])
+    saveas(a2,['ALL_STTC_remaining_',num2str(window),'_s_at_',title_,'_s.png'],'png');
+
+    a3 = figure;
+    dataPlot_correl1 = [x_red.*25, sttcs_red(deltat(ii),:)'];
+    dataPlot_correl2 = [x_red(:,[2 1]).*25, sttcs_red(deltat(ii),:)'];
+    
+    dataPlot_correl = [dataPlot_correl1; dataPlot_correl2];
+    
+    a = array2table(dataPlot_correl,'VariableNames',{'x1','x2','sttc'});
+    
+    title_ = num2str(new_sttc_red(deltat(ii),1));
+    plt = scatter3(a,'x1','x2','sttc','filled','ColorVariable','sttc');
+    plt.SizeData = 100;
+    title(['STTC reduced at ',title_,' s'])
+    colorbar
+    view(2)
+    savefig(['ALL_STTC_reduced_',num2str(window),'_s_at_',title_,'_s.fig'])
+    saveas(a3,['ALL_STTC_reduced_',num2str(window),'_s_at_',title_,'_s.png'],'png');
 end
 
 %hist3()
@@ -175,7 +267,6 @@ end
 % grid on
 
 cd ..
-
 
 %mean sttc
 if weighted_STTC == 1

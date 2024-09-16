@@ -20,7 +20,7 @@ for i = 1:n_trials
     elseif prod(type == 'standard')
         [gA,gB] = random_series_generator(neventA,neventB,interval,freq,0);
     end
-    result = STTCmultiple_windows(gA,gB,delta_t,npoints,'plot_figure',0,'save_figure',0,'mat_or_work',1);
+    [result,n,n] = STTCmultiple_windows(gA,gB,delta_t,npoints,'plot_figure',0,'save_figure',0,'mat_or_work',1);
     STTCs(:,i+1) = result(:,2);
     % if 0.6>(result(end,2))
     %     STTC_001(gA,gB,19.5,'displ_debug',1,'mat_or_work',1)
