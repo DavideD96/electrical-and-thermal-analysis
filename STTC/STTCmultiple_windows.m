@@ -35,7 +35,7 @@ for i = 1:npoints
             sttc_remai(i,1) = deltat(i);
             [sttc(i,2), nA, nB] = STTC_001(series1,series2,deltat(i),'reduce_wind',0,'mat_or_work',1);
             [sttc_reduc(i,2), nA_reduc, nB_reduc] = STTC_001(series1,series2,deltat(i),'reduce_wind',window,'mat_or_work',1);
-            [sttc_remai(i,2), ~, ~] = STTC_RemainingDelenda_001(series1,series2,deltat(i),'reduce_wind',window,'mat_or_work',1);
+            [sttc_remai(i,2), nA_rem, nB_rem] = STTC_RemainingDelenda_001(series1,series2,deltat(i),'reduce_wind',window,'mat_or_work',1);
         else
             [sttc(i,2), nA, nB] = STTC_001(series1,series2,deltat(i),'reduce_wind',0,'mat_or_work',1);
         end        
@@ -45,7 +45,7 @@ for i = 1:npoints
             sttc_remai(i,1) = deltat(i);
             [sttc(i,2), nA, nB] = STTC_001(series1,series2,deltat(i),'reduce_wind',0);
             [sttc_reduc(i,2), nA_reduc, nB_reduc] = STTC_001(series1,series2,deltat(i),'reduce_wind',window);
-            [sttc_remai(i,2), ~, ~] = STTC_RemainingDelenda_001(series1,series2,deltat(i),'reduce_wind',window);
+            [sttc_remai(i,2), nA_rem, nB_rem] = STTC_RemainingDelenda_001(series1,series2,deltat(i),'reduce_wind',window);
         else
             [sttc(i,2), nA, nB] = STTC_001(series1,series2,deltat(i),'reduce_wind',0);
         end

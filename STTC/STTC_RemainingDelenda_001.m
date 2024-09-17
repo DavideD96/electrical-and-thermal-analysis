@@ -8,6 +8,11 @@ function [ci, neventiA, neventiB] = STTC_RemainingDelenda_001(time_serieA,time_s
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  T_A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+ci = NaN;
+neventiA = 0;
+neventiB = 0;
+
+
 num = length(varargin);
 
 mat_or_work = 0;
@@ -43,16 +48,23 @@ if window ~= 0
     time_serieB = time_serieB(time_serieB(:,1) > time_serieB(1,1)+window,:);
 end
 
-if sum(time_serieA(:,2)) == 0 || sum(time_serieB(:,2)) == 0
-    ci = 0;
-    neventiA = 0;
-    neventiB = 0;
-    return
-end
+% if sum(time_serieA(:,2)) == 0 || sum(time_serieB(:,2)) == 0
+%     ci = 0;
+%     neventiA = 0;
+%     neventiB = 0;
+%     return
+% end
 
 nsamplA = size(time_serieA);
 eventiA = time_serieA(time_serieA(:,2) ~= 0,:);
 neventiA = size(eventiA,1);
+
+eventiB = time_serieB(time_serieB(:,2) ~= 0,:);
+neventiB = size(eventiB,1);
+
+if neventiA == 0 || neventiB == 0
+    return
+end
 
 Tempi_occupatiA = zeros(neventiA,2);
 

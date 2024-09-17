@@ -8,6 +8,10 @@ function [ci, neventiA, neventiB] = STTC_001(time_serieA,time_serieB,deltat, var
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  T_A  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+ci = NaN;
+neventiA = 0;
+neventiB = 0;
+
 num = length(varargin);
 
 mat_or_work = 0;
@@ -45,8 +49,16 @@ end
 %time_serieA
 %time_serieB
 nsamplA = size(time_serieA);
+
 eventiA = time_serieA(time_serieA(:,2) ~= 0,:);
 neventiA = size(eventiA,1);
+
+eventiB = time_serieB(time_serieB(:,2) ~= 0,:);
+neventiB = size(eventiB,1);
+
+if neventiA == 0 || neventiB == 0 %non eseguo analisi se non ho eventi in uno dei due siti
+    return
+end
 
 Tempi_occupatiA = zeros(neventiA,2);
 
