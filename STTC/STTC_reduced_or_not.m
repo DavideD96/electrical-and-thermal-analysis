@@ -159,7 +159,19 @@ for ii = 1:ngroups
     end
 end
 
+%min for plot:
+m1 = min(sttcs,[],'all');
+m2 = min(sttcs_red,[],'all');
+m3 = min(sttcs_rem,[],'all');
+
+minimo_ass = min([m1,m2,m3]);
+
+
 colorbar(ax_st_rem)
+clim(ax_st_rem,[minimo_ass,1])
+%ax_st_rem.Position(1) = ax_st_rem.Position(1)*1;
+xlim(ax_st_rem,[0 2000])
+%axis equal
 axes(ax_st_rem)
 title(['remaining (',num2str(window),' s - end)'])
 grid on
@@ -167,14 +179,24 @@ grid on
 %saveas(ax_st_rem,['ALL_STTC_from_', num2str(window),'_s_to_end___dist.png'],'png');
 
 colorbar(ax_st_red)
+clim(ax_st_red,[minimo_ass,1])
+%ax_st_red.Position(1) = ax_st_red.Position(1)*0.92;
+xlim(ax_st_red,[0 2000])
+%axis equal
 axes(ax_st_red)
 title(['reduced (0 s - ',num2str(window),' s)'])
 grid on
 %savefig(['ALL_STTC_from_start_to_', num2str(window),'_s___dist.fig'])
 %saveas(ax_st_red,['ALL_STTC_from_start_to_', num2str(window),'_s___dist.png'],'png');
 
+
+
 colorbar(ax_st)
+clim(ax_st,[minimo_ass,1])
+%axis equal
 axes(ax_st)
+%ax_st.Position(1) = ax_st.Position(1)*0.3;
+xlim(ax_st,[0 2000])
 
 % ax_st.Position(1) = ax_st.Position(1)/2;
 % ax_st.Position(3) = ax_st.Position(4);
@@ -207,6 +229,8 @@ thr_sttc = subplot(1,3,1);
 n_above_th = sum(sttcs>thresh,2); 
 
 plot(thr_sttc,new_sttc(:,1),n_above_th)
+xlabel('\Deltat [s]')
+
 grid on
 title(['number over threshold (',num2str(thresh),')'])
 
@@ -214,6 +238,8 @@ thr_sttc_red = subplot(1,3,2);
 n_above_th = sum(sttcs_red>thresh,2); 
 
 plot(thr_sttc_red,new_sttc(:,1),n_above_th)
+xlabel('\Deltat [s]')
+
 grid on
 title(['number over threshold (',num2str(thresh),') reduced'])
 
@@ -224,9 +250,42 @@ if size(sttcs_rem) ~= [0 0]
     grid on
 end
 
+xlabel('\Deltat [s]')
+
 title(['number over threshold (',num2str(thresh),') remaining'])
 savefig('n_over_threshold.fig')
 saveas(f2,'n_over_threshold.png','png')
+xlabel('\Deltat [s]')
+
+%sorting
+x_daga = x(:,[2 1]);
+n_daga = n(:,[2 1]);
+n_red_daga = n_red(:,[2 1]);
+n_rem_daga = n_rem(:,[2 1]);
+x_red_daga = x_red(:,[2 1]);
+x_rem_daga = x_rem(:,[2 1]);
+
+x = [x;x_daga];
+n = [n;n_daga];
+n_red = [n_red;n_red_daga];
+n_rem = [n_rem;n_rem_daga];
+x_red = [x_red;x_red_daga];
+x_rem = [x_rem;x_rem_daga];
+
+sttcs = [sttcs,sttcs];
+sttcs_red = [sttcs_red,sttcs_red];
+sttcs_rem = [sttcs_rem,sttcs_rem];
+
+[~,ind] = sort(x(:,1));
+x = x(ind,:);
+sttcs = sttcs(:,ind);
+sttcs_red = sttcs_red(:,ind);
+sttcs_rem = sttcs_rem(:,ind);
+n = n(ind,:);
+n_red = n_red(ind,:);
+n_rem = n_rem(ind,:);
+x_red = x_red(ind,:);
+x_rem = x_rem(ind,:);
 
 for ii = 1:size(deltat,2)
 
@@ -243,13 +302,32 @@ for ii = 1:size(deltat,2)
     plt = scatter3(ax1,a,'x1','x2','sttc','filled','ColorVariable','sttc');
     plt.SizeData = 100;
     title(['STTC at ',title_,' s'])        
-    ax1.Position(1) = ax1.Position(1)/2;
+    ax1.Position(1) = ax1.Position(1)*0.4;
     xlim(ax1,[0,2500])
     ylim(ax1,[0,2500])
+    zlim(ax1,[minimo_ass,1])
+    clim([minimo_ass,1])
     %axis equal
 
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%% plot 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    test_dist = x(1,1);
+    previous = x(1,1);
     for kk = 1:size(x,1)
-        text(x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n(kk,1)),'/',num2str(n(kk,2))],'FontSize',6)
+        if x(kk,1)-test_dist ~= 0 && x(kk,1)-test_dist < 1
+            %text(x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n(kk,1)),'/',num2str(n(kk,2))],'FontSize',7)
+            text(x(kk,1)*25-60,x(kk,2)*25,1.0,[num2str(n(kk,1)),'/',num2str(n(kk,2))],'FontSize',9,'Rotation',45, 'FontWeight','bold')
+            %text(x(kk,2)*25-102,x(kk,1)*25,1.0,[num2str(n(kk,2)),'/',num2str(n(kk,1))],'FontSize',7) 
+        else 
+            text(x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n(kk,1)),'/',num2str(n(kk,2))],'FontSize',9,'Rotation',45, 'FontWeight','bold')
+        end
+
+        if x(kk,1) > previous
+            test_dist = x(kk-1,1);
+        end
+        if kk > 1
+            previous = x(kk-1,1);
+        end
     end
     %set(gca,'Position',[50, 50, 400, 400])
     ax1.Position(3) = ax1.Position(3)*1.3;
@@ -259,6 +337,9 @@ for ii = 1:size(deltat,2)
     view(2)
     %savefig(['ALL_STTC_at_',title_,'_s.fig'])
     %saveas(a1,['ALL_STTC_at_',title_,'_s.png'],'png');
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
     ax2 = subplot(1,3,2);
     dataPlot_correl1 = [x_red.*25, sttcs_red(deltat(ii),:)'];
@@ -272,19 +353,23 @@ for ii = 1:size(deltat,2)
     plt = scatter3(ax2,a,'x1','x2','sttc','filled','ColorVariable','sttc');
     plt.SizeData = 100;
     title(['STTC reduced at ',title_,' s'])
+    
 
     %ax1.Position(1) = ax1.Position(1)/2;
     
     for kk = 1:size(x,1)
-        text(x(kk,1)*25-105,x(kk,2)*25,1.0,[num2str(n_red(kk,1)),'/',num2str(n_red(kk,2))],'FontSize',7)
+        text(x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n_red(kk,1)),'/',num2str(n_red(kk,2))],'FontSize',9,'Rotation',45,'FontWeight','bold')
+        %text(x(kk,2)*25-102,x(kk,1)*25,1.0,[num2str(n_red(kk,2)),'/',num2str(n_red(kk,1))],'FontSize',7)
     end
     %set(gca,'Position',[50, 50, 400, 400])
-    ax2.Position(1) = ax2.Position(1)*0.94;
+    ax2.Position(1) = ax2.Position(1)*0.92;
     ax2.Position(3) = ax2.Position(3)*1.3;
     ax2.Position(4) = ax2.Position(4)*1;
 
     xlim(ax2,[0,2500])
     ylim(ax2,[0,2500])
+    zlim(ax2,[minimo_ass,1])
+    clim([minimo_ass,1])
     %axis equal
 
     colorbar
@@ -305,9 +390,9 @@ for ii = 1:size(deltat,2)
     plt.SizeData = 100;
     title(['STTC remaining at ',title_,' s'])
 
-
     for kk = 1:size(x,1)
-        % check_grafico = find(x(abs(x(kk,1)-x(1:kk-1,1))<8));
+        
+        %  check_grafico = find(x(abs(x(kk,1)-x(1:kk-1,1))<8));
         % if size(check_grafico,1) ~= 0 %qualcuno è troppo vicino
         %     if x(kk,1)-x(1:check_grafico,1) < 0
         %         text(x(kk,1)*25-120,x(kk,2)*25,1.0,[num2str(n_rem(kk,1)),'/',num2str(n_rem(kk,2))],'FontSize',7)
@@ -316,22 +401,26 @@ for ii = 1:size(deltat,2)
         %     end
         % 
         % else
-            text(x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n_rem(kk,1)),'/',num2str(n_rem(kk,2))],'FontSize',7)
+            text(ax3,x(kk,1)*25-102,x(kk,2)*25,1.0,[num2str(n_rem(kk,1)),'/',num2str(n_rem(kk,2))],'FontSize',9,'Rotation',45,'FontWeight','bold')
+            %text(x(kk,2)*25-102,x(kk,1)*25,1.0,[num2str(n_rem(kk,2)),'/',num2str(n_rem(kk,1))],'FontSize',7)
+            
         % end
     end
-    ax3.Position(1) = ax3.Position(1)*1.05;
+    ax3.Position(1) = ax3.Position(1)*1.02;
     ax3.Position(3) = ax3.Position(3)*1.3;
     ax3.Position(4) = ax3.Position(4)*1;
 
     xlim(ax3,[0,2500])
     ylim(ax3,[0,2500])
+    zlim(ax3,[minimo_ass,1])
+    clim([minimo_ass,1])
     %axis equal
     colorbar
     view(2)
-end
 
-savefig(['ALL_STTC_window_',num2str(window),'_s_at_',title_,'_s.fig'])
-saveas(f3,['ALL_STTC_window_',num2str(window),'_s_at_',title_,'_s.png'],'png');
+    savefig(['ALL_STTC_window_',num2str(window),'_s_at_',title_,'_s.fig'])
+    saveas(f3,['ALL_STTC_window_',num2str(window),'_s_at_',title_,'_s.png'],'png');
+end
 
 %hist3()
 

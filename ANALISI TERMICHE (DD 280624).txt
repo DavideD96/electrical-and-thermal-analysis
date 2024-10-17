@@ -86,6 +86,7 @@ ________________________________________________________________________________
 					D) Thermal characterization
 
 1) run histo_thermal001 to plot an histogram of the temperature differences associated to Thermal events detected.
+2) run AS_temperature_evolution(x,y) to track Thermal evolution in an active site (or in any location).
 
 ________________________________________________________________________________________________________________________
 
@@ -104,3 +105,5 @@ ________________________________________________________________________________
 1) move to the directory '\termoFiles_mat', i.e., where mtotalT and mtotalDT are stored.
 2) run pca_thermal006('mtotalT.mat','Data.mat','N_significant_PC',12,'add_electric_dat',false,...
    ...'smoothing_before',0,'remove_0contours',false)
+3) run plot_together_pca_explained('mtotalDT',{'066_f4','066_f6','066_f7','066_f8','066_f9'})
+   You can use the original time series (mtotalT) or differential time series (mtotalDT).

@@ -2,7 +2,7 @@ function emissivity_comparison(frame)
 
 %importante! inizia sempre a selezionare dall'angolo in alto a sinistra.
 
-load('ThermoColorMap1.mat');
+load('ThermoColorMap2.mat');
 colormap(cm);
 
 %load 
@@ -45,5 +45,9 @@ end
 surf(mean(m(round(coordinates2(2,2)):round(coordinates2(3,2)),round(coordinates2(1,1)):round(coordinates2(2,1))),3))
 hold on
 surf(mean(m(round(coordinates1(2,2)):round(coordinates1(3,2)),round(coordinates1(1,1)):round(coordinates1(2,1))),3))
-zlabel('Intensity (')
+zlabel('Radiance [W*sr^{-1}*cm{-2}]')
+xlabel('pixel')
+ylabel('pixel')
+fontsize(14,"points")
+yticks([0 10 20 30 40])
 end

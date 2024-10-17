@@ -7,6 +7,8 @@ smooth = 0;
 useParam = 0;
 startEnd = [0,300];
 
+load('ThermoColorMap3')
+
 %varagin
 for k = 1:2:num
     if prod(varargin{k}=='startEnd')
