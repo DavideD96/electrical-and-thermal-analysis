@@ -297,11 +297,13 @@ for ii = 1:size(deltat,2)
     
     dataPlot_correl = [dataPlot_correl1; dataPlot_correl2];
 
-    a = array2table(dataPlot_correl,'VariableNames',{'x1','x2','sttc'});
+    a = array2table(dataPlot_correl,'VariableNames',{'x1 [\mum]','x2 [\mum]','sttc'});
     title_ = num2str(new_sttc(deltat(ii),1));
-    plt = scatter3(ax1,a,'x1','x2','sttc','filled','ColorVariable','sttc');
+    plt = scatter3(ax1,a,'x1 [\mum]','x2 [\mum]','sttc','filled','ColorVariable','sttc');
     plt.SizeData = 100;
-    title(['STTC at ',title_,' s'])        
+    title(['STTC at ',title_,' s'])   
+    xlabel('x1 [\mum]')
+    ylabel('x2 [\mum]')
     ax1.Position(1) = ax1.Position(1)*0.4;
     xlim(ax1,[0,2500])
     ylim(ax1,[0,2500])
@@ -347,10 +349,12 @@ for ii = 1:size(deltat,2)
     
     dataPlot_correl = [dataPlot_correl1; dataPlot_correl2];
     
-    a = array2table(dataPlot_correl,'VariableNames',{'x1','x2','sttc'});
+    a = array2table(dataPlot_correl,'VariableNames',{'x1 [\mum]','x2 [\mum]','sttc'});
     
     title_ = num2str(new_sttc_red(deltat(ii),1));
-    plt = scatter3(ax2,a,'x1','x2','sttc','filled','ColorVariable','sttc');
+    plt = scatter3(ax2,a,'x1 [\mum]','x2 [\mum]','sttc','filled','ColorVariable','sttc');
+    xlabel('x1 [\mum]')
+    ylabel('x2 [\mum]')
     plt.SizeData = 100;
     title(['STTC reduced at ',title_,' s'])
     
@@ -383,10 +387,10 @@ for ii = 1:size(deltat,2)
     
     dataPlot_correl = [dataPlot_correl1; dataPlot_correl2];
     
-    a = array2table(dataPlot_correl,'VariableNames',{'x1','x2','sttc'});
+    a = array2table(dataPlot_correl,'VariableNames',{'x1 [\mum]','x2 [\mum]','sttc'});
     
     title_ = num2str(new_sttc_rem(deltat(ii),1));
-    plt = scatter3(ax3,a,'x1','x2','sttc','filled','ColorVariable','sttc');
+    plt = scatter3(ax3,a,'x1 [\mum]','x2 [\mum]','sttc','filled','ColorVariable','sttc');
     plt.SizeData = 100;
     title(['STTC remaining at ',title_,' s'])
 
@@ -412,6 +416,8 @@ for ii = 1:size(deltat,2)
 
     xlim(ax3,[0,2500])
     ylim(ax3,[0,2500])
+    xlabel('x1 [\mum]')
+    ylabel('x2 [\mum]')
     zlim(ax3,[minimo_ass,1])
     clim([minimo_ass,1])
     %axis equal

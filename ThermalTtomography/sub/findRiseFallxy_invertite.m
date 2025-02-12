@@ -1,4 +1,4 @@
-function findRiseFall(frame1,frame2,varargin)
+function findRiseFallxy_invertite(frame1,frame2,varargin)
 
 % this function asks to the user to identify an active site (hotspot). Then
 % it shows the evolution of the temperature of the hotspot, and ask to
@@ -29,53 +29,31 @@ function findRiseFall(frame1,frame2,varargin)
     m1 = dat(:,:,frame1);
     m2 = dat(:,:,frame2);
     mdiff = m2-m1;
-
-    if varargin{1} ~= 0 && num > 0
-        imagesc(mdiff);
-        colorbar
-        title('select hotspot')
-        pause
-        [x,y] = ginput(1);
-        x = round(x);
-        y = round(y);
-        figure
-        temp = dat(x,y,:);
-        temp_aus1 = dat(x+5,y+5,:);
-        temp_aus2 = dat(x-5,y-5,:);
-    
-        temp = squeeze(temp(1,1,:));
-        temp_aus1 = squeeze(temp_aus1(1,1,:));
-        temp_aus2 = squeeze(temp_aus2(1,1,:));
-    
-        plot(temp)
-        hold on
-        plot(temp_aus1)
-        plot(temp_aus2)
-        grid on
-        hold off
-    else
-        x = 0;
-        y = 0;
-    end
+    imagesc(mdiff);
+    title('select hotspot')
+    pause
+    [x,y] = ginput(1);
+    x = round(x);
+    y = round(y);
 
     %plot(dat(x,y,frame1))
-
-
-    if varargin{1} ~= 0 && num > 0
-        if num > 0
-            title('select start of application')
-            pause
-            application_frames = varargin{1};
-            [t_startEnd,~] = ginput(1);
-            t_startEnd = [t_startEnd; t_startEnd+application_frames];
-        else
-            title('select start-end of application')
-            pause
-            [t_startEnd,~] = ginput(2);
-            application_frames = t_startEnd(2)-t_startEnd(1);
-        end
+    figure
+    temp = dat(y,x,:);
+    temp = squeeze(temp(1,1,:));
+    plot(temp)
+    grid on
+    
+    if num > 0
+        title('select start of application')
+        pause
+        application_frames = varargin{1};
+        [t_startEnd,~] = ginput(1);
+        t_startEnd = [t_startEnd; t_startEnd+application_frames];
     else
-        t_startEnd = [0,0];
+        title('select start-end of application')
+        pause
+        [t_startEnd,~] = ginput(2);
+        application_frames = t_startEnd(2)-t_startEnd(1);
     end
 
     t_startEnd = round(t_startEnd);
@@ -83,6 +61,6 @@ function findRiseFall(frame1,frame2,varargin)
     
     cd ..
 
-    mean_ColdAndHot()%application_frames)
+    mean_ColdAndHot(application_frames)
 
 end

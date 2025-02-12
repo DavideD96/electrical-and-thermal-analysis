@@ -1,4 +1,4 @@
-function setInitialRefPoint(filename,frame)
+function setInitialRefPoint2El(filename,frame)
 
 % This function is called at the beginning of each tomography session in
 % wich is required to compare different thermal images (different folders)
@@ -55,36 +55,13 @@ colormap("parula");
 title('set a-b/1-2 groove');
 pause
 [x,y] = ginput(2); %ref1, respect to new boundaries! ref2 (avoid rotations)
-groove1_coordinates = [x,y]; %Rab 
-groove1_coordinates = [groove1_coordinates;x(2),y(2)];
-groove1_coordinates(2,:) = [x(2),y(1)];
+groove_coordinates = [x,y]; %Rab 
+groove_coordinates = [groove_coordinates;x(2),y(2)];
+groove_coordinates(2,:) = [x(2),y(1)];
 
-groove1_coordinates(:,1) = round(groove1_coordinates(:,1));
-groove1_coordinates(:,2) = round(groove1_coordinates(:,2));
-save(append(filename,'groove_a-b_3-6_coordinates.mat'),'groove1_coordinates','filename');
- 
-title('set b-c/2-3 groove');
-pause
-[x,y] = ginput(2); %ref1, respect to new boundaries! ref2 (avoid rotations)
-groove2_coordinates = [x,y]; %Rab 
-groove2_coordinates = [groove2_coordinates;x(2),y(2)];
-groove2_coordinates(2,:) = [x(2),y(1)];
-
-groove2_coordinates(:,1) = round(groove2_coordinates(:,1));
-groove2_coordinates(:,2) = round(groove2_coordinates(:,2));
-save(append(filename,'groove_b-c_3-8_coordinates.mat'),'groove2_coordinates','filename');
-
-title('set c-a/1-3 groove');
-pause
-[x,y] = ginput(2); %ref1, respect to new boundaries! ref2 (avoid rotations)
-groove3_coordinates = [x,y]; %Rab 
-groove3_coordinates = [groove3_coordinates;x(2),y(2)];
-groove3_coordinates(2,:) = [x(2),y(1)];
-
-groove3_coordinates(:,1) = round(groove3_coordinates(:,1));
-groove3_coordinates(:,2) = round(groove3_coordinates(:,2));
-save(append(filename,'groove_c-a_2-8_coordinates.mat'),'groove3_coordinates','filename');
- 
+groove_coordinates(:,1) = round(groove_coordinates(:,1));
+groove_coordinates(:,2) = round(groove_coordinates(:,2));
+save(append(filename,'groove_coordinates.mat'),'groove_coordinates','filename');
 
 answer = inputdlg({'store mtotalT (1) or not (0)?'});
 if answer{1} == '1'

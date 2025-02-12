@@ -19,6 +19,8 @@ num = size(varargin,2);
 nBin = 0;
 int = [];
 
+n_TE = sum(group_(:,2))
+
 for k = 1:2:num
     if prod(varargin{k}=='nBin')
         nBin = varargin{k+1};

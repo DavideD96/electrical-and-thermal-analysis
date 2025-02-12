@@ -1,4 +1,4 @@
-function setInitialRefPoint(filename,frame)
+function setInitialRefPoint2El(filename,frame)
 
 % This function is called at the beginning of each tomography session in
 % wich is required to compare different thermal images (different folders)

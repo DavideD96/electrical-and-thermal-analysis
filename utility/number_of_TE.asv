@@ -1,4 +1,4 @@
-fold = {'f8', 'f5', 'f7'};
+fold = {'f13', 'f18', '23'};
 
 
 all_dat = [];
@@ -79,26 +79,5 @@ end
 hold on
 bh = bar3(dat(:,:,2));
 set(bh,'FaceColor',[0 0 1]);
-
-% for i=1:size(bh,2)
-%       zz = get(bh(i),'Zdata');
-%       %size(zz)
-%       k = 1;
-% 
-%       % Bars are defined by 6 faces(?), adding values from data2 will
-%       % shift the bars upwards accordingly, I'm sure this could be made
-%       % better!
-%       for j = 0:6:(size(zz,1)-6)  
-%              zz(j+1:j+6,:)=zz(j+1:j+6,:)+dat(k,i,3);
-%              k=k+1;
-%       end
-% 
-%       % Reset Zdata in chart
-%       set(bh(i),'Zdata',zz);
-% end
-% 
-% hold on
-% bh = bar3(dat(:,:,3));
-% set(bh,'FaceColor',[0 1 0]);
 
 nev

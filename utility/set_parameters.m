@@ -62,4 +62,6 @@ cd parameters
     save("ThermalParameters.mat","ThermalParameters")
 cd ..
 
+store_mtotalDT()
+
 end

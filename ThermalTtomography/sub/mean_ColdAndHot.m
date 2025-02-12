@@ -14,15 +14,35 @@ end
 startEnd = load('PULSE_startEnd.mat');
 startEnd = startEnd.t_startEnd;
 nframesHot = startEnd(2)-startEnd(1);
+ntrials = 200; %per cercare autonomamente il punto in cui si scalda
 
 num = length(varargin);
 
-if num > 0
-    nframesHot = varargin{1};
-end
-
 mtot = load('mtotalT.mat');
 mtot = mtot.mtotalT;
+
+if num > 0
+    nframesHot = varargin{1};
+
+else
+
+    index = 1;
+    deltaTmax = 0.1;
+
+    for ii = 1:ntrials
+        cold = mean(mtot(:,:,ii:ii+50),3);
+        hot = mean(mtot(:,:,ii++53:ii+103),3);
+        deltaT = max(hot-cold,[],'all');
+
+        if deltaT>deltaTmax
+            deltaTmax = deltaT;
+            index = ii+52;
+        end
+
+    end
+end
+
+
 start = startEnd(1);
 
 transient = 6; %exclude frames due to transient
@@ -50,6 +70,7 @@ hotMean = mean(hotData,3);
 
 save('coldMean.mat','coldMean');
 save('hotMean.mat','hotMean');
+save('start_apply.mat',"index")
 
 imagesc(hotMean-coldMean);
 

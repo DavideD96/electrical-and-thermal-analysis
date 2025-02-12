@@ -1,4 +1,4 @@
-ANALISI TERMICHE (DD 12/09/24)
+ANALISI TERMICHE (DD 11/02/25)
 
 					A) export .mat, set parameters for analysis
 
@@ -30,20 +30,19 @@ ANALISI TERMICHE (DD 12/09/24)
 	'Rows'= y dimension.
 	'detectMeth' = detection method (Always use 'ThreshNN').
    these parameters are going to be used in iterate running of your programs. You can run set_parameters() for 
-   default parameters (see function help).
-6) run store_mtotalDT(). The differential time series is stored in a 3D .mat array.
+   default parameters (see function help). Runs automatically 
+   store_mtotalDT(). The differential time series is stored in a 3D .mat array.
 _______________________________________________________________________________________________________________________
 
 					B) Thermal preprocessing and detection
 
 1) run analisi_Nframes011_multiEvento008_NOpV(). You can produce a video by adding a pair-value argument
 	at the end: analisi_Nframes011_multiEvento008_NOpV('MakeVideo',1). This program perform detection.
+	runsautomatically evento_max_temp_010_matriceEventi(0) to collapse all frames containing the same events. This 
+	function returns and saves the object 'matriceEventi'.
 _______________________________________________________________________________________________________________________
 
 					C) build data for analysis and perform statisical analysis
-
-1) run evento_max_temp_010_matriceEventi(0) to collapse all frames containing the same events. This function returns and 
-	saves the object 'matriceEventi'.
 
 Now you can choose a pixel to identify an active site. Its coordinates are x (row) and y (column).
 
@@ -79,6 +78,8 @@ STTC:
 	maxDeltaT: maximum DeltaT. The starting DeltaT is set to 0.02 s. The interval is sampled with 100 deltaT, irrespective 
 		of the length.
 	window: specify a time instant to split the time series and perform STTC also in separate intervals.
+
+6) find_bursts(serie)
 	
 
 ________________________________________________________________________________________________________________________

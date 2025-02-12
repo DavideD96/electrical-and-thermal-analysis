@@ -1,4 +1,4 @@
-function store_mtotalT8cores(filename, fr_end, varargin)
+function store_mtotalT8cores(filename, parallel, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2024-01-15 Last modification: 2024-04-12
@@ -45,46 +45,74 @@ disp(append('last frame: ', num2str(fr_end)));
 
     Flir = 1;
 
-    ncores = feature('numcores');
-
-    % Verifica se il Parallel Computing Toolbox è disponibile
-    if ~license('test', 'Distrib_Computing_Toolbox')
-        error('Il Parallel Computing Toolbox non è disponibile.');
-    end
-
-    % Avvia un pool di worker per il parallel computing
-    pool = gcp('nocreate'); % Verifica se esiste già un pool
-    if isempty(pool)
-        pool = parpool('local', ncores); % Avvia un nuovo pool con 8 core
-    end
-
-    num = length(varargin);
-
-    if num > 0
-        coordname = varargin{1};
-    end
-
-    load(append(filename,'CAF_coordinates.mat'))
-    check = exist(append(filename,'CAF_coordinates.mat'),"file");
-    if check ~= 0
-        coordname = append(filename,'CAF_coordinates.mat');
-    end
-
-    coordname
-    m = get_data002(filename, 1, coordname, Flir);
-    [Rows, Columns] = size(m);
-    mtotalT = zeros(Rows,Columns,fr_end);
-
-    mtotalT(:,:,1) = m;
+    if parallel == 1
+        ncores = feature('numcores');
     
-    parfor i = 2:fr_end
-        %waitbar(i/fr_end)
-        mtotalT(:, :, i) = get_data002(filename, i, coordname, Flir);        
-    end
+        % Verifica se il Parallel Computing Toolbox è disponibile
+        if ~license('test', 'Distrib_Computing_Toolbox')
+            error('Il Parallel Computing Toolbox non è disponibile.');
+        end
+    
+        % Avvia un pool di worker per il parallel computing
+        pool = gcp('nocreate'); % Verifica se esiste già un pool
+        if isempty(pool)
+            pool = parpool('local', ncores); % Avvia un nuovo pool con 8 core
+        end
+    
+        num = length(varargin);
+    
+        if num > 0
+            coordname = varargin{1};
+        end
+    
+        load(append(filename,'CAF_coordinates.mat'))
+        check = exist(append(filename,'CAF_coordinates.mat'),"file");
+        if check ~= 0
+            coordname = append(filename,'CAF_coordinates.mat');
+        end
+    
+        coordname
+        m = get_data002(filename, 1, coordname, Flir);
+        [Rows, Columns] = size(m);
+        mtotalT = zeros(Rows,Columns,fr_end);
+    
+        mtotalT(:,:,1) = m;
+        
+        parfor i = 2:fr_end
+            %waitbar(i/fr_end)
+            mtotalT(:, :, i) = get_data002(filename, i, coordname, Flir);        
+        end
+    
+        if fr_end == 0
+        % Opzionale: chiudi il pool di worker al termine del lavoro
+        delete(gcp('nocreate'));
+        end
 
-    if fr_end == 0
-    % Opzionale: chiudi il pool di worker al termine del lavoro
-    delete(gcp('nocreate'));
+    else
+        num = length(varargin);
+    
+        if num > 0
+            coordname = varargin{1};
+        end
+    
+        load(append(filename,'CAF_coordinates.mat'))
+        check = exist(append(filename,'CAF_coordinates.mat'),"file");
+        if check ~= 0
+            coordname = append(filename,'CAF_coordinates.mat');
+        end
+    
+        coordname
+        m = get_data002(filename, 1, coordname, Flir);
+        [Rows, Columns] = size(m);
+        mtotalT = zeros(Rows,Columns,fr_end);
+    
+        mtotalT(:,:,1) = m;
+        
+        for i = 2:fr_end
+            waitbar(i/fr_end)
+            mtotalT(:, :, i) = get_data002(filename, i, coordname, Flir);        
+        end
+
     end
 
     %salvo matrice

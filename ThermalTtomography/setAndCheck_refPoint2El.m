@@ -1,4 +1,4 @@
-function setAndCheck_refPoint(filename,frame,reffolder,refname)
+function setAndCheck_refPoint2El(filename,frame,reffolder,refname)
 
 % Author: Davide Decastri
 %
@@ -40,21 +40,11 @@ y_ref = ref_coord_.ref_coordinates(1,2);
 x_ref = x_ref - x_CAF(1,1) + 1; %sdr ora è CAF
 y_ref = y_ref - y_CAF(1,1) + 1;
 
-groove1_coord_ = load(append(refname,'groove_a-b_3-6_coordinates.mat'));
-x_groove1 = round(groove1_coord_.groove1_coordinates(:,1)); %sdr è CAF
-y_groove1 = round(groove1_coord_.groove1_coordinates(:,2));
-groove1_coordinates = [x_groove1, y_groove1];
+groove1_coord_ = load(append(refname,'groove_coordinates.mat'));
+x_groove1 = round(groove1_coord_.groove_coordinates(:,1)); %sdr è CAF
+y_groove1 = round(groove1_coord_.groove_coordinates(:,2));
+groove_coordinates = [x_groove1, y_groove1];
 
-groove2_coord_ = load(append(refname,'groove_b-c_3-8_coordinates.mat'));
-x_groove2 = groove2_coord_.groove2_coordinates(:,1);
-y_groove2 = groove2_coord_.groove2_coordinates(:,2);
-groove2_coordinates = [x_groove2, y_groove2];
-
-
-groove3_coord_ = load(append(refname,'groove_c-a_2-8_coordinates.mat'));
-x_groove3 = groove3_coord_.groove3_coordinates(:,1);
-y_groove3 = groove3_coord_.groove3_coordinates(:,2);
-groove3_coordinates = [x_groove3, y_groove3];
 
 %optional, for check
 m_ = get_data002_matCoord(refname,1,[x_CAF,y_CAF],1);
@@ -64,9 +54,7 @@ cd ..
 
 cd(path)
 
-save(append(filename,'groove_a-b_3-6_coordinates.mat'),'groove1_coordinates')
-save(append(filename,'groove_b-c_3-8_coordinates.mat'),'groove2_coordinates')
-save(append(filename,'groove_c-a_2-8_coordinates.mat'),'groove3_coordinates')
+save(append(filename,'groove_coordinates.mat'),'groove_coordinates')
 
 reftrial = append(filename,'ref1_coordinates.mat');
 check = exist(reftrial,"file");
@@ -119,7 +107,7 @@ save(append(filename,'ref1_coordinates.mat'),'ref_new');
     
     answer = inputdlg({'store mtotalT (1) or not (0)?'});
     if answer{1} == '1'
-        store_mtotalT8cores(filename,399,append(filename,'CAF_coordinates.mat'));
+        store_mtotalT8cores(filename,499,append(filename,'CAF_coordinates.mat'));
         findRiseFall(2,180,200);
     end
 end

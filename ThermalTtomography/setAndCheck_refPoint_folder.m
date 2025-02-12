@@ -1,4 +1,4 @@
-function setAndCheck_refPoint(filename,frame,reffolder,refname)
+function setAndCheck_refPoint_folder(f,filename,frame,reffolder,refname)
 
 % Author: Davide Decastri
 %
@@ -24,8 +24,7 @@ function setAndCheck_refPoint(filename,frame,reffolder,refname)
 % CAF_coordinates.mat
 % ref1_coordinates.mat
 
-path = pwd;
-cd ..
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% references %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd(reffolder)
 
@@ -62,7 +61,7 @@ m_ = get_data002_matCoord(refname,1,[x_CAF,y_CAF],1);
 cd ..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cd(path)
+cd(f)
 
 save(append(filename,'groove_a-b_3-6_coordinates.mat'),'groove1_coordinates')
 save(append(filename,'groove_b-c_3-8_coordinates.mat'),'groove2_coordinates')
@@ -75,6 +74,7 @@ check = exist(reftrial,"file");
 
 m=readtable(sprintf(append(filename,'%d.csv'), frame));
 m= m{:,:};
+figure('Position',[100,100,1400,700])
 imagesc(m);
 pause;
 [x,y] = ginput(1);
@@ -117,9 +117,11 @@ save(append(filename,'ref1_coordinates.mat'),'ref_new');
     
     colorbar
     
-    answer = inputdlg({'store mtotalT (1) or not (0)?'});
+    answer = {'1'}; %inputdlg({'store mtotalT (1) or not (0)?'});
     if answer{1} == '1'
         store_mtotalT8cores(filename,399,append(filename,'CAF_coordinates.mat'));
-        findRiseFall(2,180,200);
+        findRiseFall(2,180,0); %0 = trova automaticamente
     end
+
+    cd ..
 end

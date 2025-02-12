@@ -15,12 +15,15 @@ function pc2 = pca_thermal006(filename,fileres, varargin)
 %   'add_electric_dat' plot time evolution of PCs and conductance together
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cd parameters\
-par = load("ThermalParameters.mat");
-par = par.ThermalParameters;
-start_end = par.delay;
-start_end = [start_end,par.end_stimulation];
-cd ..
+autoLim = isfolder('parameters');
+if autoLim
+    cd parameters\
+    par = load("ThermalParameters.mat");
+    par = par.ThermalParameters;
+    start_end = par.delay;
+    start_end = [start_end,par.end_stimulation];
+    cd ..
+end
 
 cd termoFiles_mat\
 
@@ -34,6 +37,7 @@ use_electr = false;
 smooth = false;
 remove = 0;
 remove_lr = 0;
+pc_number = 1;
 
 num = size(varargin,2);
 
@@ -53,14 +57,20 @@ for k = 1:2:num
     elseif prod(varargin{k}=='check_act_sites_')
         checkAS = varargin{k+1};
     elseif prod(varargin{k}=='_remove_up_down_')
-        remove = varargin{k+1}
+        remove = varargin{k+1};
     elseif prod(varargin{k}=='_remove_lft_rig_')
-        remove_lr = varargin{k+1}
+        remove_lr = varargin{k+1};
+    elseif prod(varargin{k}=='_select_All_ASs_')
+        select_all = varargin{k+1};
     end
 end
 
 data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
+
+if ~autoLim
+    start_end = [size(data,3)-2900,size(data,3)];
+end
 
 if any(remove)
     data = data(remove(1)+1:end-remove(2),:,:);
@@ -155,11 +165,11 @@ extrN = 0;
 %     end
 % end
 %figure
-%t = tiledlayout(nrighe,ncolonne);
+t = tiledlayout(nrighe,ncolonne);
 
 for k = 1:ncolonne*nrighe
-    subplot(nrighe,ncolonne,k);
-    %nexttile
+    %subplot(nrighe,ncolonne,k);
+    nexttile
     hold on;
     pc = reshape(coeff(:,k),[rows,col]);
     imagesc(pc); %flip
@@ -801,9 +811,12 @@ if select_point ~= 0
         hold on
         for kk = 1:size(coordinates,1)
             plot(coordinates(kk,2),coordinates(kk,1),'w.', 'MarkerSize', 12);
-        end        
-        [x,y] = ginput(1);
-        coordinates = [coordinates;round([y,x])];
+        end    
+        select = inputdlg('select? [0,1]');
+        if select{1} == '1'
+            [x,y] = ginput(1);
+            coordinates = [coordinates;round([y,x])];
+        end
     end
 
     % g_coord = round([x,y]);
@@ -872,5 +885,39 @@ elseif prod(select_point == 'visual')
         saveas(a, append(title_name,'.png'),'png');
     end
 end
+
+if select_all ~= 0
+    coordinates = [];
+    figure('Position',[200,100,900,900])
+    pc = reshape(coeff(:,pc_number),[rows,col]);
+    imagesc(pc)
+    axis equal
+    swapPc = {'1'};
+    while swapPc{1} ~= '2'
+        swapPc = inputdlg('swap pc? [0,1]. 2 to end');
+        if swapPc{1} == '1'
+            pc_number = pc_number + 1;
+            pc = reshape(coeff(:,pc_number),[rows,col]);
+            imagesc(pc)
+            axis equal
+        end
+
+        hold on
+        for kk = 1:size(coordinates,1)
+            plot(coordinates(kk,2),coordinates(kk,1),'w.', 'MarkerSize', 12);
+        end    
+        select = inputdlg('select? [0,1]');
+        if select{1} == '1'
+            [x,y] = ginput(1);
+            coordinates = [coordinates;round([y,x])];
+        end
+    end
+
+    % g_coord = round([x,y]);
+    save('all_coordinates',"coordinates")
+    close all
+
+end
+
 %cd ..
 end
