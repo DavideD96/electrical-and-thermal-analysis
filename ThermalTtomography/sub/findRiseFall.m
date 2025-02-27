@@ -39,9 +39,9 @@ function findRiseFall(frame1,frame2,varargin)
         x = round(x);
         y = round(y);
         figure
-        temp = dat(x,y,:);
-        temp_aus1 = dat(x+5,y+5,:);
-        temp_aus2 = dat(x-5,y-5,:);
+        temp = dat(y,x,:); %cambiato
+        temp_aus1 = dat(y+3,x+3,:);
+        temp_aus2 = dat(y-3,x-3,:);
     
         temp = squeeze(temp(1,1,:));
         temp_aus1 = squeeze(temp_aus1(1,1,:));

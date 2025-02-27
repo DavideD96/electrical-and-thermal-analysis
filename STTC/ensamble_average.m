@@ -1,12 +1,12 @@
 %generate two random series of events and compute STTC.
 
-n_trials = 100;
+n_trials = 200;
 npoints = 50; %interval segmentation
-neventA = 25;
-neventB = 33;
-interval = 300; %[s]
+neventA = 2;
+neventB = 25;
+interval = 60; %[s]
 freq = 50; %[Hz]
-delta_t = [0.02,20]; %[s]
+delta_t = [0.02,5]; %[s]
 type = 'standard';%'bursting'; %
 
 STTCs = zeros(npoints, n_trials+1);
@@ -36,12 +36,13 @@ STTC_mean_std(:,2) = mean(STTCs(:,2:end),2);
 STTC_mean_std(:,3) = std(STTCs(:,2:end),0,2);
 
 a = figure;
-plot(STTC_mean_std(:,1),STTC_mean_std(:,2),'k')
+p = plot(STTC_mean_std(:,1),STTC_mean_std(:,2),'k');
 hold on
 grid on
-plot(STTC_mean_std(:,1),STTC_mean_std(:,2)-STTC_mean_std(:,3),'k--')
-plot(STTC_mean_std(:,1),STTC_mean_std(:,2)+STTC_mean_std(:,3),'k--')
+plot(STTC_mean_std(:,1),STTC_mean_std(:,2)-2*STTC_mean_std(:,3),'k--')
+plot(STTC_mean_std(:,1),STTC_mean_std(:,2)+2*STTC_mean_std(:,3),'k--')
 title(append(type,'.  Mean STTC nevents: ',num2str(neventA),', ',num2str(neventB)))
+legend([p(1)],[num2str(neventA),' ',num2str(neventB)])
 xlabel('\Deltat [s]')
 hold off
 saveas(a,append(type,' ',num2str(neventA),' ',num2str(neventB),'.png'),'png'); %num2str(neventA),' vs ',num2str(neventB),'events.png'),'png');

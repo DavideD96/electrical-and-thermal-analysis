@@ -29,7 +29,7 @@ cd termoFiles_mat\
 
 checkAS = 0;
 select_point = 0;
-nrighe = 4;
+nrighe = 2;
 ncolonne = 4;
 clustering = false;
 N_significant_PC = 5;
@@ -131,6 +131,7 @@ set(gca, 'XTick', 1:20)
 
 
 %%%%%%%%%%%%%%%%%%%%%% cumulative explained %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure
 pcaCSignificance = cumsum(pcaSignificance(1:20));
 plot(linspace(1,20,20), pcaCSignificance);
 xlabel('n° of pca components');
@@ -173,7 +174,7 @@ for k = 1:ncolonne*nrighe
     hold on;
     pc = reshape(coeff(:,k),[rows,col]);
     imagesc(pc); %flip
-    title(append('PC',num2str(k)),"FontSize",14);
+    title(append('PC',num2str(k)),"FontSize",20);
     xlim([1,col]);
     ylim([1,rows]);
     % clim([extrN,extrP])
@@ -181,7 +182,7 @@ for k = 1:ncolonne*nrighe
     %axis equal
     %clim([-0.32,0.42])
     axis off
-    hcb = colorbar;
+    hcb = colorbar("FontSize",10);
     hold off;
     colormap("hot")
     % colorbarpos=hcb.Position;
@@ -642,64 +643,64 @@ if use_electr == true
     data_ = table2array(data);
     newYlabels = ["time [s]","conductance [Ohm^-1]","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"];
     fig = figure;
-    subplot(10,1,1);
+    subplot(8,1,1);
     plot(data_(:,1),data_(:,2))
     ylabel('conductance [\Omega^-1]')
     set(gca,'xtick',[])
 
-    subplot(10,1,2)
+    subplot(8,1,2)
     plot(data_(:,1),data_(:,3))
     ylabel('PC1')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,3)
+    subplot(8,1,3)
     plot(data_(:,1),data_(:,4))
     ylabel('PC2')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,4)
+    subplot(8,1,4)
     plot(data_(:,1),data_(:,5))
     ylabel('PC3')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,5)
+    subplot(8,1,5)
     plot(data_(:,1),data_(:,6))
     ylabel('PC4')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,6)
+    subplot(8,1,6)
     plot(data_(:,1),data_(:,7))
     ylabel('PC5')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,7)
+    subplot(8,1,7)
     plot(data_(:,1),data_(:,8))
     ylabel('PC6')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,8)
+    subplot(8,1,8)
     plot(data_(:,1),data_(:,9))
     ylabel('PC7')
     set(gca,'xtick',[])
     set(gca,'ytick',[])
 
-    subplot(10,1,9)
-    plot(data_(:,1),data_(:,10))
-    ylabel('PC8')
-    set(gca,'xtick',[])
-    set(gca,'ytick',[])
-
-    subplot(10,1,10)
-    plot(data_(:,1),data_(:,11))
-    ylabel('PC9')
-    set(gca,'ytick',[])
-    xlabel('time [s]')
+    % subplot(10,1,9)
+    % plot(data_(:,1),data_(:,10))
+    % ylabel('PC8')
+    % set(gca,'xtick',[])
+    % set(gca,'ytick',[])
+    % 
+    % subplot(10,1,10)
+    % plot(data_(:,1),data_(:,11))
+    % ylabel('PC9')
+    % set(gca,'ytick',[])
+    % xlabel('time [s]')
 
 else
     period = 1/30;

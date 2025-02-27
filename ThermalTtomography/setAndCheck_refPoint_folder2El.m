@@ -1,4 +1,4 @@
-function setAndCheck_refPoint2El(filename,frame,reffolder,refname)
+function setAndCheck_refPoint_folder2El(f,filename,frame,reffolder,refname)
 
 % Author: Davide Decastri
 %
@@ -24,8 +24,8 @@ function setAndCheck_refPoint2El(filename,frame,reffolder,refname)
 % CAF_coordinates.mat
 % ref1_coordinates.mat
 
-path = pwd;
-cd ..
+%path = pwd;
+%cd ..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% references %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cd(reffolder)
 
@@ -52,8 +52,8 @@ m_ = get_data002_matCoord(refname,1,[x_CAF,y_CAF],1);
 cd ..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-cd(path)
-%cd(f)
+%cd(path)
+cd(f)
 
 save(append(filename,'groove_coordinates.mat'),'groove_coordinates')
 
@@ -64,7 +64,6 @@ check = exist(reftrial,"file");
 
 m=readtable(sprintf(append(filename,'%d.csv'), frame));
 m= m{:,:};
-figure
 imagesc(m);
 pause;
 [x,y] = ginput(1);
@@ -112,4 +111,6 @@ save(append(filename,'ref1_coordinates.mat'),'ref_new');
         store_mtotalT8cores(filename,499,append(filename,'CAF_coordinates.mat'));
         findRiseFall(2,180,200);
     end
+
+    cd ..
 end

@@ -1,0 +1,17 @@
+function init_folders2El(filename, start,stop, reffold)
+
+    ref_name = '-032_';
+
+    for ii = start:stop
+
+        zer = '';
+        for kk = 1:3-numel(num2str(ii))
+            zer = [zer,'0'];
+        end
+
+        filename_now = [filename,['-',zer,num2str(ii)],'_']; 
+        setAndCheck_refPoint_folder2El(num2str(ii),filename_now,10,reffold,[filename,ref_name])
+        close all
+    end
+    
+end

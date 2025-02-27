@@ -459,19 +459,16 @@ cd ..
 
 if single == 1
 
-    zlimits = [min([sttcs_red(:,1);sttcs_rem(:,1)]),...
-        max([sttcs_red(:,1);sttcs_rem(:,1)])];
+    zlimits = min([sttcs_red(:,1);sttcs_rem(:,1)])
 
     figure
     plot(new_sttc(:,1),sttcs_red(:,1))
-    ylim(zlimits)
     xlabel('synchronicity window [s]')
     ylabel('STTC')
     grid on
     
     figure
     plot(new_sttc(:,1),sttcs_rem(:,1))
-    ylim(zlimits)
     xlabel('synchronicity window [s]')
     ylabel('STTC')
     grid on

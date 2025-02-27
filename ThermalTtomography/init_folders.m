@@ -1,4 +1,4 @@
-function init_folders(filename, start,stop)
+function init_folders(filename, start,stop, reffold)
 
     ref_name = '001_';
 
@@ -10,7 +10,7 @@ function init_folders(filename, start,stop)
         end
 
         filename_now = [filename,zer,num2str(ii),'_']; 
-        setAndCheck_refPoint_folder(num2str(ii),filename_now,10,'1',[filename,ref_name])
+        setAndCheck_refPoint_folder(num2str(ii),filename_now,10,reffold,[filename,ref_name])
         close all
     end
     

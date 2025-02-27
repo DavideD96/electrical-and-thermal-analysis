@@ -108,3 +108,43 @@ ________________________________________________________________________________
    ...'smoothing_before',0,'remove_0contours',false)
 3) run plot_together_pca_explained('mtotalDT',{'066_f4','066_f6','066_f7','066_f8','066_f9'})
    You can use the original time series (mtotalT) or differential time series (mtotalDT).
+
+
+ENGRAM
+
+% thermal tomography instructions
+%
+% %%%%%%%%%%%%%%%%% locate CAF and grooves %%%%%%%%%%%%%%%%%%
+% 0) Data.mat containing electric data must be in each folder.
+%
+% 1) setInitialRefPoint in reference folder.
+%
+% 2) setAndCheck_refPoint in every folder.
+%    store_mtotalT in every folder.
+%    findRiseFall in every folder.
+%       (it runs also mean_ColdAndHot automatically)
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% now you have all the information to perform tomography.
+%
+% 3) thermalTomography
+
+
+
+% engram instructions
+%
+% %%%%%%%%%%%%%%%%% locate CAF and grooves %%%%%%%%%%%%%%%%%%
+%
+1) setInitialRefPoint in reference folder.
+2) init_folders(filename, start(numero),stop(numero), reffold(stringa)) (runs set_and_check_ref_point in each folder)
+3) engram(filiename,'startfold','endfold')
+
+IF YOU ARE USING 2 ELECTRODES:
+1) dentro la cartella, setInitialRefPoint2El('E25_D21_2El_W2mm_L1mmB_exp2_50Hz_-021_',10)
+2) init_folders('E25_D21_2El_W2mm_L1mmB_exp4_50Hz_',34,37,'32') %potresti doverlo modificare un filo per sistemare il nome
+    in alternativa, dentro ogni cartella: setAndCheck_refPoint2El('name',10,'reffolder','refname')
+    'PULSE_startEnd.at' = manual detecion of start and stop
+    'start_apply.mat' = automatic detection of start
+3) engram2El(filename,{'startfold',...,'middlefold,...,'endfold'})
+4) engram2El_writing(filiename,{'startfold',...,'middlefold,...,'endfold'})
+
