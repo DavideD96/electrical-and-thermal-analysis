@@ -21,6 +21,7 @@ function analyzed = findSwitch_rel2 (matr,col, matsigma,ns,normalize,RoG,threshH
 %   threshHighRes: threshold low conductance state (prevents detection when
 %       sample is not conducting).
 
+col = 3; %se no la check conduction non funziona!
 
 s = size(matr,1);
 z = zeros(s,1);

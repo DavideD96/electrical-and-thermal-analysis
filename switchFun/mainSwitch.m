@@ -49,7 +49,8 @@ function s = mainSwitch(nomefile,folder,method,varargin)
 %   'ntv': select intervals to compute mean and std.
 %   'RoG': save resistance of conductance.
 %   'OPT': an array of three charachters that define the meaning of value
-%       'col' - VALUE spcifies the index of the column to be analyzed
+%       'col' - VALUE spcifies the index of the column to be analyzed.
+%               Inutile per la detection, usa sempre la terza (corrente).
 %       'nos' - VALUE is the number of sigma to recognize swithing events
 %       'bin' - VALUE of bin length (in seconds)
 %       'fit' - VALUE 0 (default value) or 1; 0 no fit is performed, 1 a

@@ -17,7 +17,9 @@ function switchFound = findSwitch1(matr,sigMatr, col, ns, method, sel, selectOrN
 %         analyzed
 %   sigMatr: the matrix of interval and correspondant sigma for the
 %            quantity of interest (see findSwitch_rel)
-%   col: the column of the quantity to be analyzed
+%   col: the column of the quantity to be analyzed. Nell'attuale
+%       implementazione è inutile, perché usa sempre la 3za colonna 
+%       (corrente)
 %   ns: the number of sigmas to collect switch events (see findSwitch_rel)
 %   method: a three charachter vector; select the method to perform the analysis
 %           'rel' use the relative method (see findSwitch_rel)
