@@ -30,6 +30,12 @@ function findRiseFall(frame1,frame2,varargin)
     m2 = dat(:,:,frame2);
     mdiff = m2-m1;
 
+    if size(m1,2) < 10
+        vicino = 2;
+    else
+        vicino = 4;
+    end
+
     if varargin{1} ~= 0 && num > 0
         imagesc(mdiff);
         colorbar
@@ -40,8 +46,8 @@ function findRiseFall(frame1,frame2,varargin)
         y = round(y);
         figure
         temp = dat(y,x,:); %cambiato
-        temp_aus1 = dat(y+3,x+3,:);
-        temp_aus2 = dat(y-3,x-3,:);
+        temp_aus1 = dat(y+vicino,x+vicino,:);
+        temp_aus2 = dat(y-vicino,x-vicino,:);
     
         temp = squeeze(temp(1,1,:));
         temp_aus1 = squeeze(temp_aus1(1,1,:));

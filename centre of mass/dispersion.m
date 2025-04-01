@@ -1,0 +1,59 @@
+function dispersion()
+
+%Computes BD coefficient, defined as number of significant PC * mean STTC 
+%groups = array of strings ["group_x7_y4","group_x2_y6","group_x5_y5","group_x1_y2"]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% sttc %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%window = 30;
+
+cd termoFiles_mat
+% param = load("start_apply.mat");
+% 
+% start = param.index;
+
+%start = (start - 20);
+start = 1;
+
+matT = load("mtotalT.mat");
+matT = matT.mtotalT;
+end_ = size(matT,3)-start;
+
+Rows = size(matT,1);
+Col = size(matT,2);
+cd ..
+
+T_amb = mean(matT(:,:,1),'all');
+
+matT = matT-T_amb;
+matT = abs(matT);
+
+X = zeros(end_-start+1,1);
+Y = zeros(end_-start+1,1);
+
+giration_rad = zeros(end_-start+1,1);
+
+for ii=start:end_%start+17:start+19%start:end_
+%ii
+    M = sum(matT(:,:,ii),'all');
+    [x_all,y_all] = meshgrid(linspace(1,Col,Col),linspace(1,Rows,Rows)); %x_all = [1 2 3 4 5;1 2 3 4 5]
+                                                                         %y_all = [1 1 1 1 1;2 2 2 2 2]
+    %y_all = meshgrid(linspace(1,Rows,Rows))'
+
+    %x_all enumerates columns
+    x_weights = x_all.*matT(:,:,ii);
+    y_weights = y_all.*matT(:,:,ii);
+
+    X(ii-start+1) = sum(x_weights,"all")/M;
+    Y(ii-start+1) = sum(y_weights,'all')/M;
+
+    %dispersione: momento di inerzia globale
+    giration_rad(ii-start+1) = sqrt(sum(((x_all-X(ii-start+1)).^2+(y_all-Y(ii-start+1)).^2).*matT(:,:,ii),"all")/M);    
+
+end
+
+figure
+plot(giration_rad)
+grid on
+title('overall dispersion')
+
+end

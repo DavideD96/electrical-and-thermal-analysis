@@ -1,3 +1,7 @@
+%computes cross correlogram betwee two series of RS events: per each RS in
+%a serie computed dt respect to all the other RS events in the second
+%serie.
+
 cd termoFiles_mat
 
 window_ = 60;

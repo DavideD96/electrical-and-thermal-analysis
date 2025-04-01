@@ -1,4 +1,4 @@
-function engram2El_writing(filename,folders,comparison,volt_write,volt_read)
+function engram2El_writing(filename,folders,comparison)
 
 %filename: togli anche il 00x
 

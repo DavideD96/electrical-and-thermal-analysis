@@ -1,4 +1,4 @@
-function pc2 = pca_thermal006(filename,fileres, varargin)
+function pc8 = pca_thermal006(filename,fileres, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: 07/04/24
@@ -38,6 +38,7 @@ smooth = false;
 remove = 0;
 remove_lr = 0;
 pc_number = 1;
+binarization = 1;
 
 num = size(varargin,2);
 
@@ -62,6 +63,8 @@ for k = 1:2:num
         remove_lr = varargin{k+1};
     elseif prod(varargin{k}=='_select_All_ASs_')
         select_all = varargin{k+1};
+    elseif prod(varargin{k}=='binarizationOtsu')
+        binarization = varargin{k+1};
     end
 end
 
@@ -131,7 +134,7 @@ set(gca, 'XTick', 1:20)
 
 
 %%%%%%%%%%%%%%%%%%%%%% cumulative explained %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure
+pcaCumul = figure;
 pcaCSignificance = cumsum(pcaSignificance(1:20));
 plot(linspace(1,20,20), pcaCSignificance);
 xlabel('n° of pca components');
@@ -166,23 +169,26 @@ extrN = 0;
 %     end
 % end
 %figure
-t = tiledlayout(nrighe,ncolonne);
+%t = tiledlayout(nrighe,ncolonne);
+t = figure;%subplot(nrighe,ncolonne);
 
 for k = 1:ncolonne*nrighe
     %subplot(nrighe,ncolonne,k);
-    nexttile
+    %nexttile
+    subplot(ncolonne,nrighe,k)
     hold on;
     pc = reshape(coeff(:,k),[rows,col]);
     imagesc(pc); %flip
-    title(append('PC',num2str(k)),"FontSize",20);
+    %title(append('PC',num2str(k)),"FontSize",20);
     xlim([1,col]);
     ylim([1,rows]);
     % clim([extrN,extrP])
     %axis off
-    %axis equal
+    axis equal
     %clim([-0.32,0.42])
+    %hcb = colorbar("FontSize",10,'Location','westoutside');
+    %axis equal
     axis off
-    hcb = colorbar("FontSize",10);
     hold off;
     colormap("hot")
     % colorbarpos=hcb.Position;
@@ -191,6 +197,8 @@ for k = 1:ncolonne*nrighe
     % % %colorbarpos(2)=0.8*colorbarpos(2);
     % hcb.Position = colorbarpos;
 end
+saveas(PC, append(filename,'_PC_','.png'),'png');
+
 figure
 % figure
 % for k = 1:ncolonne*nrighe/2
@@ -732,6 +740,7 @@ filename = filename(1:end-4);
 %savefig(PC4, append(filename,'_PC4_','.fig'));
 savefig(PC, append(filename,'_PC_','.fig'));
 savefig(weigths, append(filename,'_pesi_','.fig'));
+savefig(pcaCumul, append(filename,'_pesi_Cumul_','.fig'));
 %savefig(fig, append(filename,'_stackedPC_','.fig'));
 
 %scores ha dimensioni: colonne -> componenti, di righe -> frames
@@ -920,5 +929,120 @@ if select_all ~= 0
 
 end
 
-%cd ..
+if binarization == 1
+
+    solidity_thresh = 0.85;
+    ecc_thresh = 0.05;
+    npix_thresh = 3;
+    noise_thresh = 0.5;
+
+    binar = figure;
+    %tiledlayout(2,4)
+    npc = 8;
+    overlap = zeros(rows,col);
+    total_obj = 0;
+    position_centroids = [];
+
+    for ii = 1:npc
+        total_obj_in_this_PC = 0;
+
+        pc = reshape(abs(coeff(:,ii)),[rows,col]);
+        bw_pc = imbinarize(pc,'global'); %"global"); % 'global' uses Otsu method    
+
+        connected_compon = bwconncomp(bw_pc,8); %4 = only true NN 
+        props = regionprops(connected_compon);
+        ecc = regionprops(connected_compon,'Eccentricity');
+        num_obj_remaining = connected_compon.NumObjects;
+        Circularity = regionprops(connected_compon,"Circularity"); %pixel sia nel convex hull che nell'oggetto/convex hull        
+        Solidity = regionprops(connected_compon,"Solidity");
+        %check IMAGE overall solidity: noise or ASs?
+
+
+            for kk = 1:connected_compon.NumObjects
+                % kk
+                % a = props(kk).Area
+                % b = ecc(kk).Eccentricity
+                if (props(kk).Area >= npix_thresh && ecc(kk).Eccentricity > ecc_thresh) && ecc(kk).Eccentricity < 1-ecc_thresh
+                    already_found = 0;
+                    for gg = 1:size(position_centroids,1)
+                        %NeighNeib(position_centroids(gg,:),props(kk).Centroid)
+                        if NeighNeib(position_centroids(gg,:),props(kk).Centroid) == 1
+                            already_found = 1;
+                        end
+                    end
+                    %already_found
+                    if already_found == 0
+                        %disp('found new')
+                        %props(:).Centroid
+                        position_centroids = [position_centroids;props(kk).Centroid];
+                        total_obj_in_this_PC = total_obj_in_this_PC +1;
+                        
+                    end
+                else
+    
+                    num_obj_remaining = num_obj_remaining-1;
+                    for jj = 1:length(connected_compon.PixelIdxList{kk})
+                	    y_ev = ceil(connected_compon.PixelIdxList{kk}(jj)/rows);
+                        x_ev = connected_compon.PixelIdxList{kk}(jj) - rows*(y_ev-1);
+                        bw_pc(x_ev,y_ev) = 0;
+                    end
+                end
+            end
+    
+            %imagesc(labelmatrix(connected_compon))
+            
+            %connected_compon.PixelIdxList %oggetto per ogni pixel
+            %overlap = overlap | bw_pc;
+    
+            % discard oggetti fittizi
+            ec = regionprops(bw_pc,'Eccentricity');
+    
+        %figure
+        %imagesc(overlap)
+            
+            %figure
+            
+            for hh = 1:size(position_centroids,1)
+                overlap(round(position_centroids(hh,2)),round(position_centroids(hh,1))) = 1;
+            end
+            %figure
+
+        noise = 0;
+        for kk = 1:length(Circularity)
+            if Solidity(kk).Solidity < solidity_thresh%Circularity(kk).Circularity*
+                noise = noise + 1;
+            end
+        end
+
+        if noise > num_obj_remaining*noise_thresh
+            disp('noise')
+            bw_pc = zeros(rows,col);
+            total_obj_in_this_PC = 0;
+
+        else
+
+        end
+        total_obj = total_obj +total_obj_in_this_PC;
+        %nexttile
+        subplot(2,4,ii)
+        imagesc(flip(bw_pc,1))
+        axis equal;
+        axis off;
+        colormap('gray')
+        %imagesc(flip(overlap))
+        %imshowpair(pc,bw_pc,'montage')
+        %subplot(2,4,ii)
+        %montage({pc,bw_pc})
+    end 
+    sgtitle(binar,num2str(total_obj));
+    saveas(binar, append(filename,'_PC_','_bin.png'),'png');
+
+    total_obj
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% overlap %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    %pc8 = reshape(coeff(:,8),[rows,col]);
+    %regionprops(bw_pc,)
+
+end
+cd ..
 end
