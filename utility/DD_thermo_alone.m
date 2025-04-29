@@ -7,7 +7,7 @@ set_area = 1;
 frameRate = 20;
 cd termoFiles_mat\
 fr_diff = 1;
-delay = 1
+delay = 1;
 
 for k = 1:2:num
     if prod(varargin{k}=='graphType')

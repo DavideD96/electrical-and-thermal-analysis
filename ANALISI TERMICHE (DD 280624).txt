@@ -79,7 +79,7 @@ STTC:
 		of the length.
 	window: specify a time instant to split the time series and perform STTC also in separate intervals.
 
-6) find_bursts(serie)
+6) find_bursts(serie) to perform unsupervsed burst selection accordng to the method by L. Chen, Y. Deng, W. Luo, Z. Wang, e S. Zeng, «Detection of bursts in neuronal spike trains by the mean inter-spike interval method», Prog. Nat. Sci., 2009.
 	
 
 ________________________________________________________________________________________________________________________
@@ -148,3 +148,6 @@ IF YOU ARE USING 2 ELECTRODES:
 3) engram2El(filename,{'startfold',...,'middlefold,...,'endfold'})
 4) engram2El_writing(filiename,{'startfold',...,'middlefold,...,'endfold'})
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%% for Thermal video %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+DD_thermo_alone('E26_D6_2El_W2mm_L1mmB_f9_-3V_50Hz_-0428_','initDelay',50)

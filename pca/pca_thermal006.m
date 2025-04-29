@@ -1,3 +1,4 @@
+
 function pc8 = pca_thermal006(filename,fileres, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,7 +14,14 @@ function pc8 = pca_thermal006(filename,fileres, varargin)
 % varargin: 
 %   'N_significant_PC' number of PCs to plot
 %   'add_electric_dat' plot time evolution of PCs and conductance together
+%
+% varargin: 
+%   'kmean_clustering': perform kmean clustering, and silhuette 
+%   'N_significant_PC': indicate the number of significant PC for
+%                       clustering (?)
+%   'ALL_samecolorbar': use the same colorbar for all PC
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 autoLim = isfolder('parameters');
 if autoLim
@@ -38,7 +46,8 @@ smooth = false;
 remove = 0;
 remove_lr = 0;
 pc_number = 1;
-binarization = 1;
+binarization = 0;
+sameCB = 0;
 
 num = size(varargin,2);
 
@@ -65,8 +74,12 @@ for k = 1:2:num
         select_all = varargin{k+1};
     elseif prod(varargin{k}=='binarizationOtsu')
         binarization = varargin{k+1};
+    elseif prod(varargin{k}=='ALL_sameColorbar')
+        sameCB = varargin{k+1};
     end
 end
+
+
 
 data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
@@ -175,7 +188,8 @@ t = figure;%subplot(nrighe,ncolonne);
 for k = 1:ncolonne*nrighe
     %subplot(nrighe,ncolonne,k);
     %nexttile
-    subplot(ncolonne,nrighe,k)
+    %subplot(ncolonne,nrighe,k)
+    figure
     hold on;
     pc = reshape(coeff(:,k),[rows,col]);
     imagesc(pc); %flip
@@ -190,7 +204,8 @@ for k = 1:ncolonne*nrighe
     %axis equal
     axis off
     hold off;
-    colormap("hot")
+    colormap("winter")
+    colorbar("westoutside",'FontSize',18)
     % colorbarpos=hcb.Position;
     % %colorbarpos(3)=0.7*colorbarpos(3);
     % colorbarpos(4)=0.7*colorbarpos(4);
@@ -458,138 +473,6 @@ figure
 % pc1 = reshape(coeff(:,1),[rows,col]);
 % title('pc1');
 % imagesc(pc1);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc2 = reshape(coeff(:,2),[rows,col]);
-% title('pc2');
-% imagesc(pc2);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc3 = reshape(coeff(:,3),[rows,col]);
-% title('pc3');
-% imagesc(pc3);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc4 = reshape(coeff(:,4),[rows,col]);
-% title('pc4');
-% imagesc(pc4);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc5 = reshape(coeff(:,5),[rows,col]);
-% title('pc5');
-% imagesc(pc5);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc6 = reshape(coeff(:,6),[rows,col]);
-% title('pc6');
-% imagesc(pc6);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc7 = reshape(coeff(:,7),[rows,col]);
-% title('pc7');
-% imagesc(pc7);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc8 = reshape(coeff(:,8),[rows,col]);
-% title('pc8');
-% imagesc(pc8);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc9 = reshape(coeff(:,9),[rows,col]);
-% title('pc9');
-% imagesc(pc9);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc10 = reshape(coeff(:,10),[rows,col]);
-% title('pc10');
-% imagesc(pc10);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc11 = reshape(coeff(:,11),[rows,col]);
-% title('pc11');
-% imagesc(pc11);
-% xlim([1,col]);
-% ylim([1,rows]);
-% axis equal
-% colorbar
-% hold off;
-% 
-% figure;
-% hold on;
-% %9th principal component
-% pc12 = reshape(coeff(:,12),[rows,col]);
-% title('pc12');
-% imagesc(pc12);
 % xlim([1,col]);
 % ylim([1,rows]);
 % axis equal
@@ -929,13 +812,30 @@ if select_all ~= 0
 
 end
 
+if sameCB == 1
+    only_useful_pc = coeff(:,1:8);
+    min_ = min(only_useful_pc,[],'all');
+    max_ = max(only_useful_pc,[],'all');
+
+    for kk = 1:8 
+        pc = reshape(coeff(:,kk),[rows,col]);
+        %subplot(1,8,kk)
+        figure
+        imagesc(pc) 
+        clim([min_,max_])
+        colormap('winter')
+        colorbar('eastoutside')
+        axis equal
+        axis off
+    end
+end
+
 if binarization == 1
 
-    solidity_thresh = 0.85;
-    ecc_thresh = 0.05;
-    npix_thresh = 3;
-    noise_thresh = 0.5;
-
+    solidity_thresh = 0.85; % threshold sulla solidity (> è, < numero di AS)
+    ecc_thresh = 0.20; % threshold sull'eccentricity (> è, < numero di AS)
+    npix_thresh = 3; % più piccoli di così non sono eventi
+    noise_thresh = 0.5; % proporzione di oggetti "noise" sul totale cl
     binar = figure;
     %tiledlayout(2,4)
     npc = 8;
@@ -947,7 +847,22 @@ if binarization == 1
         total_obj_in_this_PC = 0;
 
         pc = reshape(abs(coeff(:,ii)),[rows,col]);
-        bw_pc = imbinarize(pc,'global'); %"global"); % 'global' uses Otsu method    
+        pc_true = reshape(coeff(:,ii),[rows,col]);
+        % converto in colormap e estraggo rgb
+        cm = colormap("gray");
+        colorbar('Location','westoutside')
+        %rgb = ind2rgb(pc,cm);
+
+        bw_pc = imbinarize(pc,'global'); %"global"); % 'global' uses Otsu method 
+
+        % figure
+        % imagesc(bw_pc)
+
+        % hold off
+        %bw_pc = uint8(bw_pc);
+
+        %imshowpair(rgb, bw_pc,'montage')
+        %montage({rgb, bw_pc})
 
         connected_compon = bwconncomp(bw_pc,8); %4 = only true NN 
         props = regionprops(connected_compon);
@@ -955,14 +870,22 @@ if binarization == 1
         num_obj_remaining = connected_compon.NumObjects;
         Circularity = regionprops(connected_compon,"Circularity"); %pixel sia nel convex hull che nell'oggetto/convex hull        
         Solidity = regionprops(connected_compon,"Solidity");
+
+        % for kk = 1:length(Circularity)
+        %     Solidity(kk).Solidity
+        %     %Circularity(kk).Circularity
+        %     ecc(kk).Eccentricity
+        % end
+
         %check IMAGE overall solidity: noise or ASs?
 
 
             for kk = 1:connected_compon.NumObjects
-                % kk
+
                 % a = props(kk).Area
                 % b = ecc(kk).Eccentricity
-                if (props(kk).Area >= npix_thresh && ecc(kk).Eccentricity > ecc_thresh) && ecc(kk).Eccentricity < 1-ecc_thresh
+               
+                if (props(kk).Area >= npix_thresh) && (ecc(kk).Eccentricity > ecc_thresh) && ecc(kk).Eccentricity < 1-ecc_thresh
                     already_found = 0;
                     for gg = 1:size(position_centroids,1)
                         %NeighNeib(position_centroids(gg,:),props(kk).Centroid)
@@ -984,7 +907,7 @@ if binarization == 1
                     for jj = 1:length(connected_compon.PixelIdxList{kk})
                 	    y_ev = ceil(connected_compon.PixelIdxList{kk}(jj)/rows);
                         x_ev = connected_compon.PixelIdxList{kk}(jj) - rows*(y_ev-1);
-                        bw_pc(x_ev,y_ev) = 0;
+                        bw_pc(x_ev,y_ev) = 0; %elimino l'oggetto che ho scartato
                     end
                 end
             end
@@ -996,9 +919,7 @@ if binarization == 1
     
             % discard oggetti fittizi
             ec = regionprops(bw_pc,'Eccentricity');
-    
-        %figure
-        %imagesc(overlap)
+           
             
             %figure
             
@@ -1007,8 +928,15 @@ if binarization == 1
             end
             %figure
 
+            Solidity = regionprops(bw_pc,'Solidity');
+            Circularity = regionprops(bw_pc,'Circularity');
+            %imagesc(bw_pc)
+
         noise = 0;
         for kk = 1:length(Circularity)
+
+            % Solidity(kk).Solidity
+            % Solidity(kk).Solidity < solidity_thresh
             if Solidity(kk).Solidity < solidity_thresh%Circularity(kk).Circularity*
                 noise = noise + 1;
             end
@@ -1024,11 +952,22 @@ if binarization == 1
         end
         total_obj = total_obj +total_obj_in_this_PC;
         %nexttile
-        subplot(2,4,ii)
+        %subplot(2,4,ii)
+        figure
+        subplot(1,2,1)
+        imagesc(pc_true)
+        colormap('hot')
+
+        colorbar('Location','westoutside')
+        axis equal
+        axis off;
+        subplot(1,2,2)
         imagesc(flip(bw_pc,1))
+        colorbar('Location','westoutside')
+        colormap('gray')
+        %imshowpair(pc,bw_pc,'montage')
         axis equal;
         axis off;
-        colormap('gray')
         %imagesc(flip(overlap))
         %imshowpair(pc,bw_pc,'montage')
         %subplot(2,4,ii)
