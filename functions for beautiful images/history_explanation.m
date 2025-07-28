@@ -19,15 +19,16 @@ history = reshape(max(mtot,[],2),[size(mtot,1),size(mtot,3),1]);
 
 [~,ind] = max(mtot(:,:,fr1),[],2); 
 figure
-subplot(1,3,1)
+%subplot(1,3,1)
 title(num2str(fr1))
 colormap(cm)
 imagesc(mtot(:,:,fr1))
 clim([min_ max_])
+colorbar
 hold on
 
 for kk = 1:size(mtot,1)
-    plot([ind(kk)-0.5,ind(kk)-0.5,ind(kk)+0.5,ind(kk)+0.5,ind(kk)-0.5],[kk+0.5,kk-0.5,kk-0.5,kk+0.5,kk+0.5],'w','linewidth',1)
+    plot([ind(kk)-0.5,ind(kk)-0.5,ind(kk)+0.5,ind(kk)+0.5,ind(kk)-0.5],[kk+0.5,kk-0.5,kk-0.5,kk+0.5,kk+0.5],'w','linewidth',1.5)
 end
 
 axis equal
@@ -36,12 +37,13 @@ hold off
 
 
 [~,ind] = max(mtot(:,:,fr2),[],2);
-%figure
-subplot(1,3,2)
+figure
+%subplot(1,3,2)
 title(num2str(fr2))
 colormap(cm)
 imagesc(mtot(:,:,fr2))
 clim([min_ max_])
+colorbar
 hold on
 
 for kk = 1:size(mtot,1)
@@ -54,17 +56,18 @@ hold off
 
 
 [~,ind] = max(mtot(:,:,fr3),[],2);
-%figure
-subplot(1,3,3)
+figure
+%subplot(1,3,3)
 title(num2str(fr3))
 imagesc(mtot(:,:,fr3))
 colormap(cm)
 clim([min_ max_])
+colorbar
 hold on
 
-for kk = 1:size(mtot,1)
-    plot([ind(kk)-0.5,ind(kk)-0.5,ind(kk)+0.5,ind(kk)+0.5,ind(kk)-0.5],[kk+0.5,kk-0.5,kk-0.5,kk+0.5,kk+0.5],'w','linewidth',1)
-end
+% for kk = 1:size(mtot,1)
+%     plot([ind(kk)-0.5,ind(kk)-0.5,ind(kk)+0.5,ind(kk)+0.5,ind(kk)-0.5],[kk+0.5,kk-0.5,kk-0.5,kk+0.5,kk+0.5],'w','linewidth',1)
+%end
 
 max_h = max([history(:,fr1),history(:,fr2),history(:,fr3)],[],'all');
 min_h = min([history(:,fr1),history(:,fr2),history(:,fr3)],[],'all');
@@ -76,28 +79,31 @@ axis off
 hold off
 
 figure
-subplot(1,3,1)
+%subplot(1,3,1)
 imagesc(history(:,fr1))
 colormap(cm)
-clim([min_h max_h])
+%clim([min_h max_h])
+clim([min_ max_])
 title(num2str(fr1))
 axis off
 axis equal
 
-%figure
-subplot(1,3,2)
+figure
+%subplot(1,3,2)
 imagesc(history(:,fr2))
 colormap(cm)
-clim([min_h max_h])
+%clim([min_h max_h])
+clim([min_ max_])
 title(num2str(fr2))
 axis off
 axis equal
 
-%figure
-subplot(1,3,3)
+figure
+%subplot(1,3,3)
 imagesc(history(:,fr3))
 colormap(cm)
-clim([min_h max_h])
+%clim([min_h max_h])
+clim([min_ max_])
 colorbar
 title(num2str(fr3))
 axis off
