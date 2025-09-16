@@ -204,8 +204,8 @@ for k = 1:ncolonne*nrighe
     %axis equal
     axis off
     hold off;
-    colormap("winter")
-    colorbar("westoutside",'FontSize',18)
+    %colormap("winter")
+    colorbar("eastoutside",'FontSize',18)
     % colorbarpos=hcb.Position;
     % %colorbarpos(3)=0.7*colorbarpos(3);
     % colorbarpos(4)=0.7*colorbarpos(4);
