@@ -31,7 +31,7 @@ else
 
     for ii = 1:ntrials
         cold = mean(mtot(:,:,ii:ii+50),3);
-        hot = mean(mtot(:,:,ii++53:ii+103),3);
+        hot = mean(mtot(:,:,ii+53:ii+103),3);
         deltaT = max(hot-cold,[],'all');
 
         if deltaT>deltaTmax
@@ -47,10 +47,13 @@ start = startEnd(1);
 
 transient = 6; %exclude frames due to transient
 
-coldData = mtot(:,:,1:(start - transient/2)); %-1
-coldData = cat(3,coldData,mtot(:,:,(start + transient/2 + nframesHot + 1):(nframesHot + nframesHot + 1)));
-hotData = mtot(:,:,(start + transient/2):(start - transient/2 + nframesHot - 1));
-
+coldData = mtot(:,:,1:(start - transient/2)); %-1 qui trovo la sezione di immagini col campione freddo
+if 2*nframesHot+1 <= size(mtot,3)
+    coldData = cat(3,coldData,mtot(:,:,(start + transient/2 + nframesHot + 1):(nframesHot + nframesHot + 1)));
+    hotData = mtot(:,:,(start + transient/2):(start - transient/2 + nframesHot - 1));
+else
+    hotData = mtot(:,:,(start + transient/2):((start + transient/2)+start - transient/2));
+end
 %size(coldData)
 %size(hotData)
 
