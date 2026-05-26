@@ -1,0 +1,14 @@
+function plot_t_single_pixel(row,col)
+
+cd termoFiles_mat\
+
+m = load("mtotalT.mat");
+m = m.mtotalT;
+
+T_single_pix = squeeze(m(row,col,:));
+
+f = 51;
+
+plot(T_single_pix)
+
+end

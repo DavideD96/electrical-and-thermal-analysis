@@ -69,7 +69,7 @@ set(gca, 'nextplot','replacechildren', 'Visible','off');
 
 figure, set(gcf, 'Color','white')
 
-load('ThermoColorMap1.mat');
+load('ThermoColorMap2.mat');
 
 %%%%%%%% check for calibration (1 admitted!!!) %%%%%%%%%%
 calibr_frame = 0;
@@ -90,7 +90,7 @@ cd ..
 delay = param.delay-4;
 Frames = zeros(2,1);
 Frames(1) = 1;
-Frames(2) = 800; %param.end_stimulation;
+Frames(2) = 450; %param.end_stimulation;
 fr_diff = param.fr_diff;
 
 nFrames = Frames(2)-Frames(1)+1;
@@ -210,7 +210,7 @@ dist_da_succ = 1;
 f = figure('position',[200 100 1000 500]);
 
 Tmin = 23;
-Tmax = 55;
+Tmax = 258;
 
 axres = axes(f,'outerPosition', [0.05 0 0.31 1]); %subplot(1,3,1);
 axtemp = axes(f,'outerPosition', [0.375 0 0.31 1]);
@@ -400,12 +400,15 @@ for k=termo_time_index:video_length %Cafone, funziona a 30 Hz, cambia
         dist_da_succ = Res(res_time_index+1,1) - termo_times(floor(termo_time_index-delay));
         termo_time_index = termo_time_index+0.5;
 
+        dist_da_succ
+        dist_da_prec
         if dist_da_succ*dist_da_prec <= 0
             %disp('cambio')
             res_time_index = res_time_index + 1;
         else
             %disp('non cambio')
         end
+        res_time_index
     else
         termo_time_index = termo_time_index + termo_fr_over_res_fr;
     end    

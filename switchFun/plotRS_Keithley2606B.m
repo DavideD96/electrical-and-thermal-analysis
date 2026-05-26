@@ -1,4 +1,4 @@
-function plotRS_Keithley2606B(nomefile,volt_or_curr)
+function plotRS_Keithley2606B(nomefile,volt_or_curr,pulses)
 
 %check for directory where saving the data
 check = exist('RSResults');
@@ -37,6 +37,10 @@ elseif volt_or_curr == 1 %curr const
     I = R_(:,2);
     Resistance = voltage./I;
     R = [R_(:,1), voltage, I, Resistance];
+end
+
+if pulses == 1
+    R = R(2:end,:);
 end
 
 figure;
