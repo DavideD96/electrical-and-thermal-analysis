@@ -1,5 +1,5 @@
 
-function pc8 = pca_thermal006(filename,fileres, varargin)
+function pca_thermal006(filename,fileres, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Date: 2023-11-29 Last modification: 07/04/24
@@ -85,7 +85,7 @@ data = load(filename,'-mat');
 data = cell2mat(struct2cell(data));
 
 if ~autoLim
-    start_end = [size(data,3)-2900,size(data,3)];
+    start_end = [1,size(data,3)];
 end
 
 if any(remove)

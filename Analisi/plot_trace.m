@@ -28,9 +28,12 @@ files = files(~endsWith({files.name}, '.fig'));
         ax = figure('Position', [100, 100, 1400, 350]);
 
         if pulses == 1
+
             plot(trace(start:20:end-1));
         else
-            plot(trace(start:1:end-1));
+
+            times = linspace(1,length(trace)-start+1,length(trace)-start+1)/50;
+            plot(times,trace(start:end));
         end
         grid on
         savefig(ax,[nomeFile,'.fig'])
@@ -39,4 +42,10 @@ files = files(~endsWith({files.name}, '.fig'));
         % disp(dati{k});
     end
 
+    if pulses == 1
+        m = load("mtotalT.mat");
+        m = m.mtotalT;
+        mtotalT_reduced = m(:,:,start:20:end-1);
+        save('mtotalT_reduced.mat',"mtotalT_reduced")
+    end
 end
