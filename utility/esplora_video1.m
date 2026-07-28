@@ -109,7 +109,7 @@ classdef esplora_video1 < matlab.apps.AppBase
 
             title(app.UIAxesFrame2,...
                 sprintf('Frame %d',idx2));
-
+            colorbar(app.UIAxesFrame2);
 
             % DIFFERENZA
             imagesc(app.UIAxesDiff,d);

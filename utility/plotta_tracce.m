@@ -1,4 +1,4 @@
-
+function plotta_tracce(offsetIniz,delay)
 % Cerca tutti i file che iniziano con "trace"
 files = dir('trace*');
 
@@ -23,7 +23,7 @@ for k = 1:length(files)
     set(fig, 'Position', pos);
 
     % Plot dei dati
-    plot(trace(9:15:end));
+    plot(trace(offsetIniz:delay:end));
 
     % Titolo con il nome del file
     title(files(k).name, 'Interpreter', 'none');
